@@ -1,0 +1,46 @@
+{
+  "name": "neurarch-arch-bench",
+  "version": "0.1.0",
+  "description": "A verifiable benchmark for agents that design neural-network architectures. Models emit graph edits; the resulting architecture is graded programmatically. No GPU, no human judge.",
+  "type": "module",
+  "bin": {
+    "neurarch-arch-bench": "leaderboard.mjs"
+  },
+  "files": [
+    "bench.mjs",
+    "leaderboard.mjs",
+    "tasks.json",
+    "solutions.json",
+    "README.md"
+  ],
+  "scripts": {
+    "leaderboard": "node leaderboard.mjs",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "rl-environment",
+    "benchmark",
+    "neural-architecture",
+    "agents",
+    "llm",
+    "grok",
+    "verifiable-reward",
+    "deep-learning"
+  ],
+  "homepage": "https://neurarch.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neurarch-ai/neurarch-arch-bench.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neurarch-ai/neurarch-arch-bench/issues"
+  },
+  "author": "neurarch-ai",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.1"
+  }
+}

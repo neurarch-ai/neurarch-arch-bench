@@ -1,0 +1,44 @@
+{
+  "_comment": "Reference (oracle) solutions: a known-good action sequence per task. These prove every task is solvable and serve as the upper-bound row in the leaderboard (provider 'reference'). The graded model NEVER sees these; the leaderboard only sends the spec + starting graph. Tests assert each reference passes its own task, so an over-tightened constraint can't slip in unnoticed.",
+  "cnn-cifar": [
+    { "type": "add_component", "componentType": "conv2d", "name": "conv1", "afterName": "input", "params": { "inChannels": 3, "outChannels": 32, "kernelSize": 3 } },
+    { "type": "add_component", "componentType": "relu", "name": "act1", "afterName": "conv1" },
+    { "type": "add_component", "componentType": "conv2d", "name": "conv2", "afterName": "act1", "params": { "inChannels": 32, "outChannels": 64, "kernelSize": 3 } },
+    { "type": "add_component", "componentType": "relu", "name": "act2", "afterName": "conv2" },
+    { "type": "add_component", "componentType": "linear", "name": "head", "afterName": "act2", "params": { "inFeatures": 64, "outFeatures": 10 } }
+  ],
+  "mlp-tabular": [
+    { "type": "add_component", "componentType": "linear", "name": "fc1", "afterName": "input", "params": { "inFeatures": 32, "outFeatures": 64 } },
+    { "type": "add_component", "componentType": "relu", "name": "act1", "afterName": "fc1" },
+    { "type": "add_component", "componentType": "linear", "name": "fc2", "afterName": "act1", "params": { "inFeatures": 64, "outFeatures": 32 } },
+    { "type": "add_component", "componentType": "relu", "name": "act2", "afterName": "fc2" },
+    { "type": "add_component", "componentType": "linear", "name": "head", "afterName": "act2", "params": { "inFeatures": 32, "outFeatures": 2 } }
+  ],
+  "text-encoder": [
+    { "type": "add_component", "componentType": "embedding", "name": "embed", "afterName": "input", "params": { "numEmbeddings": 30000, "embeddingDim": 128 } },
+    { "type": "add_component", "componentType": "multiHeadAttention", "name": "attn1", "afterName": "embed", "params": { "embedDim": 128, "numHeads": 8 } },
+    { "type": "add_component", "componentType": "multiHeadAttention", "name": "attn2", "afterName": "attn1", "params": { "embedDim": 128, "numHeads": 8 } },
+    { "type": "add_component", "componentType": "linear", "name": "head", "afterName": "attn2", "params": { "inFeatures": 128, "outFeatures": 4 } }
+  ],
+  "fix-broken-attention": [
+    { "type": "update_params", "name": "attn", "params": { "numHeads": 5 } }
+  ],
+  "deepen-resnet": [
+    { "type": "add_component", "componentType": "conv2d", "name": "conv2", "afterName": "act1", "params": { "inChannels": 16, "outChannels": 32, "kernelSize": 3 } },
+    { "type": "add_component", "componentType": "relu", "name": "act2", "afterName": "conv2" },
+    { "type": "update_params", "name": "head", "params": { "inFeatures": 32 } }
+  ],
+  "add-normalization": [
+    { "type": "add_component", "componentType": "batchNorm1d", "name": "norm1", "afterName": "fc1", "params": { "numFeatures": 128 } }
+  ],
+  "scale-under-budget": [
+    { "type": "scale_params", "paramKey": "hiddenDim", "factor": 2, "namePattern": "^block" }
+  ],
+  "autoencoder": [
+    { "type": "add_component", "componentType": "linear", "name": "enc1", "afterName": "input", "params": { "inFeatures": 784, "outFeatures": 256 } },
+    { "type": "add_component", "componentType": "relu", "name": "enc_act", "afterName": "enc1" },
+    { "type": "add_component", "componentType": "linear", "name": "bottleneck", "afterName": "enc_act", "params": { "inFeatures": 256, "outFeatures": 64 } },
+    { "type": "add_component", "componentType": "linear", "name": "dec1", "afterName": "bottleneck", "params": { "inFeatures": 64, "outFeatures": 256 } },
+    { "type": "add_component", "componentType": "linear", "name": "dec_out", "afterName": "dec1", "params": { "inFeatures": 256, "outFeatures": 784 } }
+  ]
+}

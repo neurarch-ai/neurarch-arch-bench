@@ -1,0 +1,20 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      # Unit tests: verifier behaviour + every task is solvable by its reference.
+      - run: npm test
+      # Smoke: the keyless oracle leaderboard runs end to end with no API key.
+      - run: node leaderboard.mjs --providers=reference

@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "description": "Design-from-spec benchmark for architecture-design agents. Each task gives a policy a natural-language spec and a starting graph; the resulting graph is graded programmatically by the same verifier the product enforces live (archScore + guardrails + shape inference). No human judgement, no LLM judge.",
+  "tasks": [
+    {
+      "id": "cnn-cifar",
+      "spec": "Design a small convolutional image classifier for CIFAR-10 (3x32x32 input, 10 classes). Use at least two conv layers with nonlinearities and a final linear classifier. Keep it under 50M params.",
+      "start": "empty-image",
+      "budget": { "maxParams": 50000000 },
+      "constraints": {
+        "forbidBlockers": true,
+        "minScore": 55,
+        "maxParams": 50000000,
+        "mustContainTypes": ["conv2d", "linear"],
+        "minComponents": 5,
+        "mustReachOutput": true
+      }
+    },
+    {
+      "id": "mlp-tabular",
+      "spec": "Build a multilayer perceptron for tabular binary classification with a 32-feature input. Two or three hidden linear layers with ReLU, ending in a linear head. Keep it tiny, under 5M params.",
+      "start": "empty-tabular",
+      "budget": { "maxParams": 5000000 },
+      "constraints": {
+        "forbidBlockers": true,
+        "minScore": 55,
+        "maxParams": 5000000,
+        "mustContainTypes": ["linear", "relu"],
+        "minComponents": 5,
+        "mustReachOutput": true
+      }
+    },
+    {
+      "id": "text-encoder",
+      "spec": "Design a small transformer encoder for text classification. Token embedding, then a couple of multi-head attention blocks with a valid head configuration, then a linear classifier. Embedding dim must be divisible by the number of heads.",
+      "start": "empty-text",
+      "budget": { "maxParams": 200000000 },
+      "constraints": {
+        "forbidBlockers": true,
+        "minScore": 55,
+        "maxParams": 200000000,
+        "mustContainTypes": ["embedding", "multiHeadAttention", "linear"],
+        "minComponents": 5,
+        "mustReachOutput": true
+      }
+    },
+    {
+      "id": "fix-broken-attention",
+      "spec": "This model has a broken attention layer: embedDim 100 is not divisible by numHeads 7. Fix the head configuration so the graph is valid, changing as little else as possible.",
+      "start": "broken-attention",
+      "budget": {},
+      "constraints": {
+        "forbidBlockers": true,
+        "minScore": 50,
+        "mustReachOutput": true,
+        "maxActions": 4
+      }
+    },
+    {
+      "id": "deepen-resnet",
+      "spec": "Take this tiny CNN and deepen it: add a couple more conv + ReLU stages before the classifier, keeping the graph valid and connected and staying under 80M params.",
+      "start": "tiny-cnn",
+      "budget": { "maxParams": 80000000 },
+      "constraints": {
+        "forbidBlockers": true,
+        "minScore": 55,
+        "maxParams": 80000000,
+        "mustContainTypes": ["conv2d", "relu"],
+        "minComponents": 7,
+        "mustReachOutput": true
+      }
+    },
+    {
+      "id": "add-normalization",
+      "spec": "This MLP trains unstably. Add normalization (batch norm or layer norm) between the linear layers without breaking the shapes, and keep it connected.",
+      "start": "unstable-mlp",
+      "budget": {},
+      "constraints": {
+        "forbidBlockers": true,
+        "minScore": 55,
+        "mustContainTypesAny": ["batchNorm1d", "layerNorm", "batchNorm2d"],
+        "mustReachOutput": true
+      }
+    },
+    {
+      "id": "scale-under-budget",
+      "spec": "Make this transformer bigger to increase capacity, but the total parameter count MUST stay under 100M. Widen or deepen as you like, but respect the budget.",
+      "start": "small-transformer",
+      "budget": { "maxParams": 100000000 },
+      "constraints": {
+        "forbidBlockers": true,
+        "maxParams": 100000000,
+        "minScore": 50,
+        "mustReachOutput": true
+      }
+    },
+    {
+      "id": "autoencoder",
+      "spec": "Design a simple dense autoencoder for 784-dim flattened images: an encoder that compresses to a small bottleneck and a decoder that reconstructs back to 784. Keep it valid and connected.",
+      "start": "empty-784",
+      "budget": { "maxParams": 20000000 },
+      "constraints": {
+        "forbidBlockers": true,
+        "minScore": 50,
+        "maxParams": 20000000,
+        "mustContainTypes": ["linear"],
+        "minComponents": 6,
+        "mustReachOutput": true
+      }
+    }
+  ],
+  "fixtures": {
+    "empty-image": {
+      "name": "image-stub",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 3, 32, 32] } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [{ "from": "i", "to": "o" }]
+    },
+    "empty-tabular": {
+      "name": "tabular-stub",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 32] } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [{ "from": "i", "to": "o" }]
+    },
+    "empty-text": {
+      "name": "text-stub",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 128] } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [{ "from": "i", "to": "o" }]
+    },
+    "empty-784": {
+      "name": "image-784-stub",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 784] } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [{ "from": "i", "to": "o" }]
+    },
+    "broken-attention": {
+      "name": "broken-attn",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 128] } },
+        { "id": "e", "type": "embedding", "name": "embed", "params": { "numEmbeddings": 30000, "embeddingDim": 100 } },
+        { "id": "a", "type": "multiHeadAttention", "name": "attn", "params": { "embedDim": 100, "numHeads": 7 } },
+        { "id": "fc", "type": "linear", "name": "head", "params": { "inFeatures": 100, "outFeatures": 2 } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [
+        { "from": "i", "to": "e" },
+        { "from": "e", "to": "a" },
+        { "from": "a", "to": "fc" },
+        { "from": "fc", "to": "o" }
+      ]
+    },
+    "tiny-cnn": {
+      "name": "tiny-cnn",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 3, 32, 32] } },
+        { "id": "c1", "type": "conv2d", "name": "conv1", "params": { "inChannels": 3, "outChannels": 16, "kernelSize": 3 } },
+        { "id": "r1", "type": "relu", "name": "act1", "params": {} },
+        { "id": "fc", "type": "linear", "name": "head", "params": { "inFeatures": 16, "outFeatures": 10 } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [
+        { "from": "i", "to": "c1" },
+        { "from": "c1", "to": "r1" },
+        { "from": "r1", "to": "fc" },
+        { "from": "fc", "to": "o" }
+      ]
+    },
+    "unstable-mlp": {
+      "name": "unstable-mlp",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 64] } },
+        { "id": "f1", "type": "linear", "name": "fc1", "params": { "inFeatures": 64, "outFeatures": 128 } },
+        { "id": "r1", "type": "relu", "name": "act1", "params": {} },
+        { "id": "f2", "type": "linear", "name": "fc2", "params": { "inFeatures": 128, "outFeatures": 10 } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [
+        { "from": "i", "to": "f1" },
+        { "from": "f1", "to": "r1" },
+        { "from": "r1", "to": "f2" },
+        { "from": "f2", "to": "o" }
+      ]
+    },
+    "small-transformer": {
+      "name": "small-transformer",
+      "components": [
+        { "id": "i", "type": "input", "name": "input", "params": { "shape": [1, 128] } },
+        { "id": "e", "type": "embedding", "name": "embed", "params": { "numEmbeddings": 30000, "embeddingDim": 256 } },
+        { "id": "b1", "type": "transformerBlock", "name": "block0", "params": { "hiddenDim": 256, "numHeads": 8 } },
+        { "id": "b2", "type": "transformerBlock", "name": "block1", "params": { "hiddenDim": 256, "numHeads": 8 } },
+        { "id": "fc", "type": "linear", "name": "head", "params": { "inFeatures": 256, "outFeatures": 2 } },
+        { "id": "o", "type": "output", "name": "output", "params": {} }
+      ],
+      "connections": [
+        { "from": "i", "to": "e" },
+        { "from": "e", "to": "b1" },
+        { "from": "b1", "to": "b2" },
+        { "from": "b2", "to": "fc" },
+        { "from": "fc", "to": "o" }
+      ]
+    }
+  }
+}
