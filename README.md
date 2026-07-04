@@ -29,7 +29,7 @@ node leaderboard.mjs --providers=reference
 [PASS] reference text-encoder           score= 63 params=3971584
 ...
 -- Leaderboard --
-  reference  8/8 passed  avg score 74
+  reference  12/12 passed  avg score 75
 ```
 
 **Rank real models.** Bring an API key for whichever you want to measure:
@@ -75,7 +75,8 @@ Each task carries machine-checkable constraints. A submission **passes** only if
 
 - `forbidBlockers` — no hard structural failures (non-divisible attention heads, GQA head/kv mismatch, disconnected graph, empty graph)
 - `mustReachOutput` — input actually reaches output
-- `maxParams` — rough parameter estimate within budget
+- `maxParams` / `minParams` — rough parameter estimate inside the budget (or band, for scaling tasks)
+- `forbidActionTypes` — repair tasks forbid `replace_model` / `clear_canvas`, so a rebuild can't masquerade as a surgical fix
 - `mustContainTypes` / `mustContainTypesAny` — required layer families present
 - `minComponents` / `maxActions` — depth and edit-economy bounds
 - `minScore` — a transparent 0..100 rubric (valid baseline + depth + nonlinearities + normalization + budget respect)
@@ -97,6 +98,45 @@ const result = gradeTask(task, model, myPolicyActions.length);
 ```
 
 `applyActions` + `scoreModel` are pure and sub-millisecond, so they double as an RL environment: state is the graph, action is an edit batch, reward is `scoreModel(...).score` (dense) or `gradeTask(...).pass` (sparse terminal).
+
+## Unlimited tasks: the procedural generator
+
+The 12 curated tasks are a seed. `generate.mjs` mints deterministic splits of any size from a seed, across 10 families: 6 design-from-spec (MLP, autoencoder, CNN, transformer, GQA encoder, multi-input two-tower retrieval) and 4 edit-in-place (repair a broken attention config, trim an oversized MLP under budget, grow an undersized MLP into a two-sided param band, insert normalization), where `replace_model` is forbidden so a rebuild can't masquerade as a surgical fix.
+
+```js
+import { generateCases } from 'neurarch-arch-bench/generate.mjs';
+const split = generateCases(500, 123); // same (count, seed) => identical split
+```
+
+Every generated case carries its own reference solution; the test suite asserts each reference passes (no unsatisfiable tasks) and each edit-in-place start fails untouched (no vacuous tasks). Because splits are minted on demand, a held-out eval split never appears on the public web: contamination resistance by construction.
+
+```bash
+# leaderboard on a generated split instead of the curated set
+node leaderboard.mjs --providers=grok --generate=50 --seed=7
+```
+
+## Train on it: the RL loop
+
+`env-server.mjs` (zero deps) serves tasks and shaped rewards over HTTP, and [`training/`](./training/) contains a TRL GRPO script plus a Colab notebook that trains a small open model against the verifier end to end: baseline pass@1 on a held-out split, train, reward curve, re-eval.
+
+```bash
+node env-server.mjs                                        # reward service :8737
+python training/train_grpo.py --eval-only --seed 999 --count 64
+python training/train_grpo.py --steps 300 --count 512 --seed 123 --lora
+```
+
+The server also supports multi-turn repair episodes (`POST /episode/start` /
+`/episode/step`): the verifier's failure messages are the feedback, edits
+accumulate on the graph, done on pass or turn budget.
+
+There is also a [verifiers](https://github.com/PrimeIntellect-ai/verifiers)-compatible
+package in [`environments/neurarch_arch_design/`](./environments/neurarch_arch_design/)
+for the Prime Intellect Environments Hub (`prime env install neurarch-arch-design`).
+
+See [training/README.md](./training/README.md) for hardware notes, the reward
+formula, and the **grounding study** (does the verifier's verdict predict real
+PyTorch constructability and trainability? First run: blockers predicted
+forward-pass failure 24/24; clean graphs constructed 20/20 and trained 18/20).
 
 ## Contributing tasks
 

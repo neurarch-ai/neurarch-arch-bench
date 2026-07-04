@@ -8,6 +8,8 @@
   },
   "files": [
     "bench.mjs",
+    "generate.mjs",
+    "env-server.mjs",
     "leaderboard.mjs",
     "tasks.json",
     "solutions.json",
@@ -15,6 +17,7 @@
   ],
   "scripts": {
     "leaderboard": "node leaderboard.mjs",
+    "env": "node env-server.mjs",
     "test": "vitest run"
   },
   "keywords": [

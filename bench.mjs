@@ -256,7 +256,7 @@ export function scoreModel(model, budget = {}) {
 
 // ─── Grader ──────────────────────────────────────────────────────────────────
 
-export function gradeTask(task, model, actionCount = 0) {
+export function gradeTask(task, model, actionCount = 0, actionTypes = []) {
   const c = task.constraints ?? {};
   const { score, blockers, params } = scoreModel(model, task.budget ?? {});
   const failures = [];
@@ -265,13 +265,37 @@ export function gradeTask(task, model, actionCount = 0) {
   if (c.forbidBlockers && blockers.length) failures.push(`structural blocker: ${blockers[0]}`);
   if (typeof c.minScore === 'number' && score < c.minScore) failures.push(`score ${score} < min ${c.minScore}`);
   if (typeof c.maxParams === 'number' && params > c.maxParams) failures.push(`params ${params} > budget ${c.maxParams}`);
+  if (typeof c.minParams === 'number' && params < c.minParams) failures.push(`params ${params} < required minimum ${c.minParams}`);
   if (typeof c.minComponents === 'number' && model.components.length < c.minComponents) failures.push(`${model.components.length} components < min ${c.minComponents}`);
   for (const t of c.mustContainTypes ?? []) if (!present.has(t)) failures.push(`missing layer type "${t}"`);
   if (c.mustContainTypesAny && !c.mustContainTypesAny.some(t => present.has(t))) failures.push(`needs one of: ${c.mustContainTypesAny.join(', ')}`);
   if (c.mustReachOutput && !inputReachesOutput(model)) failures.push('input does not reach output');
   if (typeof c.maxActions === 'number' && actionCount > c.maxActions) failures.push(`${actionCount} actions > max ${c.maxActions}`);
+  // Repair tasks forbid replace_model / clear_canvas so a wholesale rebuild
+  // can't masquerade as the asked-for surgical fix.
+  for (const t of c.forbidActionTypes ?? []) if (actionTypes.includes(t)) failures.push(`used forbidden action "${t}"`);
 
   return { taskId: task.id, pass: failures.length === 0, score, params, blockers, failures };
+}
+
+/**
+ * Failure taxonomy: map a grader failure string (or an ERROR string from the
+ * harness) to a stable category. Categories make model comparisons legible:
+ * "60% of grok's failures are divisibility" says more than a pass rate.
+ */
+export function categorizeFailure(failure) {
+  const f = String(failure).toLowerCase();
+  if (f.includes('no json object') || f.includes('"actions" array')) return 'parse-error';
+  if (f.includes('not divisible')) return 'attention-divisibility';
+  if (f.includes('does not reach output') || f.includes('disconnected') || f.includes('empty graph')) return 'connectivity';
+  if (f.includes('> budget')) return 'over-budget';
+  if (f.includes('< required minimum')) return 'under-band';
+  if (f.includes('missing layer type') || f.includes('needs one of')) return 'missing-layer-type';
+  if (f.includes('forbidden action')) return 'forbidden-action';
+  if (f.includes('actions > max')) return 'action-limit';
+  if (f.includes('components < min')) return 'too-shallow';
+  if (f.includes('score')) return 'low-score';
+  return 'other';
 }
 
 /** Render a graph as the compact text a language-model policy reads. */

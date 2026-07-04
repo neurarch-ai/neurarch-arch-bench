@@ -15,13 +15,17 @@
  *   node leaderboard.mjs --providers=grok,claude,gemini --only=cnn-cifar,text-encoder
  *   LEADERBOARD_OUT=board.json node leaderboard.mjs --providers=grok
  *
+ * Procedural split (contamination-resistant, any size, seeded):
+ *   node leaderboard.mjs --providers=grok --generate=50 --seed=7
+ *
  * Pick the exact model with <PROVIDER>_MODEL, e.g. XAI_MODEL=grok-3.
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import {
-  loadBenchmark, loadSolutions, buildFixture, applyActions, gradeTask, serializeModel,
+  loadBenchmark, loadSolutions, buildFixture, applyActions, gradeTask, serializeModel, categorizeFailure,
 } from './bench.mjs';
+import { generateCases } from './generate.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => {
   const m = a.match(/^--([^=]+)(?:=(.*))?$/); return m ? [m[1], m[2] ?? 'true'] : [a, 'true'];
@@ -30,6 +34,15 @@ const PROVIDERS = (args.providers ?? 'grok').split(',').map(s => s.trim());
 const ONLY = args.only ? new Set(args.only.split(',')) : null;
 const FORMAT = args.format ?? 'text'; // 'text' | 'md'
 const OUT = process.env.LEADERBOARD_OUT;
+// --generate=N grades a procedurally-generated split of N tasks (seeded by
+// --seed) instead of the curated set. The oracle provider replays each
+// generated case's own reference solution.
+const GENERATE = Math.max(0, parseInt(args.generate ?? '0', 10) || 0);
+const SEED = parseInt(args.seed ?? '1', 10) || 1;
+// --traces=file.jsonl appends one JSON line per attempt: the full
+// (spec, observation, raw reply, parsed actions, verdict) tuple. This is the
+// benchmark's data exhaust: SFT-ready on passes, DPO/repair-ready on failures.
+const TRACES = args.traces && args.traces !== 'true' ? args.traces : null;
 
 const SYSTEM_PROMPT = `You are a neural-architecture design agent. You edit a structured model graph by emitting actions.
 Respond with ONE JSON object and nothing else: { "actions": [ <action> ... ] }
@@ -45,7 +58,9 @@ Action types:
 Rules:
 - Insert layers in order using afterName so the graph stays connected input->output.
 - Attention: embedDim MUST be divisible by numHeads.
-- Param keys: linear {inFeatures,outFeatures}; conv2d {inChannels,outChannels,kernelSize}; embedding {numEmbeddings,embeddingDim}; multiHeadAttention {embedDim,numHeads}; transformerBlock {hiddenDim,numHeads}.
+- Param keys: linear {inFeatures,outFeatures}; conv2d {inChannels,outChannels,kernelSize}; embedding {numEmbeddings,embeddingDim}; multiHeadAttention {embedDim,numHeads}; groupedQueryAttention {embedDim,numHeads,numKVHeads}; transformerBlock {hiddenDim,numHeads}; batchNorm1d {numFeatures}; layerNorm {normalizedShape}; concatenate {dim}.
+- GQA: numHeads MUST also be divisible by numKVHeads.
+- If the spec says to repair or edit in place, use surgical actions (update_params, add_component); do NOT use replace_model or clear_canvas.
 - Respect any parameter budget in the spec. Output only the JSON object.`;
 
 async function openaiCompat(baseUrl, key, model, system, user) {
@@ -65,23 +80,27 @@ const SOLUTIONS = loadSolutions();
 const REGISTRY = {
   reference: {
     envKey: null,
-    oracle: true,
-    solve: (taskId) => SOLUTIONS[taskId] ?? [],
+    oracle: true, // replays each case's known-good solution (curated or generated)
+    modelId: () => 'reference',
   },
   grok: {
     envKey: 'XAI_API_KEY',
+    modelId: () => process.env.XAI_MODEL ?? 'grok-4',
     call: (s, u) => openaiCompat('https://api.x.ai/v1', process.env.XAI_API_KEY, process.env.XAI_MODEL ?? 'grok-4', s, u),
   },
   groq: {
     envKey: 'GROQ_API_KEY',
+    modelId: () => process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile',
     call: (s, u) => openaiCompat('https://api.groq.com/openai/v1', process.env.GROQ_API_KEY, process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile', s, u),
   },
   openai: {
     envKey: 'OPENAI_API_KEY',
+    modelId: () => process.env.OPENAI_MODEL ?? 'gpt-4o',
     call: (s, u) => openaiCompat('https://api.openai.com/v1', process.env.OPENAI_API_KEY, process.env.OPENAI_MODEL ?? 'gpt-4o', s, u),
   },
   claude: {
     envKey: 'ANTHROPIC_API_KEY',
+    modelId: () => process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6',
     call: async (s, u) => {
       const r = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -94,6 +113,7 @@ const REGISTRY = {
   },
   gemini: {
     envKey: 'GEMINI_API_KEY',
+    modelId: () => process.env.GEMINI_MODEL ?? 'gemini-2.5-flash',
     call: async (s, u) => {
       const model = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`, {
@@ -105,6 +125,11 @@ const REGISTRY = {
     },
   },
 };
+
+function trace(record) {
+  if (!TRACES) return;
+  fs.appendFileSync(path.resolve(TRACES), JSON.stringify(record) + '\n');
+}
 
 function parseActions(raw) {
   let s = raw.trim();
@@ -118,7 +143,14 @@ function parseActions(raw) {
 
 async function run() {
   const bench = loadBenchmark();
-  const tasks = bench.tasks.filter(t => !ONLY || ONLY.has(t.id));
+  // A case pairs a task with its start graph and an oracle solution, unifying
+  // the curated set (fixtures + solutions.json) and the generated split
+  // (embedded start + reference).
+  const cases = GENERATE > 0
+    ? generateCases(GENERATE, SEED).map(c => ({ task: c.task, start: c.start, solution: c.reference }))
+    : bench.tasks
+        .filter(t => !ONLY || ONLY.has(t.id))
+        .map(t => ({ task: t, start: buildFixture(bench, t.start), solution: SOLUTIONS[t.id] ?? [] }));
   const providers = PROVIDERS.filter(p => {
     const spec = REGISTRY[p];
     if (!spec) { console.error(`unknown provider "${p}" — skipping`); return false; }
@@ -128,25 +160,31 @@ async function run() {
   });
   if (!providers.length) { console.error('no runnable providers (set the API key env vars, or use --providers=reference)'); process.exit(2); }
 
-  console.log(`neurarch-arch-bench v${bench.version}: ${tasks.length} tasks x ${providers.length} provider(s) [${providers.join(', ')}]\n`);
+  const splitNote = GENERATE > 0 ? ` [generated split, seed=${SEED}]` : '';
+  console.log(`neurarch-arch-bench v${bench.version}: ${cases.length} tasks${splitNote} x ${providers.length} provider(s) [${providers.join(', ')}]\n`);
   const rows = [];
 
   for (const provider of providers) {
     const spec = REGISTRY[provider];
-    for (const task of tasks) {
-      const start = buildFixture(bench, task.start);
-      const user = `SPEC:\n${task.spec}\n\nCURRENT MODEL:\n${serializeModel(start)}\n\nReturn the actions that fulfil the spec.`;
+    for (const { task, start, solution } of cases) {
+      const observation = serializeModel(start);
+      const user = `SPEC:\n${task.spec}\n\nCURRENT MODEL:\n${observation}\n\nReturn the actions that fulfil the spec.`;
       const t0 = Date.now();
+      let raw = null;
       try {
-        const actions = spec.oracle ? spec.solve(task.id) : parseActions(await spec.call(SYSTEM_PROMPT, user));
+        const actions = spec.oracle ? solution : parseActions(raw = await spec.call(SYSTEM_PROMPT, user));
         const { model } = applyActions(start, actions);
-        const g = gradeTask(task, model, actions.length);
+        const g = gradeTask(task, model, actions.length, actions.map(a => a?.type).filter(Boolean));
         const status = g.pass ? 'PASS' : 'FAIL';
-        rows.push({ provider, taskId: task.id, status, score: g.score, ...g, ms: Date.now() - t0 });
+        const failureCategories = g.failures.map(categorizeFailure);
+        rows.push({ provider, taskId: task.id, status, score: g.score, ...g, failureCategories, ms: Date.now() - t0 });
+        trace({ provider, taskId: task.id, spec: task.spec, observation, raw, actions, pass: g.pass, score: g.score, params: g.params, failures: g.failures, failureCategories, ms: Date.now() - t0 });
         console.log(`[${status}] ${provider.padEnd(8)} ${task.id.padEnd(22)} score=${String(g.score).padStart(3)} params=${g.params} (${Date.now() - t0}ms)`);
         for (const f of g.failures) console.log(`         - ${f}`);
       } catch (err) {
-        rows.push({ provider, taskId: task.id, status: 'ERROR', score: 0, error: String(err), ms: Date.now() - t0 });
+        const failureCategories = [categorizeFailure(err.message ?? err)];
+        rows.push({ provider, taskId: task.id, status: 'ERROR', score: 0, error: String(err), failureCategories, ms: Date.now() - t0 });
+        trace({ provider, taskId: task.id, spec: task.spec, observation, raw, actions: null, pass: false, score: 0, error: String(err), failureCategories, ms: Date.now() - t0 });
         console.log(`[ERR ] ${provider.padEnd(8)} ${task.id.padEnd(22)} ${err.message}`);
       }
     }
@@ -156,7 +194,13 @@ async function run() {
     const pr = rows.filter(r => r.provider === p);
     const passed = pr.filter(r => r.status === 'PASS').length;
     const avgScore = pr.length ? Math.round(pr.reduce((a, r) => a + r.score, 0) / pr.length) : 0;
-    return { provider: p, passed, total: pr.length, avgScore };
+    // Aggregate the failure taxonomy: which categories dominate this model's
+    // failures. This is the legible comparison ("60% divisibility").
+    const failureCategories = {};
+    for (const r of pr) {
+      for (const c of r.failureCategories ?? []) failureCategories[c] = (failureCategories[c] ?? 0) + 1;
+    }
+    return { provider: p, passed, total: pr.length, avgScore, failureCategories };
   }).sort((a, b) => b.passed - a.passed || b.avgScore - a.avgScore);
 
   if (FORMAT === 'md') {
@@ -165,10 +209,24 @@ async function run() {
     for (const b of board) console.log(`| ${b.provider} | ${b.passed}/${b.total} | ${b.avgScore} |`);
   } else {
     console.log('\n-- Leaderboard --');
-    for (const b of board) console.log(`  ${b.provider.padEnd(10)} ${b.passed}/${b.total} passed  avg score ${b.avgScore}`);
+    for (const b of board) {
+      console.log(`  ${b.provider.padEnd(10)} ${b.passed}/${b.total} passed  avg score ${b.avgScore}`);
+      const cats = Object.entries(b.failureCategories).sort((x, y) => y[1] - x[1]);
+      if (cats.length) console.log(`             failures: ${cats.map(([c, n]) => `${c} x${n}`).join(', ')}`);
+    }
   }
 
-  if (OUT) { fs.writeFileSync(path.resolve(OUT), JSON.stringify({ benchmark: bench.version, board, rows }, null, 2)); console.log(`\nWrote ${OUT}`); }
+  if (OUT) {
+    const meta = {
+      benchmark: bench.version,
+      split: GENERATE > 0 ? { kind: 'generated', count: GENERATE, seed: SEED } : { kind: 'curated', count: cases.length },
+      models: Object.fromEntries(providers.map(p => [p, REGISTRY[p].modelId()])),
+      generatedAt: new Date().toISOString(),
+    };
+    fs.writeFileSync(path.resolve(OUT), JSON.stringify({ ...meta, board, rows }, null, 2));
+    console.log(`\nWrote ${OUT}`);
+  }
+  if (TRACES) console.log(`Appended ${rows.length} trace line(s) to ${TRACES}`);
 }
 
 run().catch(err => { console.error(err); process.exit(2); });

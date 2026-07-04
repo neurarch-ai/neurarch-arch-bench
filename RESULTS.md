@@ -12,7 +12,7 @@ node leaderboard.mjs --providers=reference --format=md
 
 | Model | Passed | Avg score |
 | --- | --- | --- |
-| reference (oracle) | 8/8 | 74 |
+| reference (oracle) | 12/12 | 75 |
 
 ## Frontier models
 
