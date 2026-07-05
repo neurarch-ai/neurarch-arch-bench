@@ -90,6 +90,8 @@ Each task carries machine-checkable constraints. A submission **passes** only if
 
 The verifier (`bench.mjs`) is deliberately simple and fully transparent: the entire grading rubric is in one readable file, so anyone can audit, reproduce, or extend it. (The Neurarch product uses a richer internal verifier; this benchmark's results are defined solely by the rubric in this repo.)
 
+Training against this as an RL environment? Read [ANTI_GAMING.md](ANTI_GAMING.md): every degenerate strategy we tried against the grader, the constraint that blocks it, the test that pins that defense, and the measured blind spots we keep on purpose.
+
 ## Use it as a library / environment
 
 ```js

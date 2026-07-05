@@ -7,16 +7,18 @@
  * (contamination resistance), and so an RL trainer has an effectively
  * unlimited task stream with verifiable rewards.
  *
- * Eight families:
+ * Ten families:
  *
  *  design-from-spec (start = empty input->output stub):
  *   1. dense classifier        2. dense autoencoder
  *   3. conv image classifier   4. transformer encoder
  *   5. GQA encoder (numHeads % numKVHeads divisibility)
+ *   9. two-tower retrieval
  *  edit-in-place (start = full graph; replace_model / clear_canvas forbidden):
  *   6. repair a broken attention config (start carries a real blocker)
  *   7. trim an oversized MLP under a parameter budget
  *   8. insert normalization after every hidden linear
+ *  10. grow params into a band (a floor AND a ceiling, so shrink-to-nothing fails)
  *
  * Every generated case ships its own reference solution graded by the same
  * `gradeTask` as the hand-authored set; the test suite asserts each reference

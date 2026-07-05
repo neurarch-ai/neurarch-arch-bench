@@ -18,3 +18,7 @@ jobs:
       - run: npm test
       # Smoke: the keyless oracle leaderboard runs end to end with no API key.
       - run: node leaderboard.mjs --providers=reference
+      # Calibration harness self-tests: reference must pass 100%, noop ~0%.
+      # If either fails, the harness (not any model) is broken.
+      - run: node calibrate.mjs --policy=reference --per-family=4
+      - run: node calibrate.mjs --policy=noop --per-family=4
