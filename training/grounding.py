@@ -221,16 +221,44 @@ def train_briefly(model, graph, steps=60, batch=64):
 
 # ── Study ────────────────────────────────────────────────────────────────────
 
+def spearman(xs, ys):
+    """Spearman rank correlation, pure python (no scipy dependency)."""
+    n = len(xs)
+    if n < 3:
+        return float("nan")
+    def ranks(vals):
+        order = sorted(range(n), key=lambda i: vals[i])
+        r = [0.0] * n
+        i = 0
+        while i < n:
+            j = i
+            while j + 1 < n and vals[order[j + 1]] == vals[order[i]]:
+                j += 1
+            avg = (i + j) / 2 + 1
+            for k in range(i, j + 1):
+                r[order[k]] = avg
+            i = j + 1
+        return r
+    rx, ry = ranks(xs), ranks(ys)
+    mx, my = sum(rx) / n, sum(ry) / n
+    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
+    den = (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
+    return num / den if den else float("nan")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--set", default="grounding_set.jsonl")
+    ap.add_argument("--set", dest="sets", nargs="+", default=["grounding_set.jsonl"],
+                    help="one or more JSONL sets (merge multiple seeds for a bigger study)")
     ap.add_argument("--steps", type=int, default=60)
     ap.add_argument("--out", default="grounding_results.csv")
     args = ap.parse_args()
 
     rows = []
-    with open(args.set) as f:
-        entries = [json.loads(line) for line in f if line.strip()]
+    entries = []
+    for path in args.sets:
+        with open(path) as f:
+            entries.extend(json.loads(line) for line in f if line.strip())
 
     for e in entries:
         row = {
@@ -273,6 +301,23 @@ def main():
     print(f"  verifier PASS (clean):      {bucket(lambda r: r['variant'] == 'clean')}")
     print(f"  verifier BLOCKED:           {bucket(lambda r: r['verifierBlocked'])}")
     print(f"  not blocked, corrupted:     {bucket(lambda r: not r['verifierBlocked'] and r['variant'] != 'clean')}")
+
+    # Second question: among CLEAN graphs, does the score's magnitude track
+    # optimization progress, or is it only the pass/blocked boundary that is
+    # grounded? Honest either way: a weak correlation here means the score is
+    # a validity gate, not a quality ranking, and we say so.
+    clean = [r for r in rows if r["variant"] == "clean" and r["forward_ok"]
+             and isinstance(r["initial_loss"], float) and r["initial_loss"] > 0]
+    if len(clean) >= 3:
+        scores = [float(r["verifierScore"]) for r in clean]
+        decrease = [(r["initial_loss"] - r["final_loss"]) / r["initial_loss"] for r in clean]
+        rho = spearman(scores, decrease)
+        print(f"\n== Score magnitude vs. training progress (clean graphs, n={len(clean)}) ==")
+        print(f"  Spearman rho(verifier score, relative loss decrease) = {rho:.3f}")
+        print("  Interpretation: the pass/blocked boundary is the grounded claim;")
+        print("  treat the 0..100 score as a validity margin, not a quality ranking,")
+        print("  unless this correlation is strong across seeds.")
+
     print(f"\nWrote {args.out}")
     print("Read it as: blockers should predict construction/forward failure;")
     print("clean graphs should construct and train. The 'not blocked, corrupted'")

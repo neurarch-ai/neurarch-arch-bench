@@ -55,21 +55,29 @@ node dump_grounding_set.mjs --count=20 --seed=123 --out=grounding_set.jsonl
 python grounding.py --set grounding_set.jsonl --steps 60   # CPU, ~2 min
 ```
 
-First run (count=20, seed=123, 66 graphs, torch 2.8, 2026-07-02):
+Latest run (two seeds merged: 123 + 777, count=40 each, 264 graphs, torch
+2.8, 2026-07-04; reproduce with `--set gset-123.jsonl gset-777.jsonl`):
 
 | Verifier verdict | n | constructs | forward ok | trains |
 | --- | --- | --- | --- | --- |
-| PASS (clean) | 20 | 100% | 100% | 90% |
-| BLOCKED | 24 | 75% | 0% | 0% |
-| not blocked, corrupted | 22 | 100% | 0% | 0% |
+| PASS (clean) | 80 | 100% | 100% | 90% |
+| BLOCKED | 96 | 75% | 0% | 0% |
+| not blocked, corrupted | 88 | 100% | 0% | 0% |
 
-Read it honestly: a blocker predicts runtime failure perfectly here, and clean
-graphs overwhelmingly construct and make training progress. The third row is
-the transparent rubric's blind spot on purpose: linear in/out mismatches pass
-this repo's simple rubric but crash PyTorch (the richer verifier in the
-Neurarch product does flag them as shape issues). "Trains" means the loss fell
-by at least 20% in 60 steps; it is a trainability probe, not a claim about
-final model quality.
+Read it honestly: a blocker predicts runtime failure perfectly at this scale
+(96/96 forward failures), and clean graphs overwhelmingly construct and make
+training progress. The third row is the transparent rubric's blind spot on
+purpose: linear in/out mismatches pass this repo's simple rubric but crash
+PyTorch (the richer verifier in the Neurarch product does flag them as shape
+issues). "Trains" means the loss fell by at least 20% in 60 steps; it is a
+trainability probe, not a claim about final model quality.
+
+**Score magnitude is NOT a quality ranking.** Among the 80 clean graphs,
+Spearman rho between the 0..100 score and relative loss decrease was -0.581:
+higher-scoring (deeper, more structured) models make slower per-step progress
+on the short synthetic probe than tiny MLPs. So the grounded claim is the
+pass/blocked boundary; treat the score as a validity margin. Ranking design
+QUALITY needs real training outcomes, which is exactly the open roadmap item.
 
 ## What this is and is not
 
