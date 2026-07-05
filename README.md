@@ -153,6 +153,30 @@ Output is a per-model lift table (`| model | single-shot | with verifier | lift 
 The pro-model framing is the point: the environment's value is what it adds to
 any model, not how it ranks them.
 
+## The benchmark that grows itself
+
+`propose.mjs` lets an LLM author new tasks, but nothing is accepted without a
+**satisfiability proof**: the proposal's own reference solution must pass the
+deterministic grader under always-enforced safety-net constraints. An optional
+`--probe=<provider>` keeps only tasks a cheap model fails (difficulty filter).
+Accepted files run anywhere the benchmark does:
+
+```bash
+ANTHROPIC_API_KEY=... node propose.mjs --provider=claude --count=20 --probe=groq --out=proposed.json
+node leaderboard.mjs --providers=grok --tasks=proposed.json
+```
+
+## Arena: head-to-head duels, deterministic judge
+
+```bash
+node arena.mjs --a=grok --b=claude --generate=20 --seed=7
+```
+
+Same specs to both models, single-shot; the verifier decides each round
+(pass > health score > fewer tokens). No human votes, no LLM judge, fully
+reproducible from the seed. The leaderboard also reports **tokens per solved
+task** per model — the cost of intelligence, not just its rank.
+
 ## Verified SFT data, minted on demand
 
 `training/build_sft_dataset.mjs` writes chat-format and raw JSONL where every

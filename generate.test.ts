@@ -81,7 +81,6 @@ describe('procedural task generation (oss)', () => {
 });
 
 describe('kvBytesPerToken (oss canonical formula)', () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   it('MHA caches 2 x dim, GQA caches kv-heads share, MLA caches the latent', async () => {
     const { kvBytesPerToken } = await import('./bench.mjs') as any;
     const g = (type: string, params: Record<string, unknown>) => ({

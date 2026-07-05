@@ -40,6 +40,9 @@ const OUT = process.env.LEADERBOARD_OUT;
 // generated case's own reference solution.
 const GENERATE = Math.max(0, parseInt(args.generate ?? '0', 10) || 0);
 const SEED = parseInt(args.seed ?? '1', 10) || 1;
+// --tasks=proposed.json runs a task file minted by propose.mjs (LLM-proposed,
+// satisfiability-proven) instead of the curated or generated splits.
+const TASKS_FILE = args.tasks && args.tasks !== 'true' ? args.tasks : null;
 // --traces=file.jsonl appends one JSON line per attempt: the full
 // (spec, observation, raw reply, parsed actions, verdict) tuple. This is the
 // benchmark's data exhaust: SFT-ready on passes, DPO/repair-ready on failures.
@@ -57,15 +60,18 @@ async function run() {
   // A case pairs a task with its start graph and an oracle solution, unifying
   // the curated set (fixtures + solutions.json) and the generated split
   // (embedded start + reference).
-  const cases = GENERATE > 0
-    ? generateCases(GENERATE, SEED).map(c => ({ task: c.task, start: c.start, solution: c.reference }))
-    : bench.tasks
-        .filter(t => !ONLY || ONLY.has(t.id))
-        .map(t => ({ task: t, start: buildFixture(bench, t.start), solution: SOLUTIONS[t.id] ?? [] }));
+  const cases = TASKS_FILE
+    ? JSON.parse(fs.readFileSync(path.resolve(TASKS_FILE), 'utf8')).tasks
+        .map(t => ({ task: t.task, start: t.start, solution: t.reference }))
+    : GENERATE > 0
+      ? generateCases(GENERATE, SEED).map(c => ({ task: c.task, start: c.start, solution: c.reference }))
+      : bench.tasks
+          .filter(t => !ONLY || ONLY.has(t.id))
+          .map(t => ({ task: t, start: buildFixture(bench, t.start), solution: SOLUTIONS[t.id] ?? [] }));
   const providers = runnableProviders(PROVIDERS);
   if (!providers.length) { console.error('no runnable providers (set the API key env vars, or use --providers=reference)'); process.exit(2); }
 
-  const splitNote = GENERATE > 0 ? ` [generated split, seed=${SEED}]` : '';
+  const splitNote = TASKS_FILE ? ` [task file: ${TASKS_FILE}]` : GENERATE > 0 ? ` [generated split, seed=${SEED}]` : '';
   console.log(`neurarch-arch-bench v${bench.version}: ${cases.length} tasks${splitNote} x ${providers.length} provider(s) [${providers.join(', ')}]\n`);
   const rows = [];
 
@@ -76,19 +82,26 @@ async function run() {
       const user = `SPEC:\n${task.spec}\n\nCURRENT MODEL:\n${observation}\n\nReturn the actions that fulfil the spec.`;
       const t0 = Date.now();
       let raw = null;
+      let tokens = 0;
       try {
-        const actions = spec.oracle ? solution : parseActions(raw = await spec.call(SYSTEM_PROMPT, user));
+        let actions;
+        if (spec.oracle) { actions = solution; }
+        else {
+          const reply = await spec.call(SYSTEM_PROMPT, user);
+          raw = reply.text; tokens = reply.tokens;
+          actions = parseActions(raw);
+        }
         const { model } = applyActions(start, actions);
         const g = gradeTask(task, model, actions.length, actions.map(a => a?.type).filter(Boolean));
         const status = g.pass ? 'PASS' : 'FAIL';
         const failureCategories = g.failures.map(categorizeFailure);
-        rows.push({ provider, taskId: task.id, status, score: g.score, ...g, failureCategories, ms: Date.now() - t0 });
+        rows.push({ provider, taskId: task.id, status, score: g.score, ...g, failureCategories, tokens, ms: Date.now() - t0 });
         trace({ provider, taskId: task.id, spec: task.spec, observation, raw, actions, pass: g.pass, score: g.score, params: g.params, failures: g.failures, failureCategories, ms: Date.now() - t0 });
         console.log(`[${status}] ${provider.padEnd(8)} ${task.id.padEnd(22)} score=${String(g.score).padStart(3)} params=${g.params} (${Date.now() - t0}ms)`);
         for (const f of g.failures) console.log(`         - ${f}`);
       } catch (err) {
         const failureCategories = [categorizeFailure(err.message ?? err)];
-        rows.push({ provider, taskId: task.id, status: 'ERROR', score: 0, error: String(err), failureCategories, ms: Date.now() - t0 });
+        rows.push({ provider, taskId: task.id, status: 'ERROR', score: 0, error: String(err), failureCategories, tokens, ms: Date.now() - t0 });
         trace({ provider, taskId: task.id, spec: task.spec, observation, raw, actions: null, pass: false, score: 0, error: String(err), failureCategories, ms: Date.now() - t0 });
         console.log(`[ERR ] ${provider.padEnd(8)} ${task.id.padEnd(22)} ${err.message}`);
       }
@@ -105,7 +118,11 @@ async function run() {
     for (const r of pr) {
       for (const c of r.failureCategories ?? []) failureCategories[c] = (failureCategories[c] ?? 0) + 1;
     }
-    return { provider: p, passed, total: pr.length, avgScore, failureCategories };
+    // Cost of intelligence: provider-reported tokens per SOLVED task (burning
+    // more tokens to fail is worse, so the denominator is passes).
+    const totalTokens = pr.reduce((a, r) => a + (r.tokens ?? 0), 0);
+    const tokensPerSolve = passed > 0 ? Math.round(totalTokens / passed) : null;
+    return { provider: p, passed, total: pr.length, avgScore, tokensPerSolve, failureCategories };
   }).sort((a, b) => b.passed - a.passed || b.avgScore - a.avgScore);
 
   if (FORMAT === 'md') {
@@ -115,7 +132,7 @@ async function run() {
   } else {
     console.log('\n-- Leaderboard --');
     for (const b of board) {
-      console.log(`  ${b.provider.padEnd(10)} ${b.passed}/${b.total} passed  avg score ${b.avgScore}`);
+      console.log(`  ${b.provider.padEnd(10)} ${b.passed}/${b.total} passed  avg score ${b.avgScore}${b.tokensPerSolve ? `  ${b.tokensPerSolve} tok/solve` : ''}`);
       const cats = Object.entries(b.failureCategories).sort((x, y) => y[1] - x[1]);
       if (cats.length) console.log(`             failures: ${cats.map(([c, n]) => `${c} x${n}`).join(', ')}`);
     }
@@ -124,7 +141,7 @@ async function run() {
   if (OUT) {
     const meta = {
       benchmark: bench.version,
-      split: GENERATE > 0 ? { kind: 'generated', count: GENERATE, seed: SEED } : { kind: 'curated', count: cases.length },
+      split: TASKS_FILE ? { kind: 'file', path: TASKS_FILE, count: cases.length } : GENERATE > 0 ? { kind: 'generated', count: GENERATE, seed: SEED } : { kind: 'curated', count: cases.length },
       models: Object.fromEntries(providers.map(p => [p, REGISTRY[p].modelId()])),
       generatedAt: new Date().toISOString(),
     };

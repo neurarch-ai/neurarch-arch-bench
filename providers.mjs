@@ -23,6 +23,9 @@ Rules:
 - If the spec says to repair or edit in place, use surgical actions (update_params, add_component); do NOT use replace_model or clear_canvas.
 - Respect any parameter budget in the spec. Output only the JSON object.`;
 
+// Every call returns { text, tokens } — tokens is the provider-reported total
+// so the leaderboard can price intelligence (tokens per solved task), not just
+// rank it.
 async function openaiCompat(baseUrl, key, model, system, user) {
   const r = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
@@ -30,7 +33,8 @@ async function openaiCompat(baseUrl, key, model, system, user) {
     body: JSON.stringify({ model, temperature: 0.2, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
   });
   if (!r.ok) throw new Error(`${baseUrl} ${r.status}: ${(await r.text()).slice(0, 200)}`);
-  return (await r.json()).choices?.[0]?.message?.content ?? '';
+  const json = await r.json();
+  return { text: json.choices?.[0]?.message?.content ?? '', tokens: json.usage?.total_tokens ?? 0 };
 }
 
 // 'reference' is a keyless oracle handled by the callers (it replays each
@@ -66,7 +70,8 @@ export const REGISTRY = {
         body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6', max_tokens: 2000, system: s, messages: [{ role: 'user', content: u }] }),
       });
       if (!r.ok) throw new Error(`claude ${r.status}: ${(await r.text()).slice(0, 200)}`);
-      return (await r.json()).content?.[0]?.text ?? '';
+      const json = await r.json();
+      return { text: json.content?.[0]?.text ?? '', tokens: (json.usage?.input_tokens ?? 0) + (json.usage?.output_tokens ?? 0) };
     },
   },
   gemini: {
@@ -79,7 +84,8 @@ export const REGISTRY = {
         body: JSON.stringify({ systemInstruction: { parts: [{ text: s }] }, contents: [{ role: 'user', parts: [{ text: u }] }], generationConfig: { temperature: 0.2, responseMimeType: 'application/json' } }),
       });
       if (!r.ok) throw new Error(`gemini ${r.status}: ${(await r.text()).slice(0, 200)}`);
-      return (await r.json()).candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+      const json = await r.json();
+      return { text: json.candidates?.[0]?.content?.parts?.[0]?.text ?? '', tokens: json.usageMetadata?.totalTokenCount ?? 0 };
     },
   },
 };

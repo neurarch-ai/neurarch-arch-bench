@@ -47,6 +47,7 @@ async function episode(call, task, start) {
   let grade = null;
   let passAtTurn1 = false;
   let turnsUsed = 0;
+  let tokens = 0;
 
   for (let turn = 0; turn < TURNS; turn++) {
     const user = turn === 0
@@ -54,7 +55,9 @@ async function episode(call, task, start) {
       : `SPEC:\n${task.spec}\n\nCURRENT MODEL:\n${serializeModel(model)}\n\n`
         + `Your previous edits did not pass. Remaining issues:\n${grade.failures.map(f => `- ${f}`).join('\n')}\n\n`
         + `Return only the additional or corrected actions that resolve these issues.`;
-    const actions = parseActions(await call(SYSTEM_PROMPT, user));
+    const reply = await call(SYSTEM_PROMPT, user);
+    tokens += reply.tokens;
+    const actions = parseActions(reply.text);
     model = applyActions(model, actions).model;
     actionCount += actions.length;
     usedTypes.push(...actions.map(a => a?.type).filter(Boolean));
@@ -63,7 +66,7 @@ async function episode(call, task, start) {
     if (turn === 0) passAtTurn1 = grade.pass;
     if (grade.pass) break;
   }
-  return { passAtTurn1, passFinal: grade.pass, turnsUsed, finalFailures: grade.failures };
+  return { passAtTurn1, passFinal: grade.pass, turnsUsed, tokens, finalFailures: grade.failures };
 }
 
 async function run() {

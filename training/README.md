@@ -79,6 +79,29 @@ on the short synthetic probe than tiny MLPs. So the grounded claim is the
 pass/blocked boundary; treat the score as a validity margin. Ranking design
 QUALITY needs real training outcomes, which is exactly the open roadmap item.
 
+## Grounding at scale: the (architecture, score, real run) flywheel
+
+`grounding_at_scale.py` upgrades the 60-step probe to near-convergence runs
+and emits one **triple** per clean architecture: a structural fingerprint,
+the verifier's score, and the full real training curve. `analyze_grounding.py`
+reports score-vs-quality rank correlation within each family (the honest
+comparison; cross-family is confounded by task difficulty and labeled as
+such) and whether the score merely tracks parameter count.
+
+```bash
+node dump_grounding_set.mjs --count=40 --seed=123 --out=gset.jsonl
+python grounding_at_scale.py --set gset.jsonl --steps 800 --out triples.jsonl   # Colab T4: ~30-40 min
+python analyze_grounding.py --triples triples.jsonl
+```
+
+Rows are flushed as they finish, so a Colab disconnect loses nothing. The
+triples are the training set for a learned quality head: the step that turns
+the 0..100 score from a hand-tuned validity margin into a predictor
+calibrated against real optimization outcomes. Beyond one machine, the
+Neurarch product's free-GPU loop (Colab/Kaggle notebooks that report
+per-epoch curves back automatically) collects the same triples from real
+user runs; this script is the self-serve batch engine.
+
 ## What this is and is not
 
 - It IS a demonstration that the verifier's reward is learnable and that the
