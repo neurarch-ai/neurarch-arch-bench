@@ -195,6 +195,39 @@ export function estimateParams(model) {
   return sum;
 }
 
+/** KV cache bytes per generated token at fp16-by-default. Canonical rules:
+ *  full attention caches 2 x dim, GQA caches 2 x kvHeads x headDim, MLA caches
+ *  the compressed latent (+ RoPE keys). 0 for attention-free graphs. */
+export function kvBytesPerToken(model, bytesPerValue = 2) {
+  let sum = 0;
+  for (const c of model.components) {
+    const p = c.params ?? {};
+    const pos = (v, fb = 0) => { const x = Number(v); return Number.isFinite(x) && x > 0 ? x : fb; };
+    switch (c.type) {
+      case 'multiHeadAttention': case 'selfAttention': case 'causalAttention':
+      case 'attention': case 'transformerBlock': {
+        const dim = pos(p.embedDim ?? p.hiddenDim ?? p.dModel);
+        sum += 2 * dim * bytesPerValue;
+        break;
+      }
+      case 'groupedQueryAttention': {
+        const heads = pos(p.numHeads);
+        const kv = pos(p.numKVHeads, heads);
+        const dim = pos(p.embedDim);
+        const headDim = pos(p.headDim, heads > 0 ? dim / heads : 0);
+        sum += 2 * kv * headDim * bytesPerValue;
+        break;
+      }
+      case 'mla': {
+        sum += (pos(p.kvLatentDim) + pos(p.ropeHeadDim)) * bytesPerValue;
+        break;
+      }
+      default: break;
+    }
+  }
+  return Math.round(sum);
+}
+
 /** True if some output node is reachable from some input node. */
 export function inputReachesOutput(model) {
   const adj = new Map();

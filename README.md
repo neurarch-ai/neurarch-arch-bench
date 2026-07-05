@@ -135,8 +135,44 @@ for the Prime Intellect Environments Hub (`prime env install neurarch-arch-desig
 
 See [training/README.md](./training/README.md) for hardware notes, the reward
 formula, and the **grounding study** (does the verifier's verdict predict real
-PyTorch constructability and trainability? First run: blockers predicted
-forward-pass failure 24/24; clean graphs constructed 20/20 and trained 18/20).
+PyTorch constructability and trainability? 264-graph run: blockers predicted
+forward-pass failure 96/96; clean graphs constructed 80/80 and trained 90%).
+
+## The amplification study: verifier feedback makes YOUR model better
+
+`amplify.mjs` measures, per provider, single-shot pass rate vs pass rate when
+the verifier's failure messages are fed back for repair rounds. Same tasks,
+same model, same prompt; the only variable is the feedback loop:
+
+```bash
+XAI_API_KEY=... ANTHROPIC_API_KEY=... GEMINI_API_KEY=... \
+  node amplify.mjs --providers=grok,claude,gemini,openai,groq --generate=30 --seed=7 --turns=3
+```
+
+Output is a per-model lift table (`| model | single-shot | with verifier | lift |`).
+The pro-model framing is the point: the environment's value is what it adds to
+any model, not how it ranks them.
+
+## Verified SFT data, minted on demand
+
+`training/build_sft_dataset.mjs` writes chat-format and raw JSONL where every
+assistant turn is re-graded by the verifier before it is written (the build
+fails otherwise). 10 families, seeded and reproducible, contamination-free by
+construction. See [training/DATASET_CARD.md](./training/DATASET_CARD.md) for
+the HuggingFace card. `training/star_rejection.py` closes the loop with
+STaR-style rejection sampling: sample k plans, keep verifier-passing ones,
+SFT on them, repeat — no labels, no reward model, no LLM judge.
+
+## MCP: the verifier inside any agent
+
+`mcp-server.mjs` (zero deps, stdio) exposes `audit_architecture`,
+`grade_task`, and `generate_tasks` as Model Context Protocol tools, so any
+MCP-capable agent gets a deterministic physics checker while writing model
+code:
+
+```bash
+claude mcp add arch-bench -- node /path/to/neurarch-arch-bench/mcp-server.mjs
+```
 
 ## Contributing tasks
 

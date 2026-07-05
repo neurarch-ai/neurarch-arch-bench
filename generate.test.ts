@@ -79,3 +79,18 @@ describe('procedural task generation (oss)', () => {
     expect(categorizeFailure('score 42 < min 50')).toBe('low-score');
   });
 });
+
+describe('kvBytesPerToken (oss canonical formula)', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  it('MHA caches 2 x dim, GQA caches kv-heads share, MLA caches the latent', async () => {
+    const { kvBytesPerToken } = await import('./bench.mjs') as any;
+    const g = (type: string, params: Record<string, unknown>) => ({
+      components: [{ id: 'a', type, name: 'a', params, inputs: [], outputs: [] }],
+      connections: [],
+    });
+    expect(kvBytesPerToken(g('multiHeadAttention', { embedDim: 4096, numHeads: 32 }))).toBe(2 * 4096 * 2);
+    expect(kvBytesPerToken(g('groupedQueryAttention', { embedDim: 4096, numHeads: 32, numKVHeads: 8 }))).toBe(2 * 8 * 128 * 2);
+    expect(kvBytesPerToken(g('mla', { embedDim: 4096, numHeads: 32, kvLatentDim: 512, ropeHeadDim: 64 }))).toBe((512 + 64) * 2);
+    expect(kvBytesPerToken(g('linear', { inFeatures: 8, outFeatures: 8 }))).toBe(0);
+  });
+});
