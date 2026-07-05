@@ -55,6 +55,13 @@ A failing row shows exactly why:
 
 See [RESULTS.md](./RESULTS.md) for the oracle baseline and how to contribute model rows.
 
+Robustness and difficulty are documented as evidence, not claims:
+[ROBUSTNESS.md](./ROBUSTNESS.md) is the red-team report (every gaming
+strategy, its defense, the pinned test, and the open residual risks), and
+`calibrate.mjs` measures per-family pass rates against the 2-3% hard-band
+floor labs cite, with keyless self-tests that bracket the harness itself.
+Working with the environment at a lab? See [LABS.md](./LABS.md).
+
 ## The action space
 
 A policy returns `{ "actions": [ ... ] }` using the structured edit vocabulary:

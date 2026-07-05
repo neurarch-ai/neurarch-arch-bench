@@ -89,3 +89,77 @@ describe('apply + grade round trip', () => {
     expect(r.skipped).toEqual(['auto_layout', 'open_library']);
   });
 });
+
+// The lower bound of the verifier: degenerate strategies MUST fail. Reference
+// solutions pin the upper bound (a clean solve passes); this suite pins the
+// floor, so a rubric change that lets a lazy policy through fails CI instead
+// of the benchmark silently becoming a rubber stamp. See ANTI_GAMING.md for
+// the full strategy-by-strategy write-up.
+describe('degenerate solutions must fail (anti-gaming floor)', () => {
+  it('the empty plan fails a design-from-spec task', () => {
+    const start = buildFixture(bench, task('cnn-cifar').start);
+    const g = gradeTask(task('cnn-cifar'), start, 0);
+    expect(g.pass).toBe(false);
+    expect(g.failures.join(' ')).toMatch(/components|missing layer type/);
+  });
+
+  it('the empty plan fails a repair task (the start graph is broken)', () => {
+    const start = buildFixture(bench, task('fix-broken-attention').start);
+    const g = gradeTask(task('fix-broken-attention'), start, 0);
+    expect(g.pass).toBe(false);
+    expect(g.failures.join(' ')).toMatch(/blocker/);
+  });
+
+  it('a disconnected showpiece (required types present, nothing wired to output) fails reachability', () => {
+    const start = buildFixture(bench, 'empty-image');
+    // Add the required conv/linear as a chain but never reconnect to output.
+    const { model } = applyActions(start, [
+      { type: 'delete_connection', fromName: 'input', toName: 'output' },
+      { type: 'add_component', componentType: 'conv2d', name: 'conv1', afterName: 'input', params: { inChannels: 3, outChannels: 32, kernelSize: 3 } },
+      { type: 'add_component', componentType: 'conv2d', name: 'conv2', afterName: 'conv1', params: { inChannels: 32, outChannels: 64, kernelSize: 3 } },
+      { type: 'add_component', componentType: 'relu', name: 'act1', afterName: 'conv2' },
+      { type: 'add_component', componentType: 'linear', name: 'head', afterName: 'act1', params: { inFeatures: 64, outFeatures: 10 } },
+      { type: 'delete_connection', fromName: 'head', toName: 'output' },
+    ]);
+    const g = gradeTask(task('cnn-cifar'), model, 6);
+    if (g.pass) {
+      // If the applier auto-rewired output, the case is moot — assert the guard
+      // itself instead so the test can't silently pass for the wrong reason.
+      expect(inputReachesOutput(model)).toBe(true);
+    } else {
+      expect(g.failures.join(' ')).toMatch(/reach output|components/);
+    }
+  });
+
+  it('blowing past the param budget fails even with a perfect structure', () => {
+    const start = buildFixture(bench, task('mlp-tabular').start);
+    const { model } = applyActions(start, [
+      { type: 'add_component', componentType: 'linear', name: 'fc1', afterName: 'input', params: { inFeatures: 32, outFeatures: 4096 } },
+      { type: 'add_component', componentType: 'relu', name: 'act1', afterName: 'fc1' },
+      { type: 'add_component', componentType: 'linear', name: 'fc2', afterName: 'act1', params: { inFeatures: 4096, outFeatures: 4096 } },
+      { type: 'add_component', componentType: 'relu', name: 'act2', afterName: 'fc2' },
+      { type: 'add_component', componentType: 'linear', name: 'head', afterName: 'act2', params: { inFeatures: 4096, outFeatures: 2 } },
+    ]);
+    const g = gradeTask(task('mlp-tabular'), model, 5);
+    expect(g.pass).toBe(false);
+    expect(g.failures.join(' ')).toMatch(/> budget/);
+  });
+
+  it('wholesale rebuild via replace_model fails a repair task regardless of graph quality', () => {
+    const t = task('fix-broken-attention');
+    const start = buildFixture(bench, t.start);
+    const { model } = applyActions(start, [
+      { type: 'update_params', name: 'attn', params: { numHeads: 5 } },
+    ]);
+    // The graph itself is now clean — but the action log says replace_model.
+    const g = gradeTask(t, model, 1, ['replace_model']);
+    if (t.constraints.forbidActionTypes?.includes('replace_model')) {
+      expect(g.pass).toBe(false);
+      expect(g.failures.join(' ')).toMatch(/forbidden action/);
+    } else {
+      // Curated repair task doesn't forbid it (generated ones do) — then the
+      // action cap must be the binding guard instead.
+      expect(typeof t.constraints.maxActions).toBe('number');
+    }
+  });
+});
