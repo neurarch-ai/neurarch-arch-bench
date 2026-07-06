@@ -181,6 +181,8 @@ node leaderboard.mjs --providers=grok --tasks=proposed.json
 node arena.mjs --a=grok --b=claude --generate=20 --seed=7
 ```
 
+**Shareable cards.** Any run that writes JSON (`LEADERBOARD_OUT`, `AMPLIFY_OUT`, `ARENA_OUT`, `CALIBRATE_OUT`) can be rendered into a branded, self-contained SVG for the README or X: `node card.mjs board.json`. Zero dependencies; format auto-detected.
+
 Same specs to both models, single-shot; the verifier decides each round
 (pass > health score > fewer tokens). No human votes, no LLM judge, fully
 reproducible from the seed. The leaderboard also reports **tokens per solved
