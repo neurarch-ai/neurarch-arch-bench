@@ -27,10 +27,16 @@ constraints; see [ROBUSTNESS.md](./ROBUSTNESS.md)).
 
 ## Difficulty calibration against your models
 
-`calibrate.mjs` is self-serve. What we add: iterating family parameters until
-the hard band sits where your training runs need it (labs typically cite a
-2-3% pass floor), calibrated against your models' actual pass rates rather
-than public-model proxies.
+`calibrate.mjs` is self-serve. Calibrated against claude-sonnet-4-6 (stable
+across three runs), the public families split into three in the RL-learnable
+band (two-tower 0%, GQA encoder 25-56%, transformer encoder 60-62%) and nine a
+frontier model saturates, which serve as an easy curriculum tier. What we add:
+hardening families until the hard band sits where YOUR training runs need it
+(labs typically cite a 2-3% pass floor), calibrated against your model's actual
+pass rates rather than public-model proxies. A frontier model trivially solves
+simple chains and single-edit repairs; making those hard for a specific model
+(coupled defects, multi-branch shape agreement, tighter serving bands) is done
+against that model, not a proxy.
 
 ## Grounding data
 
