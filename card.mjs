@@ -69,8 +69,14 @@ function amplifyCard(d) {
 }
 
 function calibrateCard(d) {
-  const rows = (d.rows || []).slice(0, 10);
-  const bandColor = b => b?.startsWith('TARGET') ? GREEN : b?.startsWith('TOO-HARD') ? '#f87171' : b?.startsWith('SATURATED') ? AMBER : MUTED;
+  // Accept both the oss schema ({rows:[{family,rate,band}]}) and the private
+  // rl:calibrate schema ({families:[{family,passRate,band}]}).
+  const src = d.rows || (d.families || []).map(f => ({ family: f.family, rate: f.passRate, band: f.band }));
+  const rows = src.slice(0, 12);
+  const bandColor = b => {
+    const u = (b || '').toUpperCase();
+    return u.startsWith('TARGET') ? GREEN : u.startsWith('TOO-HARD') ? '#f87171' : u.startsWith('SATURATED') ? AMBER : MUTED;
+  };
   const y0 = 235, rh = 34;
   const body = rows.map((r, i) => {
     const y = y0 + i * rh;
@@ -107,7 +113,7 @@ function leaderboardCard(d) {
 // ── Dispatch on shape ────────────────────────────────────────────────────────
 let svg, kind;
 if (Array.isArray(data.results) && data.results[0] && 'withVerifier' in data.results[0]) { svg = amplifyCard(data); kind = 'amplify'; }
-else if (Array.isArray(data.rows) && data.rows[0] && 'band' in data.rows[0]) { svg = calibrateCard(data); kind = 'calibrate'; }
+else if ((Array.isArray(data.rows) && data.rows[0] && 'band' in data.rows[0]) || (Array.isArray(data.families) && data.families[0] && 'band' in data.families[0])) { svg = calibrateCard(data); kind = 'calibrate'; }
 else if ('winsA' in data && 'winsB' in data) { svg = arenaCard(data); kind = 'arena'; }
 else if (Array.isArray(data.board)) { svg = leaderboardCard(data); kind = 'leaderboard'; }
 else { console.error('Unrecognized JSON. Expected a leaderboard / amplify / arena / calibrate output.'); process.exit(2); }
