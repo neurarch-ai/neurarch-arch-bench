@@ -124,6 +124,17 @@ the harness itself: a `reference` policy that replays known-good solutions
 0% pass). If either self-test deviates, the harness rather than the model is
 broken, and CI fails.
 
+**Measured (claude-sonnet-4-6, three runs).** Calibrated against a frontier
+model at 16 rollouts per family, the difficulty distribution is stable across
+three independent runs: three families sit in the RL-learnable band (two-tower
+retrieval 0/16 every run, grouped-query-attention encoder 25-56%, transformer
+encoder 60-62%), while the remaining nine saturate (>=95%) and form an easy
+curriculum tier. This is the expected shape for a capable model on simple
+chains and single-edit repairs, and it is what the calibration is for: it
+identifies which families need per-model hardening, the difficulty-tuning
+offered to labs against their own model. Because grading is deterministic,
+these numbers reproduce from the seed.
+
 ## 5. Grounding study
 
 Does the verifier's verdict correspond to reality? We generated clean
