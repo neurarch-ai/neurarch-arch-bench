@@ -47,6 +47,29 @@ const REASON_SYSTEM = SYSTEM_PROMPT +
   'divisibility, parameter/KV budgets) inside <reasoning>...</reasoning>, then ' +
   'output the single JSON object with the actions.';
 
+// Isolate the balanced {...} block that contains "actions" from prose (the
+// reasoning text can itself contain braces, which defeats a greedy match).
+function isolateActionsJson(text) {
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] !== '{') continue;
+    let depth = 0, inStr = false, esc = false;
+    for (let j = i; j < text.length; j++) {
+      const ch = text[j];
+      if (esc) { esc = false; continue; }
+      if (ch === '\\') { esc = true; continue; }
+      if (ch === '"') { inStr = !inStr; continue; }
+      if (inStr) continue;
+      if (ch === '{') depth++;
+      else if (ch === '}' && --depth === 0) {
+        const cand = text.slice(i, j + 1);
+        if (cand.includes('"actions"')) return cand;
+        break;
+      }
+    }
+  }
+  return text;
+}
+
 function splitReasoning(text) {
   const m = text.match(/<reasoning>([\s\S]*?)<\/reasoning>/i);
   const reasoning = m ? m[1].trim() : '';
@@ -96,7 +119,7 @@ async function run() {
           const user = `SPEC:\n${task.spec}\n\nCURRENT MODEL:\n${serializeModel(start)}\n\nReturn the actions that fulfil the spec.`;
           const reply = await call(REASON_SYSTEM, user);
           const parts = splitReasoning(reply.text);
-          const acts = parseActions(parts.rest || reply.text);
+          const acts = parseActions(isolateActionsJson(parts.rest || reply.text));
           const model = applyActions(start, acts).model;
           const grade = gradeTask(task, model, acts.length, acts.map(a => a?.type).filter(Boolean));
           if (grade.pass) { reasoning = parts.reasoning; actions = acts; source = `${provider}:verified`; ok = true; }
