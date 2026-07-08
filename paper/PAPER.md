@@ -183,11 +183,16 @@ and it can only be produced where a ground-truth verifier exists. A use of the
 environment beyond training or evaluation: a calibration anchor for the LLM
 reward models labs deploy where no verifier is available.
 
-| reward model | agreement | false-positive | false-negative |
-| --- | --- | --- | --- |
-| claude-sonnet-4-6 | 93.3% | **0.0%** | 6.7% |
-| grok-4 | 91.7% | **0.0%** | 8.3% |
-| deterministic verifier (ours) | 100% | **0%** | **0%** |
+| model | tier | agreement | false-pos. | false-neg. |
+| --- | --- | --- | --- | --- |
+| claude-sonnet-4-6 | frontier | 93.3% | **0.0%** | 6.7% |
+| grok-4 | frontier | 91.7% | **0.0%** | 8.3% |
+| gpt-4o | frontier | *(to fill)* | | |
+| gemini-2.5-pro | frontier | *(to fill)* | | |
+| deepseek-reasoner | frontier | *(to fill)* | | |
+| claude-haiku-4-5 | cheap | *(to fill)* | | |
+| gemini-2.5-flash | cheap | *(to fill)* | | |
+| deterministic verifier (ours) | --- | 100% | **0%** | **0%** |
 
 On a 60-example labeled set (n=60 each), two independent frontier models never
 approve a broken design (0% false positive) but are over-conservative (6.7-8.3%

@@ -61,6 +61,11 @@ export const REGISTRY = {
     modelId: () => process.env.OPENAI_MODEL ?? 'gpt-4o',
     call: (s, u) => openaiCompat('https://api.openai.com/v1', process.env.OPENAI_API_KEY, process.env.OPENAI_MODEL ?? 'gpt-4o', s, u),
   },
+  deepseek: {
+    envKey: 'DEEPSEEK_API_KEY',
+    modelId: () => process.env.DEEPSEEK_MODEL ?? 'deepseek-chat',
+    call: (s, u) => openaiCompat('https://api.deepseek.com/v1', process.env.DEEPSEEK_API_KEY, process.env.DEEPSEEK_MODEL ?? 'deepseek-chat', s, u),
+  },
   claude: {
     envKey: 'ANTHROPIC_API_KEY',
     modelId: () => process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6',

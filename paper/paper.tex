@@ -208,17 +208,24 @@ Frontier labs increasingly use a strong model \emph{as} a reward model to optimi
 \begin{table}[t]
 \centering
 \small
-\begin{tabular}{lccc}
+\begin{tabular}{llccc}
 \toprule
-reward model & agreement & false-positive & false-negative \\
+model & tier & agreement & false-pos. & false-neg. \\
 \midrule
-claude-sonnet-4-6 & $93.3\%$ & $\mathbf{0.0\%}$ & $6.7\%$ \\
-grok-4 & $91.7\%$ & $\mathbf{0.0\%}$ & $8.3\%$ \\
+claude-sonnet-4-6 & frontier & $93.3\%$ & $\mathbf{0.0\%}$ & $6.7\%$ \\
+grok-4 & frontier & $91.7\%$ & $\mathbf{0.0\%}$ & $8.3\%$ \\
+gpt-4o & frontier & \emph{(to fill)} & & \\
+gemini-2.5-pro & frontier & \emph{(to fill)} & & \\
+deepseek-reasoner & frontier & \emph{(to fill)} & & \\
 \midrule
-deterministic verifier (ours) & $100\%$ & $\mathbf{0\%}$ & $\mathbf{0\%}$ \\
+claude-haiku-4-5 & cheap & \emph{(to fill)} & & \\
+gemini-2.5-flash & cheap & \emph{(to fill)} & & \\
+gpt-4o-mini & cheap & \emph{(to fill)} & & \\
+\midrule
+deterministic verifier (ours) & --- & $100\%$ & $\mathbf{0\%}$ & $\mathbf{0\%}$ \\
 \bottomrule
 \end{tabular}
-\caption{An LLM reward model vs.\ the deterministic verifier on a 60-example labeled set (30 valid, 30 broken), per model. False positive: approving a design the verifier proves broken. False negative: rejecting a valid design. Two independent frontier models never approve a broken design ($0\%$ FP, $n=60$ each) but are over-conservative ($6.7$--$8.3\%$ FN). A cheaper model (Gemini) was rate-limited to $n=6$ and is omitted. Whether weaker reward models drift toward false positives is the open question the verifier makes measurable.}
+\caption{An LLM reward model vs.\ the deterministic verifier on a 60-example labeled set (30 valid, 30 broken), per model. False positive: approving a design the verifier proves broken. False negative: rejecting a valid design. LLM reward models vs.\ the verifier ($n=60$ each), by capability tier. Two frontier models measured so far never approve a broken design ($0\%$ FP) but are over-conservative ($6.7$--$8.3\%$ FN). The cheap tier tests the open question directly: whether weaker reward models drift toward false positives, the failure mode that corrupts RLVR. Model IDs are exact; the verifiers false-positive rate is $0\%$ by construction.}
 \label{tab:rewardmodel}
 \end{table}
 
