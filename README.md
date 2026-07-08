@@ -147,7 +147,25 @@ formula, and the **grounding study** (does the verifier's verdict predict real
 PyTorch constructability and trainability? 264-graph run: blockers predicted
 forward-pass failure 96/96; clean graphs constructed 80/80 and trained 90%).
 
+## Verified reasoning traces (a data foundry)
+
+The 2026 input for training reasoning models on verifiable rewards is verified
+reasoning: problem -> chain of thought -> checked answer. [`training/reasoning_traces.mjs`](./training/reasoning_traces.mjs)
+produces exactly that for this domain: `(spec -> reasoning -> design)` triples
+where every design's final graph is re-graded by the deterministic verifier, so
+a trace is kept ONLY if its design passes. With a provider key it is
+rejection-sampled model reasoning; keyless it is reference-derived. See
+[training/REASONING_DATASET_CARD.md](./training/REASONING_DATASET_CARD.md).
+
+```bash
+node reasoning_traces.mjs --count=500 --seed=20260708 --out=arch-reasoning        # keyless
+ANTHROPIC_API_KEY=... node reasoning_traces.mjs --provider=claude --count=500     # verified, model-generated
+```
+
 ## The amplification study: verifier feedback makes YOUR model better
+
+This is the loop frontier labs train with: verifiable rewards and tool-integrated reasoning. The verifier is the tool a reasoning model calls mid-thought; the study measures the lift.
+
 
 `amplify.mjs` measures, per provider, single-shot pass rate vs pass rate when
 the verifier's failure messages are fed back for repair rounds. Same tasks,
