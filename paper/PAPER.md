@@ -124,7 +124,7 @@ the harness itself: a `reference` policy that replays known-good solutions
 0% pass). If either self-test deviates, the harness rather than the model is
 broken, and CI fails.
 
-**Measured (claude-sonnet-4-6, public benchmark, n~8-10/family).** Single-shot pass rate per family: eight families saturate (100%, a curriculum tier for a frontier model), transformer encoder sits in the learnable band (20%), and insert-norm fails at its action budget (0%, a known limitation where the repair loop exceeds the per-task action cap). Deterministic grading, reproducible from the seed.
+**Measured (claude-sonnet-4-6, public benchmark, n=12/family).** Single-shot pass rate per family: eight families saturate (100%, a curriculum tier for a frontier model) and two are hard: transformer encoder (25%) and insert-norm (0%). Deterministic grading, reproducible from the seed.
 
 ## 5. Grounding study
 
@@ -164,11 +164,9 @@ value is the lift it adds to any model.
 
 | Model | single-shot pass | with verifier feedback | lift |
 | --- | --- | --- | --- |
-| claude-sonnet-4-6 | 82% | 91% | +9 pts |
+| claude-sonnet-4-6 | 82% | 100% | +18 pts |
 
-The lift is concentrated in the learnable family: transformer encoder goes
-20% -> 100% (the verifier's failure messages let the model repair it), while the saturated families have no headroom. insert-norm stayed 0% in both arms in this run because the repair loop's cumulative action count exceeded its surgical cap; the harness now counts per turn, so feedback can recover such tasks on a re-run. Numbers are over the tasks graded before an API-credit
-cutout (n ~ 8-10 per family, 95 graded).
+The lift is entirely on the two families a frontier model finds hard: insert-norm 0% -> 100% and transformer encoder 25% -> 100% (the verifier's failure messages let the model repair them), while the eight curriculum families are already at 100%. n=12 per family, 117 graded (three transient network errors excluded).
 
 ## 7. Related work
 
