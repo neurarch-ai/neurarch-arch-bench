@@ -168,6 +168,21 @@ value is the lift it adds to any model.
 
 The lift is entirely on the two families a frontier model finds hard: insert-norm 0% -> 100% and transformer encoder 25% -> 100% (the verifier's failure messages let the model repair them), while the eight curriculum families are already at 100%. n=12 per family, 117 graded (three transient network errors excluded).
 
+## Auditing LLM reward models with the verifier
+
+Frontier labs increasingly use a strong model *as* a reward model to optimize
+objectives that are not directly verifiable (xAI reported this for Grok 4.1).
+The known failure mode is that an LLM reward model drifts: it approves answers
+that are actually broken. In a domain with a verifiable reward that drift is
+*measurable*. `reward_anchor.mjs` builds a verifier-labeled set (a reference
+design passes, its unsolved starting graph fails) and, given an LLM acting as a
+reward model, reports its agreement with the verifier and, crucially, its
+**false-positive rate**: how often it approves a design the verifier proves is
+broken. That number is what a lab needs to trust an LLM judge in this domain,
+and it can only be produced where a ground-truth verifier exists. A use of the
+environment beyond training or evaluation: a calibration anchor for the LLM
+reward models labs deploy where no verifier is available.
+
 ## 7. Related work
 
 **Verifiable agent benchmarks.** SWE-Bench and tau-bench established the
