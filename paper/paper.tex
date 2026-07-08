@@ -369,43 +369,61 @@ The twelve curated tasks are hand-authored from real production architectures. F
 
 \begin{figure}[h]
 \centering
+\definecolor{nSlate}{HTML}{64748B}
+\definecolor{nCyan}{HTML}{06B6D4}
+\definecolor{nIndigo}{HTML}{4F46E5}
+\definecolor{nAmber}{HTML}{F59E0B}
+\definecolor{nEmerald}{HTML}{10B981}
+\definecolor{nViolet}{HTML}{7C3AED}
+\definecolor{nRose}{HTML}{E11D48}
 \begin{tikzpicture}[>=Stealth, font=\scriptsize,
-  b/.style={draw, rounded corners, minimum height=6.5mm, minimum width=15mm, align=center, fill=blue!5},
-  t/.style={font=\footnotesize\bfseries, anchor=east}]
+  base/.style={draw, thick, rounded corners, minimum height=6.5mm, minimum width=15mm, align=center},
+  io/.style={base, draw=nSlate, fill=nSlate!12},
+  conv/.style={base, draw=nAmber, fill=nAmber!16},
+  attn/.style={base, draw=nCyan, fill=nCyan!18},
+  norm/.style={base, draw=nEmerald, fill=nEmerald!16},
+  lin/.style={base, draw=nIndigo, fill=nIndigo!11},
+  emb/.style={base, draw=nViolet, fill=nViolet!13},
+  merge/.style={base, draw=nRose, fill=nRose!13},
+  t/.style={font=\footnotesize\bfseries, anchor=east},
+  sw/.style={minimum width=3.6mm, minimum height=3mm, inner sep=0}]
 \def\dx{22mm}
-% Row 1: CNN (CIFAR-10)
-\node[t] at (-6mm, 0) {CNN};
-\node[b] (c1) at (0,0) {Conv\\ $3{\to}32$};
-\node[b] (c2) at (\dx,0) {Pool +\\ ReLU};
-\node[b] (c3) at (2*\dx,0) {Conv\\ $32{\to}64$};
-\node[b] (c4) at (3*\dx,0) {Linear};
-\node[b] (c5) at (4*\dx,0) {Softmax\\ ($10$)};
-\foreach \a/\b in {c1/c2,c2/c3,c3/c4,c4/c5} \draw[->] (\a) -- (\b);
-% Row 2: DLRM (CTR)
-\node[t] at (-6mm, -1.5) {DLRM};
-\node[b] (d1) at (0,-1.5) {Dense +\\ Embeds};
-\node[b] (d2) at (\dx,-1.5) {Feature\\ interaction};
-\node[b] (d3) at (2*\dx,-1.5) {MLP};
-\node[b] (d4) at (3*\dx,-1.5) {Linear};
-\node[b] (d5) at (4*\dx,-1.5) {CTR\\ (sigmoid)};
-\foreach \a/\b in {d1/d2,d2/d3,d3/d4,d4/d5} \draw[->] (\a) -- (\b);
-% Row 3: BST (behavior sequence transformer)
-\node[t] at (-6mm, -3) {BST};
-\node[b] (b1) at (0,-3) {Seq\\ embedding};
-\node[b] (b2) at (\dx,-3) {Self-\\ attention};
-\node[b] (b3) at (2*\dx,-3) {Pooling};
-\node[b] (b4) at (3*\dx,-3) {MLP};
-\node[b] (b5) at (4*\dx,-3) {Score};
-\foreach \a/\b in {b1/b2,b2/b3,b3/b4,b4/b5} \draw[->] (\a) -- (\b);
-% Row 4: two-tower retrieval
-\node[t] at (-6mm, -4.7) {Two-tower};
-\node[b] (q) at (0,-4.3) {Query\\ tower};
-\node[b] (i) at (0,-5.1) {Item\\ tower};
-\node[b] (dot) at (2*\dx,-4.7) {Dot\\ product};
-\node[b] (sc) at (3.3*\dx,-4.7) {Score};
-\draw[->] (q) -- (dot); \draw[->] (i) -- (dot); \draw[->] (dot) -- (sc);
+\node[t] at (-9mm,0){CNN};
+\node[conv](c1) at (0,0){Conv\\$3{\to}32$};
+\node[norm](c2) at (\dx,0){Pool +\\ReLU};
+\node[conv](c3) at (2*\dx,0){Conv\\$32{\to}64$};
+\node[lin](c4) at (3*\dx,0){Linear};
+\node[io](c5) at (4*\dx,0){Softmax\\($10$)};
+\foreach \a/\b in {c1/c2,c2/c3,c3/c4,c4/c5} \draw[->,nSlate] (\a)--(\b);
+\node[t] at (-9mm,-1.5){DLRM};
+\node[emb](d1) at (0,-1.5){Dense +\\Embeds};
+\node[merge](d2) at (\dx,-1.5){Feature\\interaction};
+\node[lin](d3) at (2*\dx,-1.5){MLP};
+\node[lin](d4) at (3*\dx,-1.5){Linear};
+\node[io](d5) at (4*\dx,-1.5){CTR\\(sigmoid)};
+\foreach \a/\b in {d1/d2,d2/d3,d3/d4,d4/d5} \draw[->,nSlate] (\a)--(\b);
+\node[t] at (-9mm,-3){BST};
+\node[emb](b1) at (0,-3){Seq\\embedding};
+\node[attn](b2) at (\dx,-3){Self-\\attention};
+\node[norm](b3) at (2*\dx,-3){Pooling};
+\node[lin](b4) at (3*\dx,-3){MLP};
+\node[io](b5) at (4*\dx,-3){Score};
+\foreach \a/\b in {b1/b2,b2/b3,b3/b4,b4/b5} \draw[->,nSlate] (\a)--(\b);
+\node[t] at (-9mm,-4.7){Two-tower};
+\node[lin](q) at (0,-4.3){Query\\tower};
+\node[lin](i) at (0,-5.1){Item\\tower};
+\node[merge](dot) at (2*\dx,-4.7){Dot\\product};
+\node[io](sc) at (3.3*\dx,-4.7){Score};
+\draw[->,nSlate](q)--(dot);\draw[->,nSlate](i)--(dot);\draw[->,nSlate](dot)--(sc);
+% legend
+\node[conv,sw](L1) at (0,-6.3){}; \node[right=0.6mm of L1, font=\tiny]{conv};
+\node[attn,sw](L2) at (16mm,-6.3){}; \node[right=0.6mm of L2, font=\tiny]{attention};
+\node[norm,sw](L3) at (37mm,-6.3){}; \node[right=0.6mm of L3, font=\tiny]{norm/pool};
+\node[lin,sw](L4) at (60mm,-6.3){}; \node[right=0.6mm of L4, font=\tiny]{linear/MLP};
+\node[emb,sw](L5) at (83mm,-6.3){}; \node[right=0.6mm of L5, font=\tiny]{embedding};
+\node[merge,sw](L6) at (104mm,-6.3){}; \node[right=0.6mm of L6, font=\tiny]{merge};
 \end{tikzpicture}
-\caption{Four of the twelve curated tasks, as typed graphs (simplified). Each is a different production family with its own required types and budgets: a CIFAR-10 CNN, a DLRM click-through-rate ranker, a Behavior Sequence Transformer (which \emph{requires} an attention layer), and a two-tower retrieval model (two encoders scored by a dot product). These are the states an agent edits and the verifier grades.}
+\caption{Four of the twelve curated tasks, as typed graphs, coloured by layer type (the same convention the Neurarch canvas uses): a CIFAR-10 CNN, a DLRM click-through-rate ranker, a Behavior Sequence Transformer (which \emph{requires} an attention layer), and a two-tower retrieval model (two encoders scored by a dot product). These are the states an agent edits and the verifier grades.}
 \label{fig:examples}
 \end{figure}
 
