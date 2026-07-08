@@ -76,7 +76,7 @@ async function run() {
   if (!ok) { console.error(`Provider "${PROVIDER}" has no API key set (or is the oracle).`); process.exit(2); }
   const call = REGISTRY[PROVIDER].call;
 
-  let agree = 0, falsePos = 0, falseNeg = 0, errored = 0, n = 0;
+  let agree = 0, falsePos = 0, falseNeg = 0, errored = 0, n = 0, firstErr = null;
   for (const e of examples) {
     try {
       const reply = await callWithRetry(call, JUDGE_SYSTEM, `SPEC:\n${e.spec}\n\nGRAPH:\n${e.graph}\n\nPASS or FAIL?`);
@@ -86,13 +86,14 @@ async function run() {
       if (judged === e.truth) agree += 1;
       else if (judged && !e.truth) falsePos += 1;   // approved a broken design (the dangerous one)
       else falseNeg += 1;
-    } catch { errored += 1; }
+    } catch (e) { errored += 1; if (!firstErr) firstErr = e.message; }
   }
   const pct = x => `${(100 * x / Math.max(1, n)).toFixed(1)}%`;
   console.log(`\nLLM reward model "${PROVIDER}" vs the verifier (n=${n}${errored ? `, ${errored} errored` : ''}):`);
   console.log(`  agreement:      ${pct(agree)} (${agree}/${n})`);
   console.log(`  FALSE POSITIVE: ${pct(falsePos)} (${falsePos}/${n})  <- approved a design the verifier proves is broken`);
   console.log(`  false negative: ${pct(falseNeg)} (${falseNeg}/${n})`);
+  if (errored) console.log(`  (${errored} errored; first error: ${firstErr})`);
   console.log('\nThe false-positive rate is the number a lab needs to trust an LLM reward model here.');
   console.log('It can only be measured where a ground-truth verifier exists. That is the point.');
 }
