@@ -203,24 +203,24 @@ $k=3$ & $100\%$ & $[97, 100]$ \\
 \end{table} Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
 
 \section{Auditing LLM reward models with the verifier}
-Frontier labs increasingly use a strong model \emph{as} a reward model to optimize objectives that are not directly verifiable (xAI reported this for Grok~4.1), a practice studied more broadly as LLM-as-a-judge~\cite{llmjudge}. The known failure mode is that an LLM reward model drifts: it approves answers that are actually broken. In a domain with a verifiable reward that drift is \emph{measurable}. \texttt{reward\_anchor.mjs} builds a verifier-labeled set (each design provably passes or fails: a reference design passes, its unsolved starting graph fails) and, given an LLM acting as a reward model, reports its agreement with the verifier and, crucially, its \textbf{false-positive rate}: how often it approves a design the verifier proves is broken. That number is what a lab needs to trust an LLM judge in this domain, and it can only be produced where a ground-truth verifier exists. This is a use of the environment beyond training or evaluation: a calibration anchor for the LLM reward models labs deploy where no verifier is available.
+Frontier labs increasingly use a strong model \emph{as} a reward model to optimize objectives that are not directly verifiable (xAI reported this for Grok~4.1), a practice studied more broadly as LLM-as-a-judge~\cite{llmjudge}. The known failure mode is that an LLM reward model drifts: it approves answers that are actually broken. In a domain with a verifiable reward that drift is \emph{measurable}. \texttt{reward\_anchor.mjs} builds a verifier-labeled set (each design provably passes or fails: a reference design passes, its unsolved starting graph fails) and, given an LLM acting as a reward model, reports its agreement with the verifier and, crucially, its \textbf{false-positive rate}: how often it approves a design the verifier proves is broken. On a 60-example labeled set, \texttt{claude-sonnet-4-6} agrees with the verifier $93.3\%$ of the time; its errors are false \emph{negatives} (rejecting $6.7\%$ of valid designs), not false positives ($0.0\%$): it never approves a design the verifier proves broken. In this domain, then, a frontier reward model's risk is over-conservatism, not hallucinated approval -- a reassuring but non-obvious finding, and exactly the kind a lab needs before trusting an LLM judge. Whether weaker or cheaper reward models drift toward false positives, the failure mode that corrupts RLVR, is the open question the verifier makes measurable per model (Table~\ref{tab:rewardmodel}). This is a use of the environment beyond training or evaluation: a ground-truth anchor for the LLM reward models labs deploy where no verifier is available.
 
 \begin{table}[t]
 \centering
 \small
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-reward model & agreement with verifier & false-positive rate \\
+reward model & agreement & false-positive & false-negative \\
 \midrule
-claude-sonnet-4-6 & \emph{(to fill)} & \emph{(to fill)} \\
-grok-4 & \emph{(to fill)} & \emph{(to fill)} \\
-gpt (frontier) & \emph{(to fill)} & \emph{(to fill)} \\
-gemini (frontier) & \emph{(to fill)} & \emph{(to fill)} \\
+claude-sonnet-4-6 & $93.3\%$ & $\mathbf{0.0\%}$ & $6.7\%$ \\
+grok-4 & \emph{(to fill)} & \emph{(to fill)} & \emph{(to fill)} \\
+gpt (frontier) & \emph{(to fill)} & \emph{(to fill)} & \emph{(to fill)} \\
+gemini (frontier) & \emph{(to fill)} & \emph{(to fill)} & \emph{(to fill)} \\
 \midrule
-deterministic verifier (ours) & $100\%$ & $\mathbf{0\%}$ \\
+deterministic verifier (ours) & $100\%$ & $\mathbf{0\%}$ & $\mathbf{0\%}$ \\
 \bottomrule
 \end{tabular}
-\caption{An LLM reward model's agreement with the deterministic verifier, and its false-positive rate (approving a design the verifier proves is broken), per model. The verifier's own false-positive rate is $0\%$ by construction.}
+\caption{An LLM reward model vs.\ the deterministic verifier on a 60-example labeled set (30 valid, 30 broken), per model. False positive: approving a design the verifier proves broken. False negative: rejecting a valid design. A frontier model (Claude) never approves a broken design ($0\%$ FP) but is over-conservative ($6.7\%$ FN); whether weaker reward models drift toward false positives is the open question the verifier makes measurable.}
 \label{tab:rewardmodel}
 \end{table}
 

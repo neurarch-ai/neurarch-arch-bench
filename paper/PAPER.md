@@ -183,11 +183,16 @@ and it can only be produced where a ground-truth verifier exists. A use of the
 environment beyond training or evaluation: a calibration anchor for the LLM
 reward models labs deploy where no verifier is available.
 
-| LLM reward model | agreement with verifier | false-positive rate |
-| --- | --- | --- |
-| *(to be filled from `reward_anchor.mjs`)* | | |
+| reward model | agreement | false-positive | false-negative |
+| --- | --- | --- | --- |
+| claude-sonnet-4-6 | 93.3% | **0.0%** | 6.7% |
+| grok-4 | *(to fill)* | *(to fill)* | *(to fill)* |
+| deterministic verifier (ours) | 100% | **0%** | **0%** |
 
-The verifier's own false-positive rate is 0% by construction.
+On a 60-example labeled set, a frontier model (Claude) never approves a broken
+design (0% false positive) but is over-conservative (6.7% false negative). The
+open question the verifier makes measurable: whether weaker reward models drift
+toward false positives, the failure mode that corrupts RLVR.
 
 ## 7. Related work
 
