@@ -39,6 +39,18 @@ const SEED = parseInt(args.seed ?? '20260708', 10) || 20260708;
 const OUT = args.out ?? 'arch-reasoning';
 const PROVIDER = args.provider;              // undefined => keyless reference-derived
 const TRIES = Math.max(1, parseInt(args.tries ?? '2', 10) || 2); // rejection-sampling attempts
+const DELAY = Math.max(0, parseInt(args.delay ?? '0', 10) || 0); // ms between calls, for rate-limited providers
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+// Retry a call up to 3 times with exponential backoff (handles transient rate limits).
+async function callWithRetry(call, system, user) {
+  let lastErr;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try { return await call(system, user); }
+    catch (e) { lastErr = e; await sleep(800 * Math.pow(2, attempt)); }
+  }
+  throw lastErr;
+}
 
 // A reasoning prompt that asks for explicit steps THEN the JSON actions. We keep
 // the model's reasoning text and its actions; the verifier decides if it counts.
@@ -113,19 +125,24 @@ async function run() {
 
     if (call) {
       // Rejection sampling: try up to TRIES; keep the first verified one.
-      let ok = false;
+      // Separate API failures (errored) from genuine solve failures (rejected),
+      // so a low yield is not silently blamed on task difficulty.
+      let ok = false, apiError = false;
       for (let t = 0; t < TRIES && !ok; t++) {
+        const user = `SPEC:\n${task.spec}\n\nCURRENT MODEL:\n${serializeModel(start)}\n\nReturn the actions that fulfil the spec.`;
+        let reply;
+        try { reply = await callWithRetry(call, REASON_SYSTEM, user); }
+        catch { apiError = true; break; }   // API failed after retries: not a solve failure
+        if (DELAY) await sleep(DELAY);
         try {
-          const user = `SPEC:\n${task.spec}\n\nCURRENT MODEL:\n${serializeModel(start)}\n\nReturn the actions that fulfil the spec.`;
-          const reply = await call(REASON_SYSTEM, user);
           const parts = splitReasoning(reply.text);
           const acts = parseActions(isolateActionsJson(parts.rest || reply.text));
           const model = applyActions(start, acts).model;
           const grade = gradeTask(task, model, acts.length, acts.map(a => a?.type).filter(Boolean));
           if (grade.pass) { reasoning = parts.reasoning; actions = acts; source = `${provider}:verified`; ok = true; }
-        } catch { /* try again */ }
+        } catch { /* parse/apply failed; try again */ }
       }
-      if (!ok) { rejected += 1; continue; }
+      if (!ok) { if (apiError) errored += 1; else rejected += 1; continue; }
     } else {
       // Keyless: reference-derived (verified by construction; assert it).
       const grade = gradeTask(task, applyActions(start, reference).model, reference.length, reference.map(a => a.type));
@@ -151,11 +168,16 @@ async function run() {
   }
   stream.end();
 
+  const solvable = attempted - errored;   // exclude API failures from the denominator
   const stats = { out: `${OUT}.jsonl`, mode: call ? `${provider} (rejection-sampled, tries=${TRIES})` : 'reference-derived (keyless)',
-    attempted, kept, rejected, errored, keptRate: +(kept / attempted).toFixed(3), seed: SEED };
+    attempted, kept, rejected, errored,
+    keptRate: +(kept / attempted).toFixed(3),
+    solveRate: +(kept / Math.max(1, solvable)).toFixed(3),   // true verified-solve rate, API errors removed
+    seed: SEED };
   fs.writeFileSync(path.resolve(`${OUT}.stats.json`), JSON.stringify(stats, null, 2));
   console.log(`Wrote ${kept} VERIFIED reasoning traces to ${OUT}.jsonl (${stats.mode}).`);
-  console.log(`  attempted ${attempted}, kept ${kept}, rejected ${rejected}, errored ${errored}.`);
+  console.log(`  attempted ${attempted}, kept ${kept}, rejected ${rejected}, errored ${errored} (API failures).`);
+  if (errored) console.log(`  verified-solve rate excluding API errors: ${(100 * kept / Math.max(1, solvable)).toFixed(1)}% (${kept}/${solvable}). Re-run with --delay to cut API errors.`);
   console.log('  Every kept trace’s design was re-graded by the deterministic verifier and passed.');
 }
 
