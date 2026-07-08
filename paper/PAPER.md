@@ -167,9 +167,7 @@ value is the lift it adds to any model.
 | claude-sonnet-4-6 | 82% | 91% | +9 pts |
 
 The lift is concentrated in the learnable family: transformer encoder goes
-20% -> 100% (the verifier's failure messages let the model repair it), while
-the saturated families have no headroom and insert-norm's action budget blocks
-recovery in both arms. Numbers are over the tasks graded before an API-credit
+20% -> 100% (the verifier's failure messages let the model repair it), while the saturated families have no headroom. insert-norm stayed 0% in both arms in this run because the repair loop's cumulative action count exceeded its surgical cap; the harness now counts per turn, so feedback can recover such tasks on a re-run. Numbers are over the tasks graded before an API-credit
 cutout (n ~ 8-10 per family, 95 graded).
 
 ## 7. Related work

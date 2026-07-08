@@ -59,7 +59,7 @@ async function episode(call, task, start) {
     tokens += reply.tokens;
     const actions = parseActions(reply.text);
     model = applyActions(model, actions).model;
-    actionCount += actions.length;
+    actionCount = actions.length; // per-turn: the repair loop's surgical budget applies to THIS correction, not the sum across turns (feedback must be able to recover action-constrained edit tasks)
     usedTypes.push(...actions.map(a => a?.type).filter(Boolean));
     grade = gradeTask(task, model, actionCount, usedTypes);
     turnsUsed = turn + 1;

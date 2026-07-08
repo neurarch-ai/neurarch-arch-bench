@@ -70,7 +70,7 @@ claude-sonnet-4-6 & $82\%$ & $91\%$ & $+9$ pts \\
 \caption{Verifier-in-the-loop lift, per provider. Same tasks, model, and prompt; the only variable is the feedback loop.}
 \end{table}
 
-The lift is concentrated in the learnable family: transformer encoder goes $20\%\to100\%$ once the verifier's failure messages are fed back, while the saturated families have no headroom and insert-norm's action budget blocks recovery in both arms. Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
+The lift is concentrated in the learnable family: transformer encoder goes $20\%\to100\%$ once the verifier's failure messages are fed back, while the saturated families have no headroom. insert-norm stayed $0\%$ in both arms in this run because the repair loop's cumulative action count exceeded its surgical cap; the harness now counts actions per turn, so feedback can recover such tasks on a re-run. Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
 
 \section{Related work}
 \textbf{Verifiable agent benchmarks.} SWE-Bench~\cite{swebench} and $\tau$-bench~\cite{taubench} established the programmatic-verifier pattern in code and tool use; SWE-Gym~\cite{swegym} showed that a few thousand verifiable tasks suffice to train agents to a double-digit absolute improvement on SWE-Bench, and did so as free, open research. We target the same pattern in a domain that lacked a public verifier.
