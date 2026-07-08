@@ -211,7 +211,10 @@ def run_train(args):
             task_type="CAUSAL_LM",
         )
 
-    cfg = GRPOConfig(
+    # Build kwargs, then keep only fields this TRL version's GRPOConfig accepts,
+    # so the script survives TRL API drift (e.g. renamed/removed length args).
+    import dataclasses
+    desired = dict(
         output_dir=args.out,
         max_steps=args.steps,
         learning_rate=args.lr,
@@ -224,6 +227,13 @@ def run_train(args):
         bf16=args.bf16,
         report_to=[],
     )
+    accepted = {f.name for f in dataclasses.fields(GRPOConfig)}
+    cfg_kwargs = {k: v for k, v in desired.items() if k in accepted}
+    dropped = [k for k in desired if k not in accepted]
+    if dropped:
+        print(f"[warn] GRPOConfig (TRL {getattr(__import__('trl'), '__version__', '?')}) "
+              f"does not accept {dropped}; using its defaults for those.")
+    cfg = GRPOConfig(**cfg_kwargs)
     trainer = GRPOTrainer(
         model=args.model,
         reward_funcs=arch_reward,
