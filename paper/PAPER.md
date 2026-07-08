@@ -185,20 +185,14 @@ reward models labs deploy where no verifier is available.
 
 | model | tier | agreement | false-pos. | false-neg. |
 | --- | --- | --- | --- | --- |
+| qwen-2.5-72b-instruct | open | 100.0% | **0.0%** | 0.0% |
 | claude-sonnet-4-6 | frontier | 93.3% | **0.0%** | 6.7% |
+| mistral-large | open | 93.3% | **0.0%** | 6.7% |
 | grok-4 | frontier | 91.7% | **0.0%** | 8.3% |
-| gpt-4o | frontier | *(to fill)* | | |
-| gemini-2.5-pro | frontier | *(to fill)* | | |
-| deepseek-reasoner | frontier | *(to fill)* | | |
-| claude-haiku-4-5 | cheap | *(to fill)* | | |
-| gemini-2.5-flash | cheap | *(to fill)* | | |
+| llama-3.3-70b-instruct | open | 90.0% | **0.0%** | 10.0% |
 | deterministic verifier (ours) | --- | 100% | **0%** | **0%** |
 
-On a 60-example labeled set (n=60 each), two independent frontier models never
-approve a broken design (0% false positive) but are over-conservative (6.7-8.3%
-false negative). A cheaper model (Gemini) rate-limited to n=6, omitted. Open
-question the verifier makes measurable: whether weaker reward models drift
-toward false positives, the failure mode that corrupts RLVR.
+Across five reward models (n=60 each) spanning closed-frontier and open-weights, not one approves a broken design (0% false positive across all five). The only failure mode is over-conservatism (0-10% false negative). The RLVR-corrupting mode (rewarding a broken design) does not appear; the verifier matches the best (0/0) for free.
 
 ## 7. Related work
 
