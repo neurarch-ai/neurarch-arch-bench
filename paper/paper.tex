@@ -115,13 +115,13 @@ A task pairs a natural-language specification with a starting graph and machine-
 \node[n, right=of ln] (head) {Linear\\ $\to C$};
 \node[n, right=of head] (out) {Output};
 \draw[->] (in) -- (emb);
-\draw[->] (emb) -- node[above, font=\scriptsize]{$[B,L,192]$} (att);
+\draw[->] (emb) -- (att);
 \draw[->] (att) -- (ln);
 \draw[->] (ln) -- (head);
 \draw[->] (head) -- (out);
 \node[red!80, below=1.5mm of att, align=center, font=\scriptsize] {$192 \bmod 7 \neq 0$\\ \textsc{headDiv} blocker};
 \end{tikzpicture}
-\caption{A task state as a typed graph, and a hard blocker the verifier returns in $O(1)$ at the attention node: $\text{embedDim}{=}192$ is not divisible by $\text{numHeads}{=}7$ (Algorithm~\ref{alg:grade}, line~4). Because widths and divisibility are typed-node properties, this check is a pure function; on free-form code it would require executing the model. The repair task asks the policy to fix exactly this in $\le 2$ edits without rebuilding.}
+\caption{A task state as a typed graph, and a hard blocker the verifier returns in $O(1)$ at the attention node: $\text{embedDim}{=}192$ is not divisible by $\text{numHeads}{=}7$ (Algorithm~\ref{alg:grade}, line~4). Because widths and divisibility are typed-node properties, this check is a pure function; on free-form code it would require executing the model. The input carries shape $[B,L]$ ($B$ batch, $L$ sequence length), widening to $[B,L,192]$ after the embedding. The repair task asks the policy to fix exactly this in $\le 2$ edits without rebuilding.}
 \label{fig:typedgraph}
 \end{figure}
 
