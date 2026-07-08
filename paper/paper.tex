@@ -23,7 +23,7 @@
 Reinforcement learning and agent evaluation both depend on a \emph{verifier}: a function that scores a candidate cheaply and without a human. Code and mathematics have compilers and unit tests; neural architecture design has had no public verifier. We present an environment in which an agent designs a neural network by emitting edits to a typed, structured graph, and a deterministic, sub-millisecond verifier grades the result against structural, budget, and serving-physics constraints, with no human or LLM in the scoring loop. The environment ships (i) a procedural task generator across ten families with satisfiability and non-vacuity proofs, (ii) anti-gaming constraints that reject wholesale rebuilds masquerading as surgical fixes, (iii) a difficulty-calibration harness that reports per-family pass rates against the pass-rate floor labs cite for usable RL environments, and (iv) a grounding study relating the verifier's verdict to real PyTorch behavior. Across 264 architectures, verifier blockers predict forward-pass failure with perfect precision ($96/96$), while graphs the verifier passes construct and train in $90\%$ of cases; we also report, honestly, that the 0--100 health score is a validity margin rather than a quality ranking (within-family Spearman correlation with training progress is weak). Because grading is a pure function, the same environment serves as a leaderboard, an RL training gym, and a source of verified supervised data; we release all three.
 \end{abstract}
 
-\paragraph{Reproducibility note.} All results marked \emph{measured} are reproduced by the commands in the repository without API keys or GPUs, except the amplification study (Section~\ref{sec:amp}), which requires provider API keys and is marked \emph{pending} until a run is inserted. Code and data: \url{https://github.com/neurarch-ai/neurarch-arch-bench} (MIT).
+\paragraph{Reproducibility note.} All results marked \emph{measured} are reproduced by the commands in the repository; the calibration, amplification, and reward-model results use provider API keys, the rest need neither keys nor GPUs. Code and data: \url{https://github.com/neurarch-ai/neurarch-arch-bench} (MIT).
 
 \section{Introduction}
 The scarce ingredient in modern agent training and evaluation is not the policy but the verifier. SWE-Bench~\cite{swebench} grades a code patch by running the project's own test suite; $\tau$-bench~\cite{taubench} grades a tool-using dialogue by diffing the resulting database state against a goal. Neither requires a human judge or a second model, and this is precisely why they are trusted and why they can be used as training signals.
@@ -125,6 +125,25 @@ two-tower retrieval & $100\%$ & $100\%$ \\
 Does the verifier's verdict correspond to reality? We generated clean reference architectures and systematically corrupted variants (broken attention divisibility, mismatched linear width, a severed mid-graph edge), built every graph as a PyTorch module, and trained each briefly on a synthetic fixed-teacher task.
 
 \paragraph{Result (measured, 264 graphs, two seeds).} Verifier blockers predicted a forward-pass failure with perfect precision: 96 of 96 blocked graphs failed to run. Graphs the verifier passed constructed in 80 of 80 cases and made training progress in $90\%$. The one systematic miss is honest and instructive: the transparent rubric in this repository does not chase linear widths through the graph, so a width mismatch can pass the rubric and crash PyTorch; the richer verifier in the production system flags this class. We treat the pass/blocked boundary as the grounded claim.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar, bar width=15pt, width=0.72\linewidth, height=5cm,
+  ymin=0, ymax=112, ylabel={\% of graphs},
+  symbolic x coords={verifier blocked, verifier passed},
+  xtick=data, enlarge x limits=0.45, ymajorgrids,
+  legend style={font=\small, at={(0.5,-0.2)}, anchor=north, legend columns=2},
+  nodes near coords, every node near coord/.append style={font=\scriptsize}]
+\addplot+[fill=red!55] coordinates {(verifier blocked,100) (verifier passed,0)};
+\addplot+[fill=blue!45] coordinates {(verifier blocked,0) (verifier passed,90)};
+\legend{failed a real PyTorch forward pass, made training progress}
+\end{axis}
+\end{tikzpicture}
+\caption{Grounding study (264 graphs, two seeds). Every graph the verifier blocked ($96/96$) failed a real PyTorch forward pass; graphs it passed constructed ($80/80$) and made training progress in $90\%$ of cases. The verdict's pass/blocked boundary tracks real behavior.}
+\label{fig:grounding}
+\end{figure}
 
 \paragraph{Negative result (measured).} Within clean graphs, the 0--100 score's magnitude does \emph{not} rank training quality: Spearman correlation between the score and relative loss decrease was $-0.58$, because deeper, more structured models make slower per-step progress on the short synthetic probe than tiny ones. The score is therefore a validity margin, not a quality ranking. A learned quality head, trained on (architecture, verdict, real training curve) triples that the environment can mint at scale, is the natural next step and the point at which the verifier would become a calibrated predictor rather than a gate.
 
