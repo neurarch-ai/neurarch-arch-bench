@@ -12,6 +12,8 @@
 \usetikzlibrary{arrows.meta, positioning}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.16}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \title{A Verifiable Environment for Neural Architecture Design}
 \author{Xin Gao\\ Neurarch\\ \texttt{\href{https://neurarch.com}{neurarch.com}}}
@@ -38,6 +40,22 @@ Our contributions are: (1) a design-from-spec and edit-in-place environment with
 
 \paragraph{Formalization.} The environment is a deterministic single-agent MDP $(\mathcal{S},\mathcal{A},T,R)$. A state $s\in\mathcal{S}$ is a typed graph $(V,E)$: nodes $V$ each carry a type and a parameter dictionary, edges $E$ are directed. An action $a\in\mathcal{A}$ is a batch of typed edits from the fixed vocabulary; the transition $T(s,a)$ applies them, with no environment stochasticity. The reward is the grader's health score $R(s')\in[0,100]$, and a task's success predicate is $R(s')\ge\tau \,\wedge\, \neg\,\mathrm{blocked}(s') \,\wedge\, \phi(s')$, where $\phi$ collects the task's machine-checkable constraints (required types, parameter/KV/latency budgets, action-economy limits). Since $T$ and $R$ are pure functions, an episode is fully reproducible from its seed, and the same $R$ is at once an evaluation metric, an RL reward, and a data-generation filter.
 
+\paragraph{Widths, parameters, and cost.} Each node type defines an output width $w_{\text{out}}$ and a parameter count from its typed parameters. For the load-bearing types,
+\begin{align}
+\text{linear}(d_{\text{in}}, d_{\text{out}})\!: &\quad w_{\text{out}} = d_{\text{out}}, \quad |\theta| = d_{\text{in}}\,d_{\text{out}} + d_{\text{out}}, \label{eq:lin}\\
+\text{attention}(d, H)\!: &\quad w_{\text{out}} = d, \quad\; |\theta| = 4 d^2 + 4 d, \label{eq:attn}\\
+\text{conv}(c_{\text{in}}, c_{\text{out}}, k)\!: &\quad w_{\text{out}} = c_{\text{out}}, \quad |\theta| = c_{\text{in}}\,c_{\text{out}}\,k^2 + c_{\text{out}}. \label{eq:conv}
+\end{align}
+Total parameters are $\textsc{Params}(G)=\sum_{v\in V}|\theta(v)|$, and the decode-time KV-cache cost per token is
+\begin{equation}
+\textsc{Kv}(G) \;=\; \sum_{v\,\in\,\text{attn}(G)} 2\,H^{\text{KV}}_v\,\frac{d_v}{H_v}\,b, \label{eq:kv}
+\end{equation}
+for $b$ bytes per cached value (multi-head attention is the case $H^{\text{KV}}_v = H_v$; grouped-query attention shrinks $H^{\text{KV}}_v$). A task with constraints $\phi$ and threshold $\tau$ is solved iff
+\begin{equation}
+\textsc{Pass}(T, G) \;=\; \big[\,B(G)=\emptyset\,\big]\ \wedge\ \big[\,h(G)\ge\tau\,\big]\ \wedge\ \phi(G), \label{eq:pass}
+\end{equation}
+where $B(G)$ is the hard-blocker set of Algorithm~\ref{alg:grade}, $h(G)$ its health score, and $\phi(G)$ conjoins the machine-checkable constraints: required types, a two-sided parameter band $p_{\min}\!\le\!\textsc{Params}(G)\!\le\!p_{\max}$, KV and latency budgets, and an action-economy limit $|a|\le a_{\max}$. Every term is a pure function of $G$, so Eq.~\eqref{eq:pass} is decidable in $O(|V|+|E|)$.
+
 The grader composes three checks, each pure and sub-millisecond: a structural score with hard blockers (disconnected input/output, attention divisibility, parameter bloat), a guardrail pass over the proposed edits, and a shape propagator that catches shape bugs an edit would introduce. No LLM grades anything, so there is no persuasion surface and no stochasticity in the reward.
 
 \begin{figure}[t]
@@ -62,7 +80,50 @@ The grader composes three checks, each pure and sub-millisecond: a structural sc
 
 \paragraph{The checks.} The grader runs three families of checks, in order. (i) \emph{Structural blockers}: a disconnected input or output; an attention layer whose \texttt{embedDim} is not divisible by \texttt{numHeads} (or \texttt{numHeads} not divisible by \texttt{numKVHeads} under grouped-query attention); a linear layer whose \texttt{inFeatures} do not match the upstream width; a parameter count far over budget. (ii) \emph{Serving physics}: parameters, forward multiply-accumulates, and KV-cache bytes per token, computed with the canonical formula (grouped-query attention caches $2\cdot\texttt{numKVHeads}\cdot d_{\text{head}}\cdot b$ bytes per token at $b$ bytes per value; multi-head attention is the special case $\texttt{numKVHeads}=\texttt{numHeads}$), and checked against per-task parameter, KV, and decode-latency budgets. (iii) \emph{Shape propagation}: a symbolic forward pass over the typed graph that catches interface mismatches an edit would introduce before any tensor is allocated. Each pass is $O(|V|+|E|)$ over the graph and completes in well under a millisecond, which is what makes the reward usable as an inner-loop RL signal rather than an offline evaluation.
 
-A task pairs a natural-language specification with a starting graph and machine-checkable constraints, e.g.\ \emph{``This encoder fails validation: embedDim (192) is not divisible by numHeads (7). Repair the attention configuration in place with at most 2 actions. Do not rebuild the model from scratch.''}
+\begin{algorithm}[t]
+\caption{$\textsc{Grade}(T, G)$: the deterministic verifier}
+\label{alg:grade}
+\begin{algorithmic}[1]
+\Require task $T$ with constraints $\phi$ and threshold $\tau$; typed graph $G=(V,E)$
+\Ensure health score $h\in[0,100]$; hard-blocker set $B$
+\State $B \gets \emptyset$
+\If{$\neg\,\textsc{Reaches}(\text{in}(G), \text{out}(G))$} $B \gets B \cup \{\textsc{disconnected}\}$ \EndIf
+\For{each attention node $v \in V$}
+  \If{$v.\text{embedDim} \bmod v.\text{numHeads} \neq 0$} $B \gets B \cup \{\textsc{headDiv}(v)\}$ \EndIf
+  \If{$v.\text{numHeads} \bmod v.\text{numKVHeads} \neq 0$} $B \gets B \cup \{\textsc{gqaDiv}(v)\}$ \EndIf
+\EndFor
+\For{each node $v$ with typed input width $w_{\text{in}}(v)$ and parent $u$}
+  \If{$w_{\text{in}}(v) \neq w_{\text{out}}(u)$} $B \gets B \cup \{\textsc{shapeMismatch}(v)\}$ \EndIf
+\EndFor
+\State compute $\textsc{Params}(G)$, $\textsc{Kv}(G)$, $\textsc{Latency}(G)$; add a blocker for each budget in $\phi$ violated, and for each required type absent
+\State $h \gets 0$ \textbf{if} $B \neq \emptyset$ \textbf{else} $100 - \sum_{s \in \textsc{Soft}(G)} \text{pen}(s)$
+\State \Return $(h, B)$
+\end{algorithmic}
+\end{algorithm}
+
+A task pairs a natural-language specification with a starting graph and machine-checkable constraints, e.g.\ \emph{``This encoder fails validation: embedDim (192) is not divisible by numHeads (7). Repair the attention configuration in place with at most 2 actions. Do not rebuild the model from scratch.''} Figure~\ref{fig:typedgraph} shows this state and the blocker the verifier returns.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Stealth, node distance=5mm and 8mm, font=\footnotesize,
+  n/.style={draw, rounded corners, align=center, minimum height=8mm, minimum width=13mm, fill=blue!5},
+  bad/.style={draw, rounded corners, align=center, minimum height=8mm, minimum width=13mm, fill=red!12, very thick, draw=red!70}]
+\node[n] (in) {Input\\ $[B,L]$};
+\node[n, right=of in] (emb) {Embedding\\ $d{=}192$};
+\node[bad, right=of emb] (att) {Attention\\ $d{=}192,H{=}7$};
+\node[n, right=of att] (ln) {LayerNorm};
+\node[n, right=of ln] (head) {Linear\\ $\to C$};
+\node[n, right=of head] (out) {Output};
+\draw[->] (in) -- (emb);
+\draw[->] (emb) -- node[above, font=\scriptsize]{$[B,L,192]$} (att);
+\draw[->] (att) -- (ln);
+\draw[->] (ln) -- (head);
+\draw[->] (head) -- (out);
+\node[red!80, below=1.5mm of att, align=center, font=\scriptsize] {$192 \bmod 7 \neq 0$\\ \textsc{headDiv} blocker};
+\end{tikzpicture}
+\caption{A task state as a typed graph, and a hard blocker the verifier returns in $O(1)$ at the attention node: $\text{embedDim}{=}192$ is not divisible by $\text{numHeads}{=}7$ (Algorithm~\ref{alg:grade}, line~4). Because widths and divisibility are typed-node properties, this check is a pure function; on free-form code it would require executing the model. The repair task asks the policy to fix exactly this in $\le 2$ edits without rebuilding.}
+\label{fig:typedgraph}
+\end{figure}
 
 \section{Task generation}
 Curated tasks are a seed. A deterministic generator mints splits of any size from a seed across ten families: six design-from-spec (dense classifier, autoencoder, convolutional classifier, transformer encoder, grouped-query attention encoder, two-tower retrieval) and four edit-in-place (repair a broken attention configuration, trim an oversized model under a parameter budget, grow an undersized model into a two-sided parameter band, insert normalization). Because tasks are synthesized rather than scraped, a held-out split need never appear on the public web; contamination resistance is a property of construction, not obscurity.
@@ -152,6 +213,26 @@ Does the verifier's verdict correspond to reality? We generated clean reference 
 
 \section{Verifier-in-the-loop amplification}
 \label{sec:amp}
+
+\begin{algorithm}[t]
+\caption{$\textsc{Rollout}(T, \pi, k)$: verifier-in-the-loop repair}
+\label{alg:amp}
+\begin{algorithmic}[1]
+\Require task $T$; policy $\pi$; maximum repair rounds $k$
+\Ensure pass $\in\{0,1\}$; rounds used
+\State $G \gets T.\text{startGraph}$; \quad $m \gets \varnothing$ \Comment{$m$: verifier feedback}
+\For{$t \gets 1$ \textbf{to} $k$}
+  \State $a \gets \pi\big(T.\text{spec},\ \textsc{Serialize}(G),\ m\big)$ \Comment{batch of typed edits}
+  \State $G \gets \textsc{Apply}(G, a)$
+  \State $(h, B) \gets \textsc{Grade}(T, G)$
+  \If{$B = \emptyset \ \wedge\ h \ge \tau \ \wedge\ \phi(G)$} \Return $(1, t)$ \EndIf
+  \State $m \gets \textsc{Explain}(B)$ \Comment{the verifier's failure messages}
+\EndFor
+\State \Return $(0, k)$
+\end{algorithmic}
+\end{algorithm}
+
+Single-shot is the $k{=}1$ special case (no feedback consumed); the amplification setting sets $k{=}3$. Algorithm~\ref{alg:amp} states the loop; the only difference between the two arms is whether line~8's feedback $m$ re-enters line~3.
 \emph{Pending a run.} Because grading is free, the verifier's failure messages can be fed back to a policy for repair rounds. We measure, per provider, the pass rate of a single shot versus the pass rate when up to $k$ repair rounds are allowed, holding tasks, model, and prompt fixed so that the only variable is the feedback loop. The framing is deliberately pro-model: the environment's value is the lift it adds to any model.
 
 \begin{table}[h]
