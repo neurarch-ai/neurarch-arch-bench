@@ -6,7 +6,10 @@ calibration and red-team harnesses, and the public splits. Run all of it
 without talking to us.
 
 This page lists what we provide beyond the public repo, for teams using the
-environment seriously.
+environment seriously. The short version: architecture design is a
+verifiable-reward domain (RLVR), and the verifier is a tool a reasoning model
+can call mid-thought (tool-integrated reasoning), so it plugs into how frontier
+models are already trained.
 
 ## Private, never-published evaluation seeds
 
@@ -46,6 +49,14 @@ The flywheel in `training/grounding_at_scale.py` produces (architecture
 fingerprint, verifier verdict, real training curve) triples. We license
 aggregated triple datasets and can run targeted grounding studies on
 architecture families you care about.
+
+## Verified reasoning traces
+
+Beyond verified SFT rows and grounding triples, `training/reasoning_traces.mjs`
+mints `(spec -> reasoning -> verified design)` triples, rejection-sampled against
+the deterministic verifier so only passing designs are kept. We license
+model-specific and private-seed trace sets, and can target the families your
+training run needs.
 
 ## Exclusivity
 
