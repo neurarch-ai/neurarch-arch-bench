@@ -141,4 +141,32 @@ async function run() {
   }
 }
 
-run().catch(err => { console.error(err); process.exit(2); });
+// Keyless bracket: run the two-arm pipeline with the reference oracle (must
+// pass both arms) and a noop policy (must fail both), so a broken grader or
+// feedback loop is caught before spending on a real provider run.
+async function selfCheck() {
+  const cases = generateCases(12, SEED); // one wave, all families
+  const policies = [
+    ['reference', (c) => async () => ({ text: JSON.stringify({ actions: c.reference }), tokens: 0 })],
+    ['noop',      ()  => async () => ({ text: '{"actions":[]}', tokens: 0 })],
+  ];
+  let ok = true;
+  for (const [name, mk] of policies) {
+    let t1 = 0, tf = 0;
+    for (const c of cases) {
+      const r = await episode(mk(c), c.task, c.start);
+      if (r.passAtTurn1) t1++;
+      if (r.passFinal) tf++;
+    }
+    const exp = name === 'reference' ? cases.length : 0;
+    const pass = t1 === exp && tf === exp;
+    ok = ok && pass;
+    console.log(`[self-check] ${name.padEnd(9)} single-shot ${t1}/${cases.length}, with-verifier ${tf}/${cases.length}  ${pass ? 'OK' : `FAIL (expected ${exp})`}`);
+  }
+  console.log(ok
+    ? '\nAmplify pipeline OK: reference 100% both arms, noop 0% both arms. Safe to spend on a real run.'
+    : '\nAmplify pipeline BROKEN: do not spend on a real run until fixed.');
+  process.exit(ok ? 0 : 1);
+}
+
+(args['self-check'] ? selfCheck() : run()).catch(err => { console.error(err); process.exit(2); });
