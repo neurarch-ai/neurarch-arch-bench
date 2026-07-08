@@ -5,6 +5,12 @@
 \usepackage{hyperref}
 \usepackage{xcolor}
 \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
 
 \title{A Verifiable Environment for Neural Architecture Design}
 \author{Xin Gao\\ Neurarch\\ \texttt{\href{https://neurarch.com}{neurarch.com}}}
@@ -22,7 +28,7 @@ Reinforcement learning and agent evaluation both depend on a \emph{verifier}: a 
 \section{Introduction}
 The scarce ingredient in modern agent training and evaluation is not the policy but the verifier. SWE-Bench~\cite{swebench} grades a code patch by running the project's own test suite; $\tau$-bench~\cite{taubench} grades a tool-using dialogue by diffing the resulting database state against a goal. Neither requires a human judge or a second model, and this is precisely why they are trusted and why they can be used as training signals.
 
-Neural architecture design has lacked such a verifier, for a structural reason: whether a proposed network is even runnable (attention head counts that divide the embedding dimension, linear widths that match upstream shapes, a graph whose input reaches its output, a parameter count inside a budget) is a pure function only when architectures are represented as typed, structured graphs rather than free-form code. Coding agents emit code, not graphs, so their output carries no shape-level verifiability. We close this gap by building the environment around a typed graph and the deterministic checks that a production editor already runs on it.
+Neural architecture design has lacked such a verifier, for a structural reason: whether a proposed network is even runnable (attention head counts that divide the embedding dimension, linear widths that match upstream shapes, a graph whose input reaches its output, a parameter count inside a budget) is a pure function only when architectures are represented as typed, structured graphs rather than free-form code. Coding agents emit code, not graphs, so their output carries no shape-level verifiability. We close this gap by building the environment around a typed graph and the deterministic checks that a production editor already runs on it. Existing structured views of architectures, such as Netron~\cite{netron}, are read-only viewers: they render a graph but do not edit it, propagate shapes, or verify, and so cannot serve as an action space or a reward.
 
 Our contributions are: (1) a design-from-spec and edit-in-place environment with a sub-millisecond programmatic verifier; (2) a procedural task generator with satisfiability proofs, non-vacuity proofs, and anti-gaming constraints; (3) a calibration harness that measures difficulty against the labs' usable band, with keyless self-tests that bracket the harness itself; (4) a grounding study connecting verdicts to real PyTorch behavior, reported with its negative results intact; and (5) three downstream uses of the same verifier (leaderboard, RL gym, verified SFT data), all released.
 
@@ -30,6 +36,28 @@ Our contributions are: (1) a design-from-spec and edit-in-place environment with
 \textbf{State.} A typed graph of a neural network: components drawn from a vocabulary of 182 layer types, each carrying parameters, connected by directed edges. \textbf{Action.} A batch of structured edits from a fixed vocabulary: \texttt{add\_component}, \texttt{add\_connection}, \texttt{update\_params}, \texttt{delete\_component}, \texttt{replace\_model}, and others, the same vocabulary a production editor executes. \textbf{Reward.} A grading function returning a 0--100 health score plus a list of hard blockers.
 
 The grader composes three checks, each pure and sub-millisecond: a structural score with hard blockers (disconnected input/output, attention divisibility, parameter bloat), a guardrail pass over the proposed edits, and a shape propagator that catches shape bugs an edit would introduce. No LLM grades anything, so there is no persuasion surface and no stochasticity in the reward.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Stealth, node distance=6mm and 10mm, font=\small,
+  box/.style={draw, rounded corners, align=center, minimum height=8mm, minimum width=17mm, fill=blue!5},
+  op/.style={draw, align=center, minimum height=8mm, minimum width=15mm, fill=gray!8}]
+\node[box] (spec) {spec +\\ start graph};
+\node[op, right=of spec] (pol) {policy emits\\ typed edits};
+\node[op, right=of pol] (apply) {apply};
+\node[box, right=of apply] (grade) {verify +\\ grade};
+\node[op, right=of grade] (rew) {reward +\\ blockers};
+\draw[->] (spec) -- (pol);
+\draw[->] (pol) -- (apply);
+\draw[->] (apply) -- (grade);
+\draw[->] (grade) -- (rew);
+\draw[->] (rew.south) -- ++(0,-6mm) -| node[pos=0.25, below, font=\scriptsize] {failure messages fed back (repair rounds)} (pol.south);
+\end{tikzpicture}
+\caption{The environment loop. A policy edits a typed graph; a deterministic, sub-millisecond grader returns a reward and hard blockers. Feeding the blocker messages back for repair rounds is the amplification setting (Section~\ref{sec:amp}); with no feedback it is single-shot.}
+\label{fig:loop}
+\end{figure}
+
+\paragraph{The checks.} The grader runs three families of checks, in order. (i) \emph{Structural blockers}: a disconnected input or output; an attention layer whose \texttt{embedDim} is not divisible by \texttt{numHeads} (or \texttt{numHeads} not divisible by \texttt{numKVHeads} under grouped-query attention); a linear layer whose \texttt{inFeatures} do not match the upstream width; a parameter count far over budget. (ii) \emph{Serving physics}: parameters, forward multiply-accumulates, and KV-cache bytes per token, computed with the canonical formula (grouped-query attention caches $2\cdot\texttt{numKVHeads}\cdot d_{\text{head}}\cdot b$ bytes per token at $b$ bytes per value; multi-head attention is the special case $\texttt{numKVHeads}=\texttt{numHeads}$), and checked against per-task parameter, KV, and decode-latency budgets. (iii) \emph{Shape propagation}: a symbolic forward pass over the typed graph that catches interface mismatches an edit would introduce before any tensor is allocated. Each pass is $O(|V|+|E|)$ over the graph and completes in well under a millisecond, which is what makes the reward usable as an inner-loop RL signal rather than an offline evaluation.
 
 A task pairs a natural-language specification with a starting graph and machine-checkable constraints, e.g.\ \emph{``This encoder fails validation: embedDim (192) is not divisible by numHeads (7). Repair the attention configuration in place with at most 2 actions. Do not rebuild the model from scratch.''}
 
@@ -40,11 +68,57 @@ Curated tasks are a seed. A deterministic generator mints splits of any size fro
 
 \paragraph{Anti-gaming.} Edit-in-place families forbid \texttt{replace\_model} and \texttt{clear\_canvas}, so an agent that cannot diagnose a defect cannot pass by regenerating the whole network; budgets are two-sided bands rather than ceilings, so ``delete everything'' fails a trim task; a KV-cache budget is always paired with a required-attention constraint, so amputating attention cannot zero the cache. Nine such strategies, their defenses, and the pinned tests that fail if any defense is weakened are enumerated in the repository's red-team report (\texttt{ROBUSTNESS.md}). An LLM-driven task proposer accepts nothing without a satisfiability proof: the proposer's own reference must pass the grader under always-enforced safety-net constraints, so LLM authorship, unsafe for human- or LLM-judged benchmarks, is safe here.
 
+\paragraph{A benchmark that bites (measured).} On twelve hand-authored curated tasks built from real production architectures (a CIFAR CNN, a DLRM click-through-rate ranker, a Behavior Sequence Transformer, a two-tower retrieval encoder, a semantic-search encoder, and repair/scaling tasks), \texttt{claude-sonnet-4-6} passes $7/12$ first try (mean health score $76$). The failures are machine-checkable and mundane (Table~\ref{tab:curated}): it omits the required attention layer, leaves the graph disconnected, or blows the parameter budget by an order of magnitude. A benchmark a frontier model clears $12/12$ measures nothing.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lc}
+\toprule
+Failure category (curated split, \texttt{claude-sonnet-4-6}) & count \\
+\midrule
+missing required layer type (e.g.\ attention) & 3 \\
+disconnected graph (input does not reach output) & 2 \\
+health score below threshold & 1 \\
+over parameter budget & 1 \\
+\midrule
+\textbf{passed} & \textbf{7 / 12} \\
+\bottomrule
+\end{tabular}
+\caption{First-try failures of a frontier model on the curated production-architecture split. Every failure is detected deterministically by the verifier.}
+\label{tab:curated}
+\end{table}
+
 \section{Difficulty calibration}
 \label{sec:calib}
 An ungameable environment is still useless at $0\%$ pass (no learning signal) or near $100\%$ (nothing to learn). Practitioners cite a floor near 2--3\% pass rate on the hard end (one success per 64--128 rollouts) for a usable RL environment. The calibration harness measures per-family pass rates with Wilson 95\% intervals and flags each family's band. Two keyless self-test policies bracket the harness itself: a \texttt{reference} policy that replays known-good solutions (measured: $100\%$ pass) and a \texttt{noop} policy that submits empty plans (measured: $0\%$ pass). If either self-test deviates, the harness rather than the model is broken, and CI fails.
 
 \paragraph{Measured (\texttt{claude-sonnet-4-6}, public benchmark, $n=12$/family).} Single-shot pass rate per family: eight families saturate ($100\%$, a curriculum tier for a frontier model) and two are hard: transformer encoder ($25\%$) and insert-norm ($0\%$). Deterministic grading, reproducible from the seed.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+Family & single-shot & with verifier feedback \\
+\midrule
+dense classifier & $100\%$ & $100\%$ \\
+autoencoder & $100\%$ & $100\%$ \\
+convolutional classifier & $100\%$ & $100\%$ \\
+GQA encoder & $100\%$ & $100\%$ \\
+repair attention & $100\%$ & $100\%$ \\
+trim under budget & $100\%$ & $100\%$ \\
+grow to band & $100\%$ & $100\%$ \\
+two-tower retrieval & $100\%$ & $100\%$ \\
+\textbf{transformer encoder} & $\mathbf{25\%}$ & $\mathbf{100\%}$ \\
+\textbf{insert normalization} & $\mathbf{0\%}$ & $\mathbf{100\%}$ \\
+\midrule
+\textbf{overall} & $\mathbf{82\%}$ & $\mathbf{100\%}$ \\
+\bottomrule
+\end{tabular}
+\caption{Per-family pass rate for \texttt{claude-sonnet-4-6} on the public benchmark ($n=12$ per family, 117 graded). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off.}
+\label{tab:perfamily}
+\end{table}
 
 \section{Grounding study}
 \label{sec:ground}
@@ -70,17 +144,36 @@ claude-sonnet-4-6 & $82\%$ & $100\%$ & $+18$ pts \\
 \caption{Verifier-in-the-loop lift, per provider. Same tasks, model, and prompt; the only variable is the feedback loop.}
 \end{table}
 
-The lift is concentrated in the learnable family: transformer encoder goes $20\%\to100\%$ once the verifier's failure messages are fed back, The lift is entirely on the two families a frontier model finds hard: insert-norm $0\%\to100\%$ and transformer encoder $25\%\to100\%$ (the verifier's failure messages let the model repair them), while the eight curriculum families are already at $100\%$. $n=12$ per family, 117 graded (three transient network errors excluded). Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
+The lift is concentrated in the learnable family: transformer encoder goes $20\%\to100\%$ once the verifier's failure messages are fed back, The lift is entirely on the two families a frontier model finds hard: insert-norm $0\%\to100\%$ and transformer encoder $25\%\to100\%$ (the verifier's failure messages let the model repair them), while the eight curriculum families are already at $100\%$. $n=12$ per family, 117 graded (three transient network errors excluded).
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar, bar width=11pt, width=0.82\linewidth, height=5.2cm,
+  ymin=0, ymax=112, ylabel={pass rate (\%)},
+  symbolic x coords={transformer, insert-norm, overall},
+  xtick=data, ymajorgrids, enlarge x limits=0.32,
+  legend style={font=\small, at={(0.02,0.98)}, anchor=north west},
+  nodes near coords, every node near coord/.append style={font=\scriptsize}]
+\addplot+[fill=gray!30] coordinates {(transformer,25) (insert-norm,0) (overall,82)};
+\addplot+[fill=blue!55] coordinates {(transformer,100) (insert-norm,100) (overall,100)};
+\legend{single-shot, with verifier}
+\end{axis}
+\end{tikzpicture}
+\caption{Verifier-in-the-loop lift for \texttt{claude-sonnet-4-6}. The overall gain ($82\to100$) lands entirely on the two families a frontier model finds hard; the eight saturated families (all at $100\%$) are omitted for clarity.}
+\label{fig:lift}
+\end{figure} Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
 
 \section{Auditing LLM reward models with the verifier}
-Frontier labs increasingly use a strong model \emph{as} a reward model to optimize objectives that are not directly verifiable (xAI reported this for Grok~4.1). The known failure mode is that an LLM reward model drifts: it approves answers that are actually broken. In a domain with a verifiable reward that drift is \emph{measurable}. \texttt{reward\_anchor.mjs} builds a verifier-labeled set (each design provably passes or fails: a reference design passes, its unsolved starting graph fails) and, given an LLM acting as a reward model, reports its agreement with the verifier and, crucially, its \textbf{false-positive rate}: how often it approves a design the verifier proves is broken. That number is what a lab needs to trust an LLM judge in this domain, and it can only be produced where a ground-truth verifier exists. This is a use of the environment beyond training or evaluation: a calibration anchor for the LLM reward models labs deploy where no verifier is available.
+Frontier labs increasingly use a strong model \emph{as} a reward model to optimize objectives that are not directly verifiable (xAI reported this for Grok~4.1), a practice studied more broadly as LLM-as-a-judge~\cite{llmjudge}. The known failure mode is that an LLM reward model drifts: it approves answers that are actually broken. In a domain with a verifiable reward that drift is \emph{measurable}. \texttt{reward\_anchor.mjs} builds a verifier-labeled set (each design provably passes or fails: a reference design passes, its unsolved starting graph fails) and, given an LLM acting as a reward model, reports its agreement with the verifier and, crucially, its \textbf{false-positive rate}: how often it approves a design the verifier proves is broken. That number is what a lab needs to trust an LLM judge in this domain, and it can only be produced where a ground-truth verifier exists. This is a use of the environment beyond training or evaluation: a calibration anchor for the LLM reward models labs deploy where no verifier is available.
 
 \section{Related work}
 \textbf{Verifiable agent benchmarks.} SWE-Bench~\cite{swebench} and $\tau$-bench~\cite{taubench} established the programmatic-verifier pattern in code and tool use; SWE-Gym~\cite{swegym} showed that a few thousand verifiable tasks suffice to train agents to a double-digit absolute improvement on SWE-Bench, and did so as free, open research. We target the same pattern in a domain that lacked a public verifier.
 
-\textbf{RL environments.} A growing market supplies labs with RL environments; reward-hacking resistance is the quality bar most consistently cited, and usable environments are expected to expose a hard band near a 2--3\% pass floor. We build directly against both criteria.
+\textbf{RL environments and verifiable rewards.} Training on verifiable rewards (RLVR) is now central to reasoning-model post-training~\cite{rlvr,r1}, typically with policy-gradient methods such as PPO~\cite{ppo} and GRPO~\cite{grpo}, preference optimization~\cite{dpo}, or rejection sampling in the STaR~\cite{star} style. A growing market supplies labs with RL environments; reward-hacking resistance is the quality bar most consistently cited, and usable environments are expected to expose a hard band near a 2--3\% pass floor. We build directly against both criteria, and ship GRPO and STaR loops against the same grader.
 
-\textbf{Neural architecture search.} Classical NAS automates architecture design under a proxy objective; our environment differs in providing a human-legible, per-edit, sub-millisecond verifier over a typed graph, and in serving as a training and evaluation substrate rather than a single search procedure. The accompanying product exposes a deterministic, constraint-satisfying design search (given a parameter budget, KV-cache budget, and target GPU, it returns the Pareto front over capacity, parameters, and KV cache), a NAS-lite special case built entirely from the verifier's physics rather than a learned proxy objective.
+\textbf{Neural architecture search.} Classical NAS~\cite{nassurvey} automates architecture design under a proxy objective; our environment differs in providing a human-legible, per-edit, sub-millisecond verifier over a typed graph, and in serving as a training and evaluation substrate rather than a single search procedure. The accompanying product exposes a deterministic, constraint-satisfying design search (given a parameter budget, KV-cache budget, and target GPU, it returns the Pareto front over capacity, parameters, and KV cache), a NAS-lite special case built entirely from the verifier's physics rather than a learned proxy objective.
 
 \section{Limitations}
 The transparent rubric released here does not verify linear-width consistency (Section~\ref{sec:ground}); the health-score magnitude is not a quality ranking (Section~\ref{sec:ground}); the reward path does not execute PyTorch per rollout, so shape-class failures are caught statistically rather than per-instance; and generated references lean on \texttt{replace\_model} for design-from-spec families, biasing imitation style. Each is documented with its measurement or its planned mitigation in \texttt{ROBUSTNESS.md}.
@@ -100,10 +193,19 @@ python training/grounding_at_scale.py --set g.jsonl
 python training/analyze_grounding.py
 \end{verbatim}
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \bibitem{swebench} C.~E. Jimenez, J.~Yang, A.~Wettig, S.~Yao, K.~Pei, O.~Press, and K.~Narasimhan. SWE-bench: Can Language Models Resolve Real-World GitHub Issues? \emph{ICLR}, 2024.
 \bibitem{taubench} S.~Yao, N.~Shinn, P.~Razavi, and K.~Narasimhan. $\tau$-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains. \emph{arXiv:2406.12045}, 2024.
-\bibitem{swegym} J.~Pan et al. Training Software Engineering Agents and Verifiers with SWE-Gym. \emph{arXiv:2412.21139}, 2024.
+\bibitem{swegym} J.~Pan, X.~Wang, G.~Neubig, et al. Training Software Engineering Agents and Verifiers with SWE-Gym. \emph{arXiv:2412.21139}, 2024.
+\bibitem{rlvr} N.~Lambert et al. Tulu 3: Pushing Frontiers in Open Language Model Post-Training. \emph{arXiv:2411.15124}, 2024.
+\bibitem{r1} DeepSeek-AI (D.~Guo et al.). DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. \emph{arXiv:2501.12948}, 2025.
+\bibitem{grpo} Z.~Shao et al. DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models. \emph{arXiv:2402.03300}, 2024.
+\bibitem{ppo} J.~Schulman, F.~Wolski, P.~Dhariwal, A.~Radford, and O.~Klimov. Proximal Policy Optimization Algorithms. \emph{arXiv:1707.06347}, 2017.
+\bibitem{star} E.~Zelikman, Y.~Wu, J.~Mu, and N.~D. Goodman. STaR: Bootstrapping Reasoning with Reasoning. \emph{NeurIPS}, 2022.
+\bibitem{dpo} R.~Rafailov, A.~Sharma, E.~Mitchell, S.~Ermon, C.~D. Manning, and C.~Finn. Direct Preference Optimization. \emph{NeurIPS}, 2023.
+\bibitem{nassurvey} T.~Elsken, J.~H. Metzen, and F.~Hutter. Neural Architecture Search: A Survey. \emph{JMLR}, 20(55):1--21, 2019.
+\bibitem{llmjudge} L.~Zheng et al. Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena. \emph{NeurIPS}, 2023.
+\bibitem{netron} L.~Roeder. Netron: Visualizer for neural network, deep learning and machine learning models. Software, \url{https://github.com/lutzroeder/netron}.
 \end{thebibliography}
 
 \end{document}
