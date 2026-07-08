@@ -183,6 +183,12 @@ and it can only be produced where a ground-truth verifier exists. A use of the
 environment beyond training or evaluation: a calibration anchor for the LLM
 reward models labs deploy where no verifier is available.
 
+| LLM reward model | agreement with verifier | false-positive rate |
+| --- | --- | --- |
+| *(to be filled from `reward_anchor.mjs`)* | | |
+
+The verifier's own false-positive rate is 0% by construction.
+
 ## 7. Related work
 
 **Verifiable agent benchmarks.** SWE-Bench and tau-bench established the

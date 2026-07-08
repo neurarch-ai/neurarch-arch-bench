@@ -187,6 +187,20 @@ The lift is concentrated in the learnable family: transformer encoder goes $20\%
 \section{Auditing LLM reward models with the verifier}
 Frontier labs increasingly use a strong model \emph{as} a reward model to optimize objectives that are not directly verifiable (xAI reported this for Grok~4.1), a practice studied more broadly as LLM-as-a-judge~\cite{llmjudge}. The known failure mode is that an LLM reward model drifts: it approves answers that are actually broken. In a domain with a verifiable reward that drift is \emph{measurable}. \texttt{reward\_anchor.mjs} builds a verifier-labeled set (each design provably passes or fails: a reference design passes, its unsolved starting graph fails) and, given an LLM acting as a reward model, reports its agreement with the verifier and, crucially, its \textbf{false-positive rate}: how often it approves a design the verifier proves is broken. That number is what a lab needs to trust an LLM judge in this domain, and it can only be produced where a ground-truth verifier exists. This is a use of the environment beyond training or evaluation: a calibration anchor for the LLM reward models labs deploy where no verifier is available.
 
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+LLM reward model & agreement with verifier & false-positive rate \\
+\midrule
+\emph{(to be filled from \texttt{reward\_anchor.mjs})} & & \\
+\bottomrule
+\end{tabular}
+\caption{An LLM reward model's agreement with the deterministic verifier, and its false-positive rate (approving a design the verifier proves is broken), per model. The verifier's own false-positive rate is $0\%$ by construction.}
+\label{tab:rewardmodel}
+\end{table}
+
 \section{Related work}
 \textbf{Verifiable agent benchmarks.} SWE-Bench~\cite{swebench} and $\tau$-bench~\cite{taubench} established the programmatic-verifier pattern in code and tool use; SWE-Gym~\cite{swegym} showed that a few thousand verifiable tasks suffice to train agents to a double-digit absolute improvement on SWE-Bench, and did so as free, open research. We target the same pattern in a domain that lacked a public verifier.
 
