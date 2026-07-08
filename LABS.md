@@ -27,10 +27,11 @@ constraints; see [ROBUSTNESS.md](./ROBUSTNESS.md)).
 
 ## Difficulty calibration against your models
 
-`calibrate.mjs` is self-serve. Calibrated against claude-sonnet-4-6 (stable
-across three runs), the public families split into three in the RL-learnable
-band (two-tower 0%, GQA encoder 25-56%, transformer encoder 60-62%) and nine a
-frontier model saturates, which serve as an easy curriculum tier. What we add:
+`calibrate.mjs` is self-serve. Per-family calibration of the public benchmark
+against claude-sonnet-4-6 is being finalized from a fresh run and will be
+published with the numbers; deterministic grading makes it reproducible from
+the seed, and the single-shot arm of `amplify.mjs` doubles as the calibration.
+What we add:
 hardening families until the hard band sits where YOUR training runs need it
 (labs typically cite a 2-3% pass floor), calibrated against your model's actual
 pass rates rather than public-model proxies. A frontier model trivially solves
