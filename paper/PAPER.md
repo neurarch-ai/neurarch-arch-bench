@@ -186,12 +186,13 @@ reward models labs deploy where no verifier is available.
 | reward model | agreement | false-positive | false-negative |
 | --- | --- | --- | --- |
 | claude-sonnet-4-6 | 93.3% | **0.0%** | 6.7% |
-| grok-4 | *(to fill)* | *(to fill)* | *(to fill)* |
+| grok-4 | 91.7% | **0.0%** | 8.3% |
 | deterministic verifier (ours) | 100% | **0%** | **0%** |
 
-On a 60-example labeled set, a frontier model (Claude) never approves a broken
-design (0% false positive) but is over-conservative (6.7% false negative). The
-open question the verifier makes measurable: whether weaker reward models drift
+On a 60-example labeled set (n=60 each), two independent frontier models never
+approve a broken design (0% false positive) but are over-conservative (6.7-8.3%
+false negative). A cheaper model (Gemini) rate-limited to n=6, omitted. Open
+question the verifier makes measurable: whether weaker reward models drift
 toward false positives, the failure mode that corrupts RLVR.
 
 ## 7. Related work
