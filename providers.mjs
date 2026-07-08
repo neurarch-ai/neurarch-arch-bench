@@ -21,6 +21,7 @@ Rules:
 - Param keys: linear {inFeatures,outFeatures}; conv2d {inChannels,outChannels,kernelSize}; embedding {numEmbeddings,embeddingDim}; multiHeadAttention {embedDim,numHeads}; groupedQueryAttention {embedDim,numHeads,numKVHeads}; transformerBlock {hiddenDim,numHeads}; batchNorm1d {numFeatures}; layerNorm {normalizedShape}; concatenate {dim}.
 - GQA: numHeads MUST also be divisible by numKVHeads.
 - If the spec says to repair or edit in place, use surgical actions (update_params, add_component); do NOT use replace_model or clear_canvas.
+- Every numeric value MUST be a single computed integer, never an arithmetic expression: write "inFeatures": 6400, NOT "inFeatures": 64 * 10 * 10.
 - Respect any parameter budget in the spec. Output only the JSON object.`;
 
 // Every call returns { text, tokens } — tokens is the provider-reported total
@@ -90,12 +91,49 @@ export const REGISTRY = {
   },
 };
 
+// Evaluate a simple integer arithmetic expression (only * and +, e.g. the
+// `64 * 10 * 10` a model writes for a flattened conv dim) WITHOUT eval.
+function evalIntExpr(expr) {
+  const flat = expr.replace(/\s+/g, '');
+  if (!/^\d+([*+]\d+)+$/.test(flat)) return null;
+  let sum = 0;
+  for (const term of flat.split('+')) {
+    let prod = 1;
+    for (const f of term.split('*')) prod *= Number(f);
+    sum += prod;
+  }
+  return Number.isSafeInteger(sum) ? sum : null;
+}
+
 export function parseActions(raw) {
   let s = raw.trim();
   if (s.startsWith('```')) s = s.replace(/```json?\n?/g, '').replace(/```\n?/g, '');
   const m = s.match(/\{[\s\S]*\}/);
   if (!m) throw new Error('no JSON object in reply');
-  const obj = JSON.parse(m[0]);
+  const json = m[0];
+  let obj;
+  try {
+    obj = JSON.parse(json);
+  } catch (first) {
+    // Fallback for format hiccups that are not design errors: (a) arithmetic in
+    // a value position, e.g. "inFeatures": 64 * 10 * 10 (Groq/Llama & Claude on
+    // conv specs) -> evaluate to the intended integer so the grader still judges
+    // the flatten dim; (b) a dropped comma between properties. Only after a parse
+    // failure, never touching strings or valid JSON.
+    let repaired = json.replace(
+      /(?<=[:[,]\s*)\d+(?:\s*[*+]\s*\d+)+(?=\s*[,\]}])/g,
+      (expr) => { const v = evalIntExpr(expr); return v === null ? expr : String(v); });
+    repaired = repaired.replace(
+      /("(?:[^"\\]|\\.)*")(\s+)("(?:[^"\\]|\\.)*"\s*:)/g, '$1,$2$3');
+    try {
+      obj = JSON.parse(repaired);
+    } catch {
+      const msg = first instanceof Error ? first.message : String(first);
+      const pos = Number((msg.match(/position (\d+)/) || [])[1] ?? -1);
+      const near = pos >= 0 ? json.slice(Math.max(0, pos - 50), pos + 50).replace(/\n/g, '\\n') : json.slice(0, 120);
+      throw new Error(`bad JSON (${msg}); near >>>${near}<<<`);
+    }
+  }
   if (!Array.isArray(obj.actions)) throw new Error('reply has no "actions" array');
   return obj.actions;
 }
