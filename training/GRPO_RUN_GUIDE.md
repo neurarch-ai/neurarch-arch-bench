@@ -85,8 +85,10 @@ back and I will write the subsection and the figure.
 
 ## Notes
 
-- No GPU locally? The repo's Colab notebook runs steps 0-3 on a free T4; open it,
-  run all, copy the printed numbers.
+- No GPU locally? Open `training/colab_grpo.ipynb` in Colab (free T4) and Run All:
+  it does baseline -> train -> re-eval -> reward curve and prints the numbers.
+- Local GPU? `./training/run_grpo_demo.sh` runs all three steps and prints a
+  BEFORE/AFTER summary you can paste back.
 - Bigger lift, more compute: raise `--steps` and `--count`; try `--num-generations 8`
   (GRPO group size) and a slightly higher `--lr`. Keep the eval seed fixed at 999.
 - Everything is seeded and reproducible; the reward is the same verifier as the
