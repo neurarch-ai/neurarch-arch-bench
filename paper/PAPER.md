@@ -186,9 +186,11 @@ reward models labs deploy where no verifier is available.
 | model | tier | agreement | false-pos. | false-neg. |
 | --- | --- | --- | --- | --- |
 | qwen-2.5-72b-instruct | open | 100.0% | **0.0%** | 0.0% |
+| grok-4.5 | frontier | 95.0% | **0.0%** | 5.0% |
 | claude-sonnet-4-6 | frontier | 93.3% | **0.0%** | 6.7% |
 | mistral-large | open | 93.3% | **0.0%** | 6.7% |
 | deepseek-chat (V3) | open | 93.3% | **0.0%** | 6.7% |
+| grok-4.20-reasoning | frontier | 93.3% | **0.0%** | 6.7% |
 | grok-4 | frontier | 91.7% | **0.0%** | 8.3% |
 | grok-4-fast | frontier | 91.7% | **0.0%** | 8.3% |
 | gemma-2-27b-it | open | 90.0% | **0.0%** | 10.0% |
@@ -196,7 +198,7 @@ reward models labs deploy where no verifier is available.
 | deepseek-r1 (reasoning) | open | 90.0% | **0.0%** | 10.0% |
 | deterministic verifier (ours) | --- | 100% | **0%** | **0%** |
 
-Across nine reward models (n=60 each) spanning closed-frontier and open-weights, not one approves a broken design (0% false positive across all nine). The only failure mode is over-conservatism (0-10% false negative). The RLVR-corrupting mode (rewarding a broken design) does not appear; the verifier matches the best (0/0) for free.
+Across eleven reward models (n=60 each) spanning closed-frontier and open-weights, not one approves a broken design (0% false positive across all eleven). The only failure mode is over-conservatism (0-10% false negative). The RLVR-corrupting mode (rewarding a broken design) does not appear; the verifier matches the best (0/0) for free.
 
 ## 7. Related work
 
