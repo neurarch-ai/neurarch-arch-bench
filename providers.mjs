@@ -66,6 +66,13 @@ export const REGISTRY = {
     modelId: () => process.env.DEEPSEEK_MODEL ?? 'deepseek-chat',
     call: (s, u) => openaiCompat('https://api.deepseek.com/v1', process.env.DEEPSEEK_API_KEY, process.env.DEEPSEEK_MODEL ?? 'deepseek-chat', s, u),
   },
+  openrouter: {
+    // One key, dozens of open models. Pick any via OPENROUTER_MODEL, e.g.
+    // qwen/qwen-2.5-72b-instruct, mistralai/mistral-large, meta-llama/llama-3.3-70b-instruct.
+    envKey: 'OPENROUTER_API_KEY',
+    modelId: () => process.env.OPENROUTER_MODEL ?? 'meta-llama/llama-3.3-70b-instruct',
+    call: (s, u) => openaiCompat('https://openrouter.ai/api/v1', process.env.OPENROUTER_API_KEY, process.env.OPENROUTER_MODEL ?? 'meta-llama/llama-3.3-70b-instruct', s, u),
+  },
   claude: {
     envKey: 'ANTHROPIC_API_KEY',
     modelId: () => process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6',
