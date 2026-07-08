@@ -31,6 +31,18 @@ const args = Object.fromEntries(process.argv.slice(2).map(a => {
 const COUNT = Math.max(1, parseInt(args.count ?? '30', 10) || 30);
 const SEED = parseInt(args.seed ?? '7', 10) || 7;
 const PROVIDER = args.provider;
+const DELAY = Math.max(0, parseInt(args.delay ?? '0', 10) || 0);   // ms between calls, for rate-limited providers
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+// Retry a call up to 3 times with exponential backoff (handles transient rate limits).
+async function callWithRetry(call, system, user) {
+  let lastErr;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try { return await call(system, user); }
+    catch (e) { lastErr = e; await sleep(500 * Math.pow(2, attempt)); }
+  }
+  throw lastErr;
+}
 
 const JUDGE_SYSTEM =
   'You are a reward model for neural-architecture design. Given a spec and a ' +
@@ -67,9 +79,10 @@ async function run() {
   let agree = 0, falsePos = 0, falseNeg = 0, errored = 0, n = 0;
   for (const e of examples) {
     try {
-      const reply = await call(JUDGE_SYSTEM, `SPEC:\n${e.spec}\n\nGRAPH:\n${e.graph}\n\nPASS or FAIL?`);
+      const reply = await callWithRetry(call, JUDGE_SYSTEM, `SPEC:\n${e.spec}\n\nGRAPH:\n${e.graph}\n\nPASS or FAIL?`);
       const judged = /pass/i.test(reply.text) && !/fail/i.test(reply.text);
       n += 1;
+      if (DELAY) await sleep(DELAY);
       if (judged === e.truth) agree += 1;
       else if (judged && !e.truth) falsePos += 1;   // approved a broken design (the dangerous one)
       else falseNeg += 1;
