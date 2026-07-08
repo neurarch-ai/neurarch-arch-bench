@@ -28,10 +28,11 @@ constraints; see [ROBUSTNESS.md](./ROBUSTNESS.md)).
 ## Difficulty calibration against your models
 
 `calibrate.mjs` is self-serve. On the public benchmark against claude-sonnet-4-6
-(n ~ 8-10 per family), eight families saturate (100% single-shot, a curriculum
-tier), transformer-encoder sits in the learnable band (20% single-shot rising
-to 100% with verifier feedback), and insert-norm fails at its action budget.
-Deterministic grading makes it reproducible from the seed. What we add:
+(n=12 per family), eight families saturate (100% single-shot, a curriculum tier)
+and two are hard: transformer-encoder (25% single-shot) and insert-norm (0%).
+Verifier-in-the-loop feedback lifts overall pass 82% -> 100% (+18 pts), entirely
+on those two (insert-norm 0->100, transformer 25->100). Deterministic grading
+makes it reproducible from the seed. What we add:
 hardening families until the hard band sits where YOUR training runs need it
 (labs typically cite a 2-3% pass floor), calibrated against your model's actual
 pass rates rather than public-model proxies. A frontier model trivially solves
