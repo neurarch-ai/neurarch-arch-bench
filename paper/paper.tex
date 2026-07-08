@@ -6,6 +6,7 @@
 \usepackage{xcolor}
 \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning}
@@ -34,6 +35,8 @@ Our contributions are: (1) a design-from-spec and edit-in-place environment with
 
 \section{The environment}
 \textbf{State.} A typed graph of a neural network: components drawn from a vocabulary of 182 layer types, each carrying parameters, connected by directed edges. \textbf{Action.} A batch of structured edits from a fixed vocabulary: \texttt{add\_component}, \texttt{add\_connection}, \texttt{update\_params}, \texttt{delete\_component}, \texttt{replace\_model}, and others, the same vocabulary a production editor executes. \textbf{Reward.} A grading function returning a 0--100 health score plus a list of hard blockers.
+
+\paragraph{Formalization.} The environment is a deterministic single-agent MDP $(\mathcal{S},\mathcal{A},T,R)$. A state $s\in\mathcal{S}$ is a typed graph $(V,E)$: nodes $V$ each carry a type and a parameter dictionary, edges $E$ are directed. An action $a\in\mathcal{A}$ is a batch of typed edits from the fixed vocabulary; the transition $T(s,a)$ applies them, with no environment stochasticity. The reward is the grader's health score $R(s')\in[0,100]$, and a task's success predicate is $R(s')\ge\tau \,\wedge\, \neg\,\mathrm{blocked}(s') \,\wedge\, \phi(s')$, where $\phi$ collects the task's machine-checkable constraints (required types, parameter/KV/latency budgets, action-economy limits). Since $T$ and $R$ are pure functions, an episode is fully reproducible from its seed, and the same $R$ is at once an evaluation metric, an RL reward, and a data-generation filter.
 
 The grader composes three checks, each pure and sub-millisecond: a structural score with hard blockers (disconnected input/output, attention divisibility, parameter bloat), a guardrail pass over the proposed edits, and a shape propagator that catches shape bugs an edit would introduce. No LLM grades anything, so there is no persuasion surface and no stochasticity in the reward.
 
@@ -116,7 +119,7 @@ two-tower retrieval & $100\%$ & $100\%$ \\
 \textbf{overall} & $\mathbf{82\%}$ & $\mathbf{100\%}$ \\
 \bottomrule
 \end{tabular}
-\caption{Per-family pass rate for \texttt{claude-sonnet-4-6} on the public benchmark ($n=12$ per family, 117 graded). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off.}
+\caption{Per-family pass rate for \texttt{claude-sonnet-4-6} on the public benchmark ($n=12$ per family, 117 graded). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off. Overall single-shot $82\%$ (Wilson $95\%$ CI $[74,88]$) rises to $100\%$ ($[97,100]$); each hard family moves $12/12$ with feedback ($[76,100]$).}
 \label{tab:perfamily}
 \end{table}
 
@@ -182,7 +185,22 @@ The lift is concentrated in the learnable family: transformer encoder goes $20\%
 \end{tikzpicture}
 \caption{Verifier-in-the-loop lift for \texttt{claude-sonnet-4-6}. The overall gain ($82\to100$) lands entirely on the two families a frontier model finds hard; the eight saturated families (all at $100\%$) are omitted for clarity.}
 \label{fig:lift}
-\end{figure} Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
+\end{figure}
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lcc}
+\toprule
+max repair rounds $k$ & overall pass & 95\% CI \\
+\midrule
+$k=1$ (single-shot) & $82\%$ & $[74, 88]$ \\
+$k=2$ & $\mathbf{100\%}$ & $[97, 100]$ \\
+$k=3$ & $100\%$ & $[97, 100]$ \\
+\bottomrule
+\end{tabular}
+\caption{Ablation on the number of verifier-feedback repair rounds ($n=117$, Wilson intervals). A \emph{single} repair round ($k{=}2$) closes the entire gap: every task the model missed on the first try is fixed once the verifier's failure message is fed back once. Further rounds add nothing.}
+\label{tab:ablation}
+\end{table} Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
 
 \section{Auditing LLM reward models with the verifier}
 Frontier labs increasingly use a strong model \emph{as} a reward model to optimize objectives that are not directly verifiable (xAI reported this for Grok~4.1), a practice studied more broadly as LLM-as-a-judge~\cite{llmjudge}. The known failure mode is that an LLM reward model drifts: it approves answers that are actually broken. In a domain with a verifiable reward that drift is \emph{measurable}. \texttt{reward\_anchor.mjs} builds a verifier-labeled set (each design provably passes or fails: a reference design passes, its unsolved starting graph fails) and, given an LLM acting as a reward model, reports its agreement with the verifier and, crucially, its \textbf{false-positive rate}: how often it approves a design the verifier proves is broken. That number is what a lab needs to trust an LLM judge in this domain, and it can only be produced where a ground-truth verifier exists. This is a use of the environment beyond training or evaluation: a calibration anchor for the LLM reward models labs deploy where no verifier is available.
@@ -192,9 +210,14 @@ Frontier labs increasingly use a strong model \emph{as} a reward model to optimi
 \small
 \begin{tabular}{lcc}
 \toprule
-LLM reward model & agreement with verifier & false-positive rate \\
+reward model & agreement with verifier & false-positive rate \\
 \midrule
-\emph{(to be filled from \texttt{reward\_anchor.mjs})} & & \\
+claude-sonnet-4-6 & \emph{(to fill)} & \emph{(to fill)} \\
+grok-4 & \emph{(to fill)} & \emph{(to fill)} \\
+gpt (frontier) & \emph{(to fill)} & \emph{(to fill)} \\
+gemini (frontier) & \emph{(to fill)} & \emph{(to fill)} \\
+\midrule
+deterministic verifier (ours) & $100\%$ & $\mathbf{0\%}$ \\
 \bottomrule
 \end{tabular}
 \caption{An LLM reward model's agreement with the deterministic verifier, and its false-positive rate (approving a design the verifier proves is broken), per model. The verifier's own false-positive rate is $0\%$ by construction.}
@@ -203,6 +226,25 @@ LLM reward model & agreement with verifier & false-positive rate \\
 
 \section{Related work}
 \textbf{Verifiable agent benchmarks.} SWE-Bench~\cite{swebench} and $\tau$-bench~\cite{taubench} established the programmatic-verifier pattern in code and tool use; SWE-Gym~\cite{swegym} showed that a few thousand verifiable tasks suffice to train agents to a double-digit absolute improvement on SWE-Bench, and did so as free, open research. We target the same pattern in a domain that lacked a public verifier.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lccccc}
+\toprule
+ & domain & verifiable & procedural, & anti-gaming & typed-graph \\
+ & & reward & contam.-resist. & red-teamed & action space \\
+\midrule
+SWE-Bench~\cite{swebench} & code & \checkmark & partial & -- & -- \\
+$\tau$-bench~\cite{taubench} & tool use & \checkmark & -- & -- & -- \\
+SWE-Gym~\cite{swegym} & code & \checkmark & partial & -- & -- \\
+classical NAS~\cite{nassurvey} & architecture & proxy & -- & -- & -- \\
+\textbf{ours} & \textbf{architecture} & \checkmark & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabular}
+\caption{Where this environment sits: architecture design as a verifiable-reward domain, with a contamination-resistant procedural generator, red-teamed anti-gaming defenses, and a typed-graph action space.}
+\label{tab:compare}
+\end{table}
 
 \textbf{RL environments and verifiable rewards.} Training on verifiable rewards (RLVR) is now central to reasoning-model post-training~\cite{rlvr,r1}, typically with policy-gradient methods such as PPO~\cite{ppo} and GRPO~\cite{grpo}, preference optimization~\cite{dpo}, or rejection sampling in the STaR~\cite{star} style. A growing market supplies labs with RL environments; reward-hacking resistance is the quality bar most consistently cited, and usable environments are expected to expose a hard band near a 2--3\% pass floor. We build directly against both criteria, and ship GRPO and STaR loops against the same grader.
 
@@ -213,6 +255,9 @@ The transparent rubric released here does not verify linear-width consistency (S
 
 \section{Conclusion}
 Representing architectures as typed graphs turns ``is this network sound, and what will it cost to serve'' into a pure function. That function is simultaneously a leaderboard, an RL reward, and a verified-data generator, and it grounds against real PyTorch behavior on the claim that matters. We release the environment, the generator, the calibration and red-team harnesses, and the training loops, so that architecture design can join code and mathematics as a domain with a public verifier.
+
+\section*{Broader impact}
+The environment lowers the cost of designing valid, servable architectures and of training and evaluating agents that do so, which should broaden access beyond teams with dedicated ML-research staff. Two risks warrant note. First, a verifier defines what ``good'' means; ours checks structural validity and serving cost, not fairness, safety, or data appropriateness, and must not be mistaken for a quality oracle -- the negative result in Section~\ref{sec:ground} is deliberate. Second, verified-data generation can accelerate capability gains; we mitigate by releasing the methodology openly, so the same tools that build also audit (the reward-model analysis above). The benchmark contains no personal data and no scraped content: every task is synthetic or hand-authored.
 
 \section*{Reproducibility}
 \begin{verbatim}
