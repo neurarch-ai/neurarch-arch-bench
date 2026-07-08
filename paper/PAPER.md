@@ -188,12 +188,13 @@ reward models labs deploy where no verifier is available.
 | qwen-2.5-72b-instruct | open | 100.0% | **0.0%** | 0.0% |
 | claude-sonnet-4-6 | frontier | 93.3% | **0.0%** | 6.7% |
 | mistral-large | open | 93.3% | **0.0%** | 6.7% |
+| deepseek-chat (V3) | open | 93.3% | **0.0%** | 6.7% |
 | grok-4 | frontier | 91.7% | **0.0%** | 8.3% |
 | gemma-2-27b-it | open | 90.0% | **0.0%** | 10.0% |
 | llama-3.3-70b-instruct | open | 90.0% | **0.0%** | 10.0% |
 | deterministic verifier (ours) | --- | 100% | **0%** | **0%** |
 
-Across six reward models (n=60 each) spanning closed-frontier and open-weights, not one approves a broken design (0% false positive across all six). The only failure mode is over-conservatism (0-10% false negative). The RLVR-corrupting mode (rewarding a broken design) does not appear; the verifier matches the best (0/0) for free.
+Across seven reward models (n=60 each) spanning closed-frontier and open-weights, not one approves a broken design (0% false positive across all seven). The only failure mode is over-conservatism (0-10% false negative). The RLVR-corrupting mode (rewarding a broken design) does not appear; the verifier matches the best (0/0) for free.
 
 ## 7. Related work
 
