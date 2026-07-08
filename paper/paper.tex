@@ -44,7 +44,7 @@ Curated tasks are a seed. A deterministic generator mints splits of any size fro
 \label{sec:calib}
 An ungameable environment is still useless at $0\%$ pass (no learning signal) or near $100\%$ (nothing to learn). Practitioners cite a floor near 2--3\% pass rate on the hard end (one success per 64--128 rollouts) for a usable RL environment. The calibration harness measures per-family pass rates with Wilson 95\% intervals and flags each family's band. Two keyless self-test policies bracket the harness itself: a \texttt{reference} policy that replays known-good solutions (measured: $100\%$ pass) and a \texttt{noop} policy that submits empty plans (measured: $0\%$ pass). If either self-test deviates, the harness rather than the model is broken, and CI fails.
 
-\paragraph{Calibration (pending, public benchmark).} Per-family pass rates against \texttt{claude-sonnet-4-6} are being finalized from a fresh run on this public benchmark and will be inserted here; deterministic grading makes them reproducible from the seed, and the single-shot arm of the amplification study (Section~\ref{sec:amp}) doubles as the calibration.
+\paragraph{Measured (\texttt{claude-sonnet-4-6}, public benchmark).} Single-shot pass rate per family ($n\approx8$--$10$): eight families saturate ($100\%$, a curriculum tier for a frontier model), transformer encoder sits in the learnable band ($20\%$), and insert-norm fails at its action budget ($0\%$, a known limitation where the repair loop exceeds the per-task action cap). Deterministic grading, reproducible from the seed.
 
 \section{Grounding study}
 \label{sec:ground}
@@ -64,11 +64,13 @@ Does the verifier's verdict correspond to reality? We generated clean reference 
 \toprule
 Model & single-shot pass & with verifier feedback & lift \\
 \midrule
-\emph{(to be filled from \texttt{amplify.mjs})} & & & \\
+claude-sonnet-4-6 & $82\%$ & $91\%$ & $+9$ pts \\
 \bottomrule
 \end{tabular}
 \caption{Verifier-in-the-loop lift, per provider. Same tasks, model, and prompt; the only variable is the feedback loop.}
 \end{table}
+
+The lift is concentrated in the learnable family: transformer encoder goes $20\%\to100\%$ once the verifier's failure messages are fed back, while the saturated families have no headroom and insert-norm's action budget blocks recovery in both arms. Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
 
 \section{Related work}
 \textbf{Verifiable agent benchmarks.} SWE-Bench~\cite{swebench} and $\tau$-bench~\cite{taubench} established the programmatic-verifier pattern in code and tool use; SWE-Gym~\cite{swegym} showed that a few thousand verifiable tasks suffice to train agents to a double-digit absolute improvement on SWE-Bench, and did so as free, open research. We target the same pattern in a domain that lacked a public verifier.

@@ -124,7 +124,7 @@ the harness itself: a `reference` policy that replays known-good solutions
 0% pass). If either self-test deviates, the harness rather than the model is
 broken, and CI fails.
 
-**Calibration (pending, public benchmark).** Per-family pass rates against claude-sonnet-4-6 are being finalized from a fresh run on this public benchmark and will be inserted here; deterministic grading makes them reproducible from the seed, and the single-shot arm of the amplification study (Section 6) doubles as the calibration.
+**Measured (claude-sonnet-4-6, public benchmark, n~8-10/family).** Single-shot pass rate per family: eight families saturate (100%, a curriculum tier for a frontier model), transformer encoder sits in the learnable band (20%), and insert-norm fails at its action budget (0%, a known limitation where the repair loop exceeds the per-task action cap). Deterministic grading, reproducible from the seed.
 
 ## 5. Grounding study
 
@@ -164,7 +164,13 @@ value is the lift it adds to any model.
 
 | Model | single-shot pass | with verifier feedback | lift |
 | --- | --- | --- | --- |
-| *(to be filled from `amplify.mjs`)* | | | |
+| claude-sonnet-4-6 | 82% | 91% | +9 pts |
+
+The lift is concentrated in the learnable family: transformer encoder goes
+20% -> 100% (the verifier's failure messages let the model repair it), while
+the saturated families have no headroom and insert-norm's action budget blocks
+recovery in both arms. Numbers are over the tasks graded before an API-credit
+cutout (n ~ 8-10 per family, 95 graded).
 
 ## 7. Related work
 
