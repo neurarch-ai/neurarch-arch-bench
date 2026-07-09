@@ -14,6 +14,7 @@ LoRA). Budget ~1-2 hours wall-clock for a short run.
 ```bash
 cd oss/neurarch-arch-bench
 pip install "trl>=0.14" transformers datasets accelerate peft
+pip uninstall -y torchao   # Colab ships an old torchao that PEFT rejects; LoRA does not need it
 node env-server.mjs        # reward server on http://localhost:8737 — leave running in one terminal
 ```
 
