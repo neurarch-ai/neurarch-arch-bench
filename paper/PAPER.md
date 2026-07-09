@@ -178,12 +178,10 @@ seed-999 split:
 | --- | --- | --- | --- |
 | 0 (baseline) | 25.0% | 15/64 | 0.42 |
 | 10 | 25.0% | 13/64 | 0.45 |
-| 150 | **26.6%** | **12/64** | **0.48** |
+| 50 | 21.9% | 14/64 | 0.40 |
+| 150 | 26.6% | 12/64 | 0.48 |
 
-The pass@1 change (16->17) is within noise at this n; the robust signals are
-fewer parse failures and higher mean reward, The per-step training reward is noisy and roughly flat at this scale; the
-evidence of learning is the monotonic held-out trend across checkpoints. A
-small-scale demonstration that the reward trains a policy.
+Reported without cherry-picking: at this small scale the held-out metrics are within noise and non-monotonic (the 50-step checkpoint dips below baseline). The contribution is that the environment is trainable end-to-end on a free GPU; a clear learning curve needs more compute.
 
 ## Auditing LLM reward models with the verifier
 
