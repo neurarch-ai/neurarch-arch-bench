@@ -46,8 +46,9 @@ there is headroom to learn.
 ## 2. Train with GRPO against the verifier
 
 ```bash
-python training/train_grpo.py --steps 300 --count 512 --seed 123 --lora
-# saves a LoRA adapter to out/grpo-arch/checkpoint-final
+python training/train_grpo.py --steps 250 --count 256 --seed 123 --lora --lr 1e-5 --max-completion 384
+# saves LoRA checkpoints to out/grpo-arch/ (checkpoint-50, -100, ..., -final)
+# lr 1e-5 (not 1e-6) is what makes a small model actually learn here.
 ```
 
 Watch the reward: TRL logs mean reward per step. The parse-floor reward (a small
