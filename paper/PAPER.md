@@ -176,12 +176,14 @@ seed-999 split:
 
 | | pass@1 | parse failures | mean reward |
 | --- | --- | --- | --- |
-| baseline | 25.0% | 15/64 | 0.42 |
-| after GRPO (150 steps) | **26.6%** | **12/64** | **0.48** |
+| 0 (baseline) | 25.0% | 15/64 | 0.42 |
+| 10 | 25.0% | 13/64 | 0.45 |
+| 150 | **26.6%** | **12/64** | **0.48** |
 
 The pass@1 change (16->17) is within noise at this n; the robust signals are
-fewer parse failures and higher mean reward, with the training reward rising
-over the run. A small-scale demonstration that the reward trains a policy.
+fewer parse failures and higher mean reward, The per-step training reward is noisy and roughly flat at this scale; the
+evidence of learning is the monotonic held-out trend across checkpoints. A
+small-scale demonstration that the reward trains a policy.
 
 ## Auditing LLM reward models with the verifier
 

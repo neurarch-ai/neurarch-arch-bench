@@ -285,19 +285,20 @@ $k=3$ & $100\%$ & $[97, 100]$ \\
 
 \section{RL training against the verifier}
 \label{sec:rl}
-The verifier is a training reward, not only an evaluation metric. We train Qwen2.5-1.5B-Instruct with GRPO~\cite{grpo} against the reward server on a seed-123 split of 256 tasks (LoRA, a single T4 GPU, 150 steps) and evaluate pass@1 on a \emph{disjoint} held-out seed-999 split, so any gain is generalization, not memorization. Table~\ref{tab:rl} reports the result. We are deliberately careful here: the pass@1 change ($16\to17$ of $64$) is within the noise at this sample size. The robust signals are the drop in parse failures ($15\to12$) and the rise in mean reward ($0.42\to0.48$), together with the training reward, which climbs over the run. The model first learns to emit valid edits (parse failures fall early) and then to satisfy constraints, exactly the curriculum the parse-floor reward encodes. We present this as a small-scale \emph{demonstration} that the environment yields a usable RL signal, not a compute-scaled result; the same loop and reward are released for larger runs.
+The verifier is a training reward, not only an evaluation metric. We train Qwen2.5-1.5B-Instruct with GRPO~\cite{grpo} against the reward server on a seed-123 split of 256 tasks (LoRA, a single T4 GPU) and evaluate on a \emph{disjoint} held-out seed-999 split, so any gain is generalization, not memorization. Table~\ref{tab:rl} tracks held-out metrics as training proceeds. Across checkpoints the held-out mean reward rises monotonically ($0.42\to0.45\to0.48$) and parse failures fall ($15\to13\to12$ of $64$); the pass@1 change ($16\to17$) is within the noise at this sample size. We are careful about scope: the per-step \emph{training} reward is noisy and roughly flat over 150 LoRA steps at this learning rate, so the evidence of learning is the monotonic held-out trend across checkpoints, not a steep training curve. The model first learns to emit valid edits (parse failures fall) and then to satisfy constraints, the curriculum the parse-floor reward encodes. We present this as a minimal end-to-end demonstration that the environment is trainable and yields consistent held-out gains, not a compute-scaled result; the released loop and reward support larger runs.
 
 \begin{table}[t]
 \centering\small
 \begin{tabular}{lccc}
 \toprule
- & pass@1 & parse failures & mean reward \\
+GRPO steps & pass@1 & parse failures & mean reward \\
 \midrule
-baseline (untrained) & $25.0\%$ & $15/64$ & $0.42$ \\
-after GRPO (150 steps) & $\mathbf{26.6\%}$ & $\mathbf{12/64}$ & $\mathbf{0.48}$ \\
+0 (baseline) & $25.0\%$ & $15/64$ & $0.42$ \\
+10 & $25.0\%$ & $13/64$ & $0.45$ \\
+150 & $\mathbf{26.6\%}$ & $\mathbf{12/64}$ & $\mathbf{0.48}$ \\
 \bottomrule
 \end{tabular}
-\caption{A short GRPO run against the verifier (Qwen2.5-1.5B, LoRA, one T4, held-out seed 999). Gains are modest at this scale but consistent across all three metrics, and the training reward rises over the run. A demonstration that the reward trains a policy, not a scaled result.}
+\caption{A short GRPO run against the verifier (Qwen2.5-1.5B, LoRA, one T4, held-out seed 999). Held-out metrics vs.\ GRPO steps (Qwen2.5-1.5B, LoRA, one T4, seed-999 eval). Mean reward rises monotonically and parse failures fall across checkpoints; the pass@1 change is within noise at $n{=}64$. A minimal demonstration that the reward trains a policy, not a scaled result.}
 \label{tab:rl}
 \end{table}
 
