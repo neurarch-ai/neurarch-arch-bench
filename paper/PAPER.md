@@ -168,6 +168,21 @@ value is the lift it adds to any model.
 
 The lift is entirely on the two families a frontier model finds hard: insert-norm 0% -> 100% and transformer encoder 25% -> 100% (the verifier's failure messages let the model repair them), while the eight curriculum families are already at 100%. n=12 per family, 117 graded (three transient network errors excluded).
 
+## RL training against the verifier
+
+The verifier is a training reward. We train Qwen2.5-1.5B with GRPO against the
+reward server (LoRA, one T4, 150 steps) and evaluate on a disjoint held-out
+seed-999 split:
+
+| | pass@1 | parse failures | mean reward |
+| --- | --- | --- | --- |
+| baseline | 25.0% | 15/64 | 0.42 |
+| after GRPO (150 steps) | **26.6%** | **12/64** | **0.48** |
+
+The pass@1 change (16->17) is within noise at this n; the robust signals are
+fewer parse failures and higher mean reward, with the training reward rising
+over the run. A small-scale demonstration that the reward trains a policy.
+
 ## Auditing LLM reward models with the verifier
 
 Frontier labs increasingly use a strong model *as* a reward model to optimize
