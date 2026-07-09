@@ -232,6 +232,25 @@ def run_train(args):
             task_type="CAUSAL_LM",
         )
 
+    # GRPO requires the per-device batch (the generation batch) to be divisible
+    # by num_generations (the group size). Auto-adjust so any batch/group combo
+    # runs instead of erroring in TRL.
+    if args.batch_size % args.num_generations != 0:
+        divisors = [d for d in range(2, args.batch_size + 1)
+                    if args.batch_size % d == 0 and d <= args.num_generations]
+        ng = max(divisors) if divisors else args.batch_size
+        print(f"[warn] num_generations {args.num_generations} does not divide "
+              f"batch_size {args.batch_size}; using num_generations={ng}.")
+        args.num_generations = ng
+
+    # T4 (Turing) GPUs have no bf16; fall back to fp16 so --bf16 does not crash.
+    use_bf16, use_fp16 = args.bf16, False
+    if args.bf16:
+        import torch
+        if not (torch.cuda.is_available() and torch.cuda.is_bf16_supported()):
+            use_bf16, use_fp16 = False, True
+            print("[warn] bf16 not supported on this GPU (e.g. T4); using fp16 instead.")
+
     # Build kwargs, then keep only fields this TRL version's GRPOConfig accepts,
     # so the script survives TRL API drift (e.g. renamed/removed length args).
     import dataclasses
@@ -245,7 +264,8 @@ def run_train(args):
         max_completion_length=args.max_completion,
         logging_steps=1,
         save_steps=max(50, args.steps // 4),
-        bf16=args.bf16,
+        bf16=use_bf16,
+        fp16=use_fp16,
         report_to=[],
     )
     accepted = {f.name for f in dataclasses.fields(GRPOConfig)}
@@ -278,7 +298,7 @@ def main():
     p.add_argument("--steps", type=int, default=300)
     p.add_argument("--lr", type=float, default=1e-6)
     p.add_argument("--batch-size", type=int, default=4)
-    p.add_argument("--num-generations", type=int, default=8, help="GRPO group size")
+    p.add_argument("--num-generations", type=int, default=4, help="GRPO group size (must divide batch-size)")
     p.add_argument("--max-prompt", type=int, default=1024)
     p.add_argument("--max-completion", type=int, default=512)
     p.add_argument("--out", default="out/grpo-arch")
