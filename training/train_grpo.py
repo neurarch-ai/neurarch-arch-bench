@@ -299,11 +299,11 @@ def main():
     p.add_argument("--count", type=int, default=256, help="tasks in the split")
     p.add_argument("--seed", type=int, default=123, help="split seed (use a different seed for held-out eval)")
     p.add_argument("--steps", type=int, default=300)
-    p.add_argument("--lr", type=float, default=1e-6)
+    p.add_argument("--lr", type=float, default=1e-5)  # 1e-6 was too low to learn; 1e-5 is a better LoRA-RL default
     p.add_argument("--batch-size", type=int, default=4)
     p.add_argument("--num-generations", type=int, default=4, help="GRPO group size (must divide batch-size)")
     p.add_argument("--max-prompt", type=int, default=1024)
-    p.add_argument("--max-completion", type=int, default=512)
+    p.add_argument("--max-completion", type=int, default=384)  # valid designs are short; 512 wastes gen time on ramblers
     p.add_argument("--out", default="out/grpo-arch")
     p.add_argument("--lora", action="store_true", help="LoRA instead of full finetune")
     p.add_argument("--bf16", action="store_true")
