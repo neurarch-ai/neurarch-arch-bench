@@ -134,6 +134,11 @@ def run_eval(args):
     import os, json as _json
     tasks = fetch_tasks(args.env_url, args.count, args.seed)
 
+    # fp16 on GPUs without bf16 (e.g. T4); low_cpu_mem_usage avoids a RAM spike
+    # that can kill the Colab kernel while loading.
+    dtype = torch.bfloat16 if (torch.cuda.is_available() and torch.cuda.is_bf16_supported()) else torch.float16
+    load_kw = dict(torch_dtype=dtype, device_map="auto", low_cpu_mem_usage=True)
+
     is_local = os.path.isdir(args.model)
     adapter_cfg = os.path.join(args.model, "adapter_config.json")
     if is_local and os.path.exists(adapter_cfg):
@@ -143,7 +148,7 @@ def run_eval(args):
         base = _json.load(open(adapter_cfg)).get("base_model_name_or_path") or "Qwen/Qwen2.5-1.5B-Instruct"
         tok_src = args.model if os.path.exists(os.path.join(args.model, "tokenizer_config.json")) else base
         tok = AutoTokenizer.from_pretrained(tok_src)
-        model = AutoModelForCausalLM.from_pretrained(base, torch_dtype="auto", device_map="auto")
+        model = AutoModelForCausalLM.from_pretrained(base, **load_kw)
         model = PeftModel.from_pretrained(model, args.model)
     else:
         if not is_local and args.model.count("/") != 1:
@@ -154,9 +159,7 @@ def run_eval(args):
                 f"neurarch-arch-bench/neurarch-arch-bench folder)."
             )
         tok = AutoTokenizer.from_pretrained(args.model)
-        model = AutoModelForCausalLM.from_pretrained(
-            args.model, torch_dtype="auto", device_map="auto"
-        )
+        model = AutoModelForCausalLM.from_pretrained(args.model, **load_kw)
     passed, parse_failures, total_reward = 0, 0, 0.0
     for t in tasks:
         text = tok.apply_chat_template(
