@@ -8,7 +8,7 @@ Nothing here is marketing; where the paper is thin, it says so.
 
 A **borderline-to-weak-accept as a workshop paper today; borderline for a main
 track** without one more experiment. The environment, the verifier, the
-calibration/red-team methodology, and the 9-model reward-model audit are a
+calibration/red-team methodology, and the 11-model reward-model audit are a
 genuine, well-scoped contribution with unusually honest reporting. The single
 thing standing between it and a confident main-track accept is **an actual RL
 training result** (below). Fix that and it is a solid main-track paper.
@@ -22,7 +22,7 @@ training result** (below). Fix that and it is a solid main-track paper.
 - Methodological care rare in benchmark papers: satisfiability + non-vacuity
   proofs, red-teamed anti-gaming, keyless self-tests that bracket the harness,
   Wilson CIs, and a grounding study **reported with its negative result intact**.
-- The reward-model audit (9 models, universal 0% false-positive) is a novel,
+- The reward-model audit (11 models, universal 0% false-positive) is a novel,
   reproducible finding.
 
 ## The one objection that matters most
@@ -86,7 +86,7 @@ least one more model to show it is not Claude-specific; (b) clarify that this is
 inference-time test-time compute, not RL (ties back to the main objection).
 
 **Reward-model audit (Sec 7).** Novel and reproducible. But a sharp reviewer
-will invert it: "if 9/9 models already achieve 0% false-positive, doesn't that
+will invert it: "if 11/11 models already achieve 0% false-positive, doesn't that
 show an LLM judge is fine here, undercutting the need for your verifier?" The
 paper must answer head-on (it partly does): the verifier is (i) the only reason
 you can *know* the 0% number, (ii) strictly better on false negatives (0 vs up to
@@ -101,10 +101,9 @@ NAS reviewer may want one paragraph on differentiable/one-shot NAS and why a
 per-edit legality verifier is orthogonal to (and composable with) a search
 procedure.
 
-**Reasoning traces (Sec 8).** Honestly labeled (65% yield, n=20 preliminary,
-rate-limited). A reviewer may see it as underbaked. Either promote it with a
-full run (n=500) and a real yield number, or demote it to a one-paragraph
-"downstream use" so it does not invite a "half-finished" critique.
+**Reasoning traces (Sec 8).** *Done:* the full 500-task run is in (72.5%
+verified yield, 327 traces, API failures excluded and reported). No longer
+underbaked.
 
 **Broader impact / limitations.** Present and honest. Good.
 
@@ -121,10 +120,10 @@ full run (n=500) and a real yield number, or demote it to a one-paragraph
 
 1. **An RL training result** from the shipped loop (converts the central claim).
 2. **A second model on the amplification ablation** (kills "Claude-specific").
-3. **A time-cost line** for the verifier vs alternatives.
-4. **One sentence** each on: contamination not-yet-measured, health-score weights
-   abstract, reward-audit tasks being clear-cut.
-5. Either finish or demote the reasoning-traces section.
+3. ~~A time-cost line~~ *done* (microseconds vs paid API round-trip).
+4. ~~One-sentence caveats~~ *done* (contamination unverified empirically;
+   health score diagnostic-only; reward-audit subtlety already in the caption).
+5. ~~Reasoning-traces section~~ *done* (full n=500 run, 72.5% yield).
 
 None of 2–5 needs new infrastructure; all are hours, not weeks. #1 needs a small
 GPU run the repo already supports.
