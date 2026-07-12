@@ -81,8 +81,7 @@ liability, *if framed as intended*. Keep it. One ask: 264 graphs over two seeds
 10% failures were (the paper hints at width-consistency; make it explicit).
 
 **Amplification (Sec 6).** The ablation (k=1→2 closes the gap) is the best single
-result and is clean. Two reviewer asks: (a) single model — run the ablation on at
-least one more model to show it is not Claude-specific; (b) clarify that this is
+result and is clean. Two reviewer asks: (a) ~~single model~~ *done*: deepseek-chat replicates the pattern (60->88, all fixes at k=2); (b) clarify that this is
 inference-time test-time compute, not RL (ties back to the main objection).
 
 **Reward-model audit (Sec 7).** Novel and reproducible. But a sharp reviewer
@@ -119,7 +118,7 @@ underbaked.
 ## What to add before a main-track submission, ranked
 
 1. **An RL training result** from the shipped loop (converts the central claim).
-2. **A second model on the amplification ablation** (kills "Claude-specific").
+2. ~~A second model on the amplification ablation~~ *done* (deepseek-chat 60->88, +28; fixes again all at k=2).
 3. ~~A time-cost line~~ *done* (microseconds vs paid API round-trip).
 4. ~~One-sentence caveats~~ *done* (contamination unverified empirically;
    health score diagnostic-only; reward-audit subtlety already in the caption).

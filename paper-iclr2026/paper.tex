@@ -25,7 +25,7 @@
 \maketitle
 
 \begin{abstract}
-Reinforcement learning and agent evaluation both depend on a \emph{verifier}: a function that scores a candidate cheaply and without a human. Code and mathematics have compilers and unit tests; neural architecture design has had no public verifier. We present an environment in which an agent designs a neural network by emitting edits to a typed, structured graph, and a deterministic, sub-millisecond verifier grades the result against structural, budget, and serving-physics constraints, with no human or LLM in the scoring loop. The environment ships (i) a procedural task generator across ten families with satisfiability and non-vacuity proofs, (ii) anti-gaming constraints that reject wholesale rebuilds masquerading as surgical fixes, (iii) a difficulty-calibration harness that reports per-family pass rates against the pass-rate floor labs cite for usable RL environments, and (iv) a grounding study relating the verifier's verdict to real PyTorch behavior. Across 264 architectures, verifier blockers predict forward-pass failure with perfect precision ($96/96$), while graphs the verifier passes construct and train in $90\%$ of cases; we also report, honestly, that the 0--100 health score is a validity margin rather than a quality ranking (within-family Spearman correlation with training progress is weak). Fed into the loop, the verifier is a measurable capability multiplier: on the public benchmark it raises \texttt{claude-sonnet-4-6} from $82\%$ to $100\%$ ($+18$ points), a single repair round closing the entire gap, with the gain landing entirely on the two families a frontier model finds hard; on a curated split of production architectures the same model passes only $7/12$ first try. Using the verifier as ground truth, we also audit an LLM reward model: across eleven reward models spanning closed-frontier and open-weights, not one approves a provably-broken design ($0\%$ false positive); the only failure mode is over-conservatism -- a measurement only a verifiable domain permits. We also release and run a GRPO loop that trains a small model against the same reward end-to-end on a free GPU, reported honestly: at this small scale the held-out gains are within noise, and a clear learning curve is a compute question the loop is built to run. Because grading is a pure function, the same environment is at once a leaderboard, an RL training gym, a verified-SFT and reasoning-trace generator, and a ground-truth anchor for LLM reward models; we release all of it.
+Reinforcement learning and agent evaluation both depend on a \emph{verifier}: a function that scores a candidate cheaply and without a human. Code and mathematics have compilers and unit tests; neural architecture design has had no public verifier. We present an environment in which an agent designs a neural network by emitting edits to a typed, structured graph, and a deterministic, sub-millisecond verifier grades the result against structural, budget, and serving-physics constraints, with no human or LLM in the scoring loop. The environment ships (i) a procedural task generator across ten families with satisfiability and non-vacuity proofs, (ii) anti-gaming constraints that reject wholesale rebuilds masquerading as surgical fixes, (iii) a difficulty-calibration harness that reports per-family pass rates against the pass-rate floor labs cite for usable RL environments, and (iv) a grounding study relating the verifier's verdict to real PyTorch behavior. Across 264 architectures, verifier blockers predict forward-pass failure with perfect precision ($96/96$), while graphs the verifier passes construct and train in $90\%$ of cases; we also report, honestly, that the 0--100 health score is a validity margin rather than a quality ranking (within-family Spearman correlation with training progress is weak). Fed into the loop, the verifier is a measurable capability multiplier: on the public benchmark it raises \texttt{claude-sonnet-4-6} from $82\%$ to $100\%$ ($+18$ points), a single repair round closing the entire gap, and replicates on a second, weaker model (deepseek-chat, $60\%\to88\%$, $+28$); on a curated split of production architectures the same model passes only $7/12$ first try. Using the verifier as ground truth, we also audit an LLM reward model: across eleven reward models spanning closed-frontier and open-weights, not one approves a provably-broken design ($0\%$ false positive); the only failure mode is over-conservatism -- a measurement only a verifiable domain permits. We also release and run a GRPO loop that trains a small model against the same reward end-to-end on a free GPU, reported honestly: at this small scale the held-out gains are within noise, and a clear learning curve is a compute question the loop is built to run. Because grading is a pure function, the same environment is at once a leaderboard, an RL training gym, a verified-SFT and reasoning-trace generator, and a ground-truth anchor for LLM reward models; we release all of it.
 \end{abstract}
 
 \paragraph{Reproducibility note.} All results marked \emph{measured} are reproduced by the commands in the repository; the calibration, amplification, and reward-model results use provider API keys, the rest need neither keys nor GPUs. Code and data: \url{https://github.com/neurarch-ai/neurarch-arch-bench} (MIT).
@@ -244,12 +244,13 @@ Single-shot is the $k{=}1$ special case (no feedback consumed); the amplificatio
 Model & single-shot pass & with verifier feedback & lift \\
 \midrule
 claude-sonnet-4-6 & $82\%$ & $100\%$ & $+18$ pts \\
+deepseek-chat (V3) & $60\%$ & $88\%$ & $+28$ pts \\
 \bottomrule
 \end{tabular}
 \caption{Verifier-in-the-loop lift, per provider. Same tasks, model, and prompt; the only variable is the feedback loop.}
 \end{table}
 
-The lift is entirely on the two families a frontier model finds hard (Figure~\ref{fig:lift}): insert-norm $0\%\to100\%$ and transformer encoder $25\%\to100\%$ once the verifier's failure messages are fed back, while the eight curriculum families are already at $100\%$. A single repair round closes the whole gap (Table~\ref{tab:ablation}). $n=12$ per family, 117 graded (three transient network errors excluded).
+The lift is entirely on the two families a frontier model finds hard (Figure~\ref{fig:lift}): insert-norm $0\%\to100\%$ and transformer encoder $25\%\to100\%$ once the verifier's failure messages are fed back, while the eight curriculum families are already at $100\%$. A single repair round closes the whole gap (Table~\ref{tab:ablation}). $n=12$ per family, 117 graded (three transient network errors excluded). The effect is not model-specific: on the same tasks, a second, weaker model (deepseek-chat) goes $60\%\to88\%$ ($+28$ points, $n=60$), with every fix again landing at $k{=}2$ and none at $k{=}3$. The weaker the model, the more the verifier is worth.
 
 \begin{figure}[t]
 \centering
@@ -274,14 +275,14 @@ The lift is entirely on the two families a frontier model finds hard (Figure~\re
 \centering\small
 \begin{tabular}{lcc}
 \toprule
-max repair rounds $k$ & overall pass & 95\% CI \\
+max repair rounds $k$ & claude-sonnet-4-6 & deepseek-chat \\
 \midrule
-$k=1$ (single-shot) & $82\%$ & $[74, 88]$ \\
-$k=2$ & $\mathbf{100\%}$ & $[97, 100]$ \\
-$k=3$ & $100\%$ & $[97, 100]$ \\
+$k=1$ (single-shot) & $82\%$ $[74,88]$ & $60\%$ $[47,71]$ \\
+$k=2$ & $\mathbf{100\%}$ $[97,100]$ & $\mathbf{88\%}$ $[78,94]$ \\
+$k=3$ & $100\%$ $[97,100]$ & $88\%$ $[78,94]$ \\
 \bottomrule
 \end{tabular}
-\caption{Ablation on the number of verifier-feedback repair rounds ($n=117$, Wilson intervals). A \emph{single} repair round ($k{=}2$) closes the entire gap: every task the model missed on the first try is fixed once the verifier's failure message is fed back once. Further rounds add nothing.}
+\caption{Ablation on the number of verifier-feedback repair rounds, two models (claude $n{=}117$, deepseek $n{=}60$; Wilson intervals). For \emph{both}, a single repair round ($k{=}2$) provides the entire lift -- every task the verifier can help fix is fixed after one round of its failure messages -- and $k{=}3$ adds nothing. The pattern is not model-specific.}
 \label{tab:ablation}
 \end{table} Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
 
