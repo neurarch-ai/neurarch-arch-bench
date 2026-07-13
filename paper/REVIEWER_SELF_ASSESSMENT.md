@@ -35,8 +35,10 @@ released GRPO loop runs end-to-end on a free T4 (Qwen2.5-1.5B, LoRA), all
 checkpoints reported without cherry-picking, with the plain statement that at
 this scale the held-out metrics are within noise and non-monotonic. This
 converts the objection from "no RL run at all" to "RL demonstrated but not
-compute-scaled" — a weaker objection. A scaled run with a clear learning curve
-would still strengthen a main-track submission.
+compute-scaled" — a weaker objection. Two runs (lr 1e-6 x150 steps, lr 1e-5
+x250 steps) both show no held-out gain at 1.5B+LoRA; the paper reports this as
+a clean small-scale negative result. A truly scaled run (larger policy, full
+fine-tune) remains the upgrade path for a main-track submission.
 
 The original objection, kept for the record: The paper ships a GRPO loop
 and a STaR loop but reports no training curve showing a policy *improving* on a
