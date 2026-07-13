@@ -155,7 +155,8 @@ produces exactly that for this domain: `(spec -> reasoning -> design)` triples
 where every design's final graph is re-graded by the deterministic verifier, so
 a trace is kept ONLY if its design passes. With a provider key it is
 rejection-sampled model reasoning; keyless it is reference-derived. See
-[training/REASONING_DATASET_CARD.md](./training/REASONING_DATASET_CARD.md).
+[training/REASONING_DATASET_CARD.md](./training/REASONING_DATASET_CARD.md). A 327-trace claude-sonnet-4-6 set is public at
+[huggingface.co/datasets/neurarch-ai/arch-reasoning-claude](https://huggingface.co/datasets/neurarch-ai/arch-reasoning-claude).
 
 ```bash
 node reasoning_traces.mjs --count=500 --seed=20260708 --out=arch-reasoning        # keyless

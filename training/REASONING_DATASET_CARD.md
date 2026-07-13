@@ -1,3 +1,18 @@
+---
+license: mit
+task_categories:
+- text-generation
+tags:
+- reinforcement-learning
+- verifiable-rewards
+- neural-architecture-design
+- reasoning
+- rlvr
+pretty_name: Verified architecture-design reasoning traces
+size_categories:
+- n<1K
+---
+
 # Verified architecture-design reasoning traces
 
 Produced by `training/reasoning_traces.mjs`. Each row is a
