@@ -288,7 +288,25 @@ $k=3$ & $100\%$ $[97,100]$ & $88\%$ $[78,94]$ \\
 \label{sec:rl}
 The environment trains models through two channels, and we report both honestly.
 
-\paragraph{Verified SFT: the data foundry works.} Every generated task carries a reference solution that provably passes the grader, so the environment mints unlimited verified $(\text{spec}\!\to\!\text{edits})$ supervised pairs, keylessly and for free. Fine-tuning Qwen2.5-1.5B-Instruct on $3{,}000$ such pairs (LoRA, one free T4, under ten minutes) transforms held-out performance (Table~\ref{tab:rl}): pass@1 rises from $23.4\%$ (Wilson $[15,35]$) to $\mathbf{85.9\%}$ ($[75,92]$), a $+62$-point lift with non-overlapping intervals; parse failures collapse from $19/64$ to $2/64$; mean reward rises from $0.35$ to $1.19$. The eval split (seed 999) is generated from a seed disjoint from the training data's, so the gain is generalization to fresh instances of the ten families, not recall of seen tasks. The surviving failures are substantive design errors the verifier pinpoints (disconnected graphs, too few components), no longer formatting.
+\paragraph{Verified SFT: the data foundry works.} Every generated task carries a reference solution that provably passes the grader, so the environment mints unlimited verified $(\text{spec}\!\to\!\text{edits})$ supervised pairs, keylessly and for free. Fine-tuning Qwen2.5-1.5B-Instruct on $3{,}000$ such pairs (LoRA, one free T4, under ten minutes) transforms held-out performance (Table~\ref{tab:rl}): pass@1 rises from $23.4\%$ (Wilson $[15,35]$) to $\mathbf{85.9\%}$ ($[75,92]$), a $+62$-point lift with non-overlapping intervals; parse failures collapse from $19/64$ to $2/64$; mean reward rises from $0.35$ to $1.19$. The eval split (seed 999) is generated from a seed disjoint from the training data's, so the gain is generalization to fresh instances of the ten families, not recall of seen tasks. The surviving failures are substantive design errors the verifier pinpoints (disconnected graphs, too few components), no longer formatting. Data scaling is steep and non-monotonic at the low end (Figure~\ref{fig:sftscale}): $250$ and $500$ pairs \emph{underperform} the raw instruct model ($9.4\%$ and $14.1\%$ vs.\ $25.0\%$) -- a half-learned edit format displaces the base model's occasional valid outputs before replacing them -- while $1{,}000$ pairs recover to $34.4\%$ and $3{,}000$ reach $85.9\%$. The foundry mints pairs for free, so the operative cost of the full lift is minutes of generation plus minutes of fine-tuning.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.7\linewidth, height=5.2cm, xmode=log, log ticks with fixed point,
+  xlabel={verified SFT pairs (log scale)}, ylabel={held-out pass@1 (\%)},
+  xtick={250,500,1000,3000}, ymin=0, ymax=100, ymajorgrids,
+  legend style={font=\small, at={(0.02,0.98)}, anchor=north west}]
+\addplot+[mark=*, thick] coordinates {(250,9.4) (500,14.1) (1000,34.4) (3000,85.9)};
+\addlegendentry{SFT on minted pairs}
+\addplot[dashed, domain=250:3000] {25.0};
+\addlegendentry{untrained baseline ($25.0\%$)}
+\end{axis}
+\end{tikzpicture}
+\caption{Held-out pass@1 vs.\ number of environment-minted verified SFT pairs (Qwen2.5-1.5B, LoRA, 2 epochs, seed-999 split, $n{=}64$). The curve is steep: below ${\sim}1$k pairs the half-learned format underperforms the raw instruct model; $3$k pairs reach $85.9\%$. Pairs are free to mint, so the x-axis costs seconds of generation.}
+\label{fig:sftscale}
+\end{figure}
 
 \paragraph{RL alone at small scale: an honest null, now explained.} The released GRPO~\cite{grpo} loop runs end-to-end against the reward server on the same hardware, but RL \emph{from the raw instruct model} does not move held-out metrics: two runs (learning rates $10^{-6}\times150$ and $10^{-5}\times250$ steps, every checkpoint evaluated and reported) sit at or below their own baselines. The SFT result explains the failure: the raw policy cannot emit parseable edits on a third of tasks, so the group-relative policy gradient starves. This is the classic SFT-then-RL split -- supervised learning teaches the action format, RL then refines -- and the environment supplies both stages: the verified SFT data and the deterministic reward. Scaled SFT-then-RL is the natural next experiment.
 
