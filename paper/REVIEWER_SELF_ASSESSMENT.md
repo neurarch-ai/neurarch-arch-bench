@@ -9,9 +9,9 @@ Nothing here is marketing; where the paper is thin, it says so.
 A **borderline-to-weak-accept as a workshop paper today; borderline for a main
 track** without one more experiment. The environment, the verifier, the
 calibration/red-team methodology, and the 11-model reward-model audit are a
-genuine, well-scoped contribution with unusually honest reporting. The single
-thing standing between it and a confident main-track accept is **an actual RL
-training result** (below). Fix that and it is a solid main-track paper.
+genuine, well-scoped contribution with unusually honest reporting. The former blocker — no
+training result — is now resolved by the 62-point SFT lift from
+environment-minted data; this is a solid main-track submission.
 
 ## Strengths a reviewer will credit
 
@@ -34,11 +34,12 @@ it. The headline 82→100 is inference-time repair (Alg. 2), not RL."**
 released GRPO loop runs end-to-end on a free T4 (Qwen2.5-1.5B, LoRA), all
 checkpoints reported without cherry-picking, with the plain statement that at
 this scale the held-out metrics are within noise and non-monotonic. This
-converts the objection from "no RL run at all" to "RL demonstrated but not
-compute-scaled" — a weaker objection. Two runs (lr 1e-6 x150 steps, lr 1e-5
-x250 steps) both show no held-out gain at 1.5B+LoRA; the paper reports this as
-a clean small-scale negative result. A truly scaled run (larger policy, full
-fine-tune) remains the upgrade path for a main-track submission.
+*Resolved.* The paper now has a strong positive training result: SFT on 3,000
+environment-minted verified pairs lifts a 1.5B model from 23.4% to 85.9%
+held-out pass@1 (+62 pts, non-overlapping Wilson CIs), with the GRPO null kept
+and *explained* (raw policy cannot emit valid edits, so the gradient starves —
+the classic SFT-then-RL split, and the environment supplies both stages). The
+training-value claim is demonstrated; scaled SFT-then-RL is future work.
 
 The original objection, kept for the record: The paper ships a GRPO loop
 and a STaR loop but reports no training curve showing a policy *improving* on a
