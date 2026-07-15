@@ -362,7 +362,7 @@ classical NAS~\cite{nassurvey} & architecture & proxy & -- & -- & -- \\
 
 \textbf{RL environments and verifiable rewards.} Training on verifiable rewards (RLVR) is now central to reasoning-model post-training~\cite{rlvr,r1}, typically with policy-gradient methods such as PPO~\cite{ppo} and GRPO~\cite{grpo}, preference optimization~\cite{dpo}, or rejection sampling in the STaR~\cite{star} style. A growing market supplies labs with RL environments; reward-hacking resistance is the quality bar most consistently cited, and usable environments are expected to expose a hard band near a 2--3\% pass floor. We build directly against both criteria, and ship GRPO and STaR loops against the same grader.
 
-\textbf{Neural architecture search.} Classical NAS~\cite{nassurvey} automates architecture design under a proxy objective; our environment differs in providing a human-legible, per-edit, sub-millisecond verifier over a typed graph, and in serving as a training and evaluation substrate rather than a single search procedure. The accompanying product exposes a deterministic, constraint-satisfying design search (given a parameter budget, KV-cache budget, and target GPU, it returns the Pareto front over capacity, parameters, and KV cache), a NAS-lite special case built entirely from the verifier's physics rather than a learned proxy objective.
+\textbf{Neural architecture search.} Classical NAS~\cite{nassurvey} automates architecture design under a proxy objective; our environment differs in providing a human-legible, per-edit, sub-millisecond verifier over a typed graph, and in serving as a training and evaluation substrate rather than a single search procedure. The accompanying product exposes a deterministic, constraint-satisfying design search (given a parameter budget, KV-cache budget, and target GPU, it returns the Pareto front over capacity, parameters, and KV cache), a NAS-lite special case built entirely from the verifier's physics rather than a learned proxy objective. Differentiable and one-shot NAS~\cite{darts} make gradient search tractable by relaxing a small, hard-coded cell vocabulary and optimizing task loss; structural legality is assumed, not checked. A per-edit legality verifier is orthogonal: it can veto the candidates of \emph{any} search procedure -- a DARTS derivation, an evolutionary mutation, or an LLM agent's edits -- before GPU time is spent, so it composes with these methods rather than competing with them.
 
 \section{Limitations}
 The transparent rubric released here does not verify linear-width consistency (Section~\ref{sec:ground}); the health-score magnitude is not a quality ranking (Section~\ref{sec:ground}); the reward path does not execute PyTorch per rollout, so shape-class failures are caught statistically rather than per-instance; and generated references lean on \texttt{replace\_model} for design-from-spec families, biasing imitation style. Each is documented with its measurement or its planned mitigation in \texttt{ROBUSTNESS.md}.
@@ -380,6 +380,12 @@ cd neurarch-arch-bench
 npx vitest run                            # satisfiability + non-vacuity + anti-gaming
 node calibrate.mjs --policy=reference     # harness self-test (must be 100%)
 node calibrate.mjs --policy=noop          # harness self-test (must be 0%)
+node training/build_sft_dataset.mjs \
+     --count=3000 --seed=20260713       # mint verified SFT pairs (no key)
+python training/train_sft.py \
+     --data arch-design-sft.chat.jsonl  # 23.4% -> 85.9% (one T4, <10 min)
+python training/train_grpo.py --eval-only --seed 999 --count 64 \
+     --model out/sft-arch/checkpoint-final
 node dump_grounding_set.mjs --count=40 --seed=123 --out=g.jsonl
 python training/grounding_at_scale.py --set g.jsonl
 python training/analyze_grounding.py
@@ -460,6 +466,7 @@ The twelve curated tasks are hand-authored from real production architectures. F
 \bibitem{ppo} J.~Schulman, F.~Wolski, P.~Dhariwal, A.~Radford, and O.~Klimov. Proximal Policy Optimization Algorithms. \emph{arXiv:1707.06347}, 2017.
 \bibitem{star} E.~Zelikman, Y.~Wu, J.~Mu, and N.~D. Goodman. STaR: Bootstrapping Reasoning with Reasoning. \emph{NeurIPS}, 2022.
 \bibitem{dpo} R.~Rafailov, A.~Sharma, E.~Mitchell, S.~Ermon, C.~D. Manning, and C.~Finn. Direct Preference Optimization. \emph{NeurIPS}, 2023.
+\bibitem{darts} H.~Liu, K.~Simonyan, and Y.~Yang. DARTS: Differentiable Architecture Search. \emph{ICLR}, 2019.
 \bibitem{nassurvey} T.~Elsken, J.~H. Metzen, and F.~Hutter. Neural Architecture Search: A Survey. \emph{JMLR}, 20(55):1--21, 2019.
 \bibitem{llmjudge} L.~Zheng et al. Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena. \emph{NeurIPS}, 2023.
 \bibitem{netron} L.~Roeder. Netron: Visualizer for neural network, deep learning and machine learning models. Software, \url{https://github.com/lutzroeder/netron}.
