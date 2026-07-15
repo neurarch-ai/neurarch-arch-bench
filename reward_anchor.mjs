@@ -50,16 +50,58 @@ const JUDGE_SYSTEM =
   'to the spec (structurally sound, connected, required layers present, within ' +
   'any stated budget). Answer with exactly one word: PASS or FAIL.';
 
+/** Minimally corrupt a solved model so it fails the grader: one edit away from
+ *  correct. Tries dropping a connection, breaking attention divisibility, then
+ *  dropping a component; returns the first corruption the grader rejects. */
+function nearMiss(task, solved, reference, idx = 0) {
+  const nAct = reference.length, types = reference.map(a => a.type);
+  const tryGrade = (m) => !gradeTask(task, m, nAct, types).pass;
+  const corruptions = [
+    () => {           // drop the last connection -> usually disconnects the graph
+      if (solved.connections.length <= 1) return null;
+      const m = structuredClone(solved); m.connections.pop();
+      return tryGrade(m) ? { m, kind: 'dropped-connection' } : null;
+    },
+    () => {           // break attention divisibility with a one-parameter tweak
+      const m = structuredClone(solved);
+      const att = m.components.find(c => c.params && c.params.numHeads);
+      if (!att) return null;
+      att.params.numHeads = att.params.numHeads + 1;
+      return tryGrade(m) ? { m, kind: 'broken-divisibility' } : null;
+    },
+    () => {           // drop the last component and its edges
+      if (solved.components.length <= 2) return null;
+      const m = structuredClone(solved);
+      const gone = m.components.pop();
+      m.connections = m.connections.filter(c => c.from !== gone.id && c.to !== gone.id && c.from !== gone.name && c.to !== gone.name);
+      return tryGrade(m) ? { m, kind: 'dropped-component' } : null;
+    },
+  ];
+  // rotate the preferred corruption by task index so the negative set is diverse
+  for (let k = 0; k < corruptions.length; k++) {
+    const hit = corruptions[(idx + k) % corruptions.length]();
+    if (hit) return hit;
+  }
+  return null;
+}
+
 /** Build the verifier-labeled examples: (spec, graph, verifierPass). */
 function labeledExamples() {
-  const ex = [];
+  const ex = []; const kinds = {};
   for (const { task, start, reference } of generateCases(COUNT, SEED)) {
     const solved = applyActions(start, reference).model;
     const gPass = gradeTask(task, solved, reference.length, reference.map(a => a.type));
-    const gFail = gradeTask(task, start, 0, []);
     ex.push({ spec: task.spec, graph: serializeModel(solved), truth: gPass.pass });   // should be PASS
-    ex.push({ spec: task.spec, graph: serializeModel(start), truth: gFail.pass });     // should be FAIL
+    if (args['near-miss']) {
+      // subtle negative: one edit away from a passing design
+      const nm = nearMiss(task, solved, reference, ex.length);
+      if (nm) { ex.push({ spec: task.spec, graph: serializeModel(nm.m), truth: false }); kinds[nm.kind] = (kinds[nm.kind] ?? 0) + 1; }
+    } else {
+      const gFail = gradeTask(task, start, 0, []);
+      ex.push({ spec: task.spec, graph: serializeModel(start), truth: gFail.pass });   // should be FAIL
+    }
   }
+  if (args['near-miss']) console.log('near-miss negatives:', JSON.stringify(kinds));
   return ex;
 }
 
