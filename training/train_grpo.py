@@ -132,7 +132,11 @@ def run_eval(args):
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     import os, json as _json
-    tasks = fetch_tasks(args.env_url, args.count, args.seed)
+    if getattr(args, "curated", False):
+        tasks = http_json(f"{args.env_url}/tasks?split=curated")
+        print(f"evaluating on the curated split ({len(tasks)} hand-authored tasks)")
+    else:
+        tasks = fetch_tasks(args.env_url, args.count, args.seed)
 
     # fp16 on GPUs without bf16 (e.g. T4); low_cpu_mem_usage avoids a RAM spike
     # that can kill the Colab kernel while loading.
@@ -180,7 +184,10 @@ def run_eval(args):
             total_reward += PARSE_FAILURE_REWARD
             print(f"[PARSE-FAIL] {t['id']}")
             continue
-        g = grade(args.env_url, args.seed, args.count, t["index"], actions)
+        if getattr(args, "curated", False):
+            g = http_json(f"{args.env_url}/grade", {"taskId": t["id"], "actions": actions})
+        else:
+            g = grade(args.env_url, args.seed, args.count, t["index"], actions)
         passed += 1 if g["pass"] else 0
         total_reward += g["reward"]
         status = "PASS" if g["pass"] else "FAIL"
@@ -188,7 +195,7 @@ def run_eval(args):
               + ("" if g["pass"] else f"  ({'; '.join(g['failures'][:2])})"))
     n = len(tasks)
     print(f"\nmodel={args.model}")
-    print(f"split: seed={args.seed} count={n}")
+    print("split: curated" if getattr(args, "curated", False) else f"split: seed={args.seed} count={n}")
     print(f"pass@1: {passed}/{n} = {passed / n:.3f}")
     print(f"parse failures: {parse_failures}/{n}")
     print(f"mean reward: {total_reward / n:.3f}")
@@ -308,6 +315,7 @@ def main():
     p.add_argument("--lora", action="store_true", help="LoRA instead of full finetune")
     p.add_argument("--bf16", action="store_true")
     p.add_argument("--eval-only", action="store_true", help="report pass@1 on the split, no training")
+    p.add_argument("--curated", action="store_true", help="eval on the 12 curated tasks instead of a generated split")
     args = p.parse_args()
 
     ok = http_json(f"{args.env_url}/health")
