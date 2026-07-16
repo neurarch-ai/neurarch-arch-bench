@@ -39,7 +39,19 @@ const familyOf = (id) => id.replace(/^gen-/, '').replace(/-\d+$/, '');
 const stats = {};
 let written = 0, rejected = 0;
 
+// Never let a training row collide with the standard eval split: exclude any
+// case whose spec appears in the holdout (seed 999 x 512 covers eval splits up
+// to count=512). Override with --holdout-seed / --holdout-count; 0 disables.
+const HOLDOUT_SEED = parseInt(args['holdout-seed'] ?? '999', 10);
+const HOLDOUT_COUNT = parseInt(args['holdout-count'] ?? '512', 10);
+const holdout = new Set();
+if (HOLDOUT_COUNT > 0) {
+  for (const { task } of generateCases(HOLDOUT_COUNT, HOLDOUT_SEED)) holdout.add(task.spec);
+}
+let excluded = 0;
+
 for (const { task, start, reference } of generateCases(COUNT, SEED)) {
+  if (holdout.has(task.spec)) { excluded += 1; continue; }
   // The guarantee: re-apply and re-grade every reference before writing.
   const applied = applyActions(start, reference);
   const grade = gradeTask(task, applied.model, reference.length, reference.map(a => a.type));
@@ -75,6 +87,7 @@ raw.end();
 chat.end();
 
 console.log(`Wrote ${written} verified rows (${rejected} rejected by re-grading — should be 0)`);
+if (excluded) console.log(`  excluded ${excluded} row(s) colliding with the holdout split (seed ${HOLDOUT_SEED} x ${HOLDOUT_COUNT})`);
 console.log(`  ${rawPath}`);
 console.log(`  ${chatPath}`);
 console.log('By family:');

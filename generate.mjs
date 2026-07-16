@@ -38,7 +38,12 @@ function rng(seed) {
   };
 }
 
+// v2: parameters drawn from wide ranges (17k+ distinct tasks in a 20k draw);
+// v1 drew from small discrete lists (127 distinct) — see git history.
+export const GENERATOR_VERSION = 2;
+
 const pick = (r, xs) => xs[Math.floor(r() * xs.length)];
+const randInt = (r, lo, hi) => lo + Math.floor(r() * (hi - lo + 1));
 
 // ─── Graph builders ──────────────────────────────────────────────────────────
 
@@ -92,10 +97,10 @@ const EDIT_FORBIDDEN = ['replace_model', 'clear_canvas'];
 // ─── Design-from-spec families ───────────────────────────────────────────────
 
 function genClassifier(i, r) {
-  const D = pick(r, [16, 32, 48, 64, 128]);
-  const C = pick(r, [2, 3, 10]);
-  const depth = pick(r, [2, 3, 4]);
-  const widths = Array.from({ length: depth }, () => pick(r, [32, 64, 128, 256]));
+  const D = randInt(r, 8, 512);
+  const C = randInt(r, 2, 200);
+  const depth = randInt(r, 2, 6);
+  const widths = Array.from({ length: depth }, () => randInt(r, 16, 1024));
 
   const comps = [{ componentType: 'input', name: 'input', params: { shape: [1, D] } }];
   const conns = [];
@@ -130,9 +135,9 @@ function genClassifier(i, r) {
 }
 
 function genAutoencoder(i, r) {
-  const D = pick(r, [256, 512, 784]);
-  const hidden = pick(r, [128, 256]);
-  const bottleneck = pick(r, [16, 32, 64]);
+  const D = randInt(r, 64, 2048);
+  const hidden = randInt(r, 64, 1024);
+  const bottleneck = randInt(r, 4, 256);
   const dims = [D, hidden, bottleneck, hidden, D];
 
   const comps = [{ componentType: 'input', name: 'input', params: { shape: [1, D] } }];
@@ -163,16 +168,16 @@ function genAutoencoder(i, r) {
 }
 
 function genConvClassifier(i, r) {
-  const side = pick(r, [28, 32]);
-  const C = pick(r, [2, 10]);
-  const stages = pick(r, [2, 3]);
+  const side = randInt(r, 24, 64);
+  const C = randInt(r, 2, 100);
+  const stages = randInt(r, 2, 4);
 
   const comps = [{ componentType: 'input', name: 'input', params: { shape: [1, 3, side, side] } }];
   const conns = [];
   let prev = 'input';
   let inCh = 3;
   for (let k = 0; k < stages; k++) {
-    const outCh = pick(r, [8, 16, 32]);
+    const outCh = randInt(r, 8, 64);
     comps.push({ componentType: 'conv2d', name: `conv${k + 1}`, params: { inChannels: inCh, outChannels: outCh, kernelSize: 3 } });
     conns.push({ from: prev, to: `conv${k + 1}` });
     comps.push({ componentType: 'relu', name: `act${k + 1}`, params: {} });
@@ -201,12 +206,12 @@ function genConvClassifier(i, r) {
 }
 
 function genTransformerEncoder(i, r) {
-  const seq = pick(r, [64, 128]);
-  const D = pick(r, [128, 256]); // divisible by every head count below
-  const heads = pick(r, [4, 8]);
-  const blocks = pick(r, [1, 2]);
-  const C = pick(r, [2, 5]);
-  const vocab = pick(r, [20_000, 30_000]);
+  const seq = randInt(r, 32, 512);
+  const heads = pick(r, [2, 4, 8]);
+  const D = heads * randInt(r, 8, 64);   // divisible by heads by construction
+  const blocks = randInt(r, 1, 3);
+  const C = randInt(r, 2, 100);
+  const vocab = randInt(r, 8_000, 50_000);
 
   const comps = [
     { componentType: 'input', name: 'input', params: { shape: [1, seq] } },
@@ -240,12 +245,13 @@ function genTransformerEncoder(i, r) {
 }
 
 function genGQAEncoder(i, r) {
-  const seq = pick(r, [64, 128]);
-  const D = pick(r, [128, 256]); // divisible by 8
-  const kv = pick(r, [2, 4]);    // divides 8
-  const blocks = pick(r, [1, 2]);
-  const C = pick(r, [2, 5]);
-  const vocab = pick(r, [20_000, 30_000]);
+  const seq = randInt(r, 32, 512);
+  const heads = pick(r, [4, 8, 16]);
+  const D = heads * randInt(r, 8, 48);          // divisible by heads
+  const kv = pick(r, { 4: [2], 8: [2, 4], 16: [2, 4, 8] }[heads]);  // divides heads
+  const blocks = randInt(r, 1, 3);
+  const C = randInt(r, 2, 100);
+  const vocab = randInt(r, 8_000, 50_000);
 
   const comps = [
     { componentType: 'input', name: 'input', params: { shape: [1, seq] } },
@@ -254,7 +260,7 @@ function genGQAEncoder(i, r) {
   const conns = [{ from: 'input', to: 'embed' }];
   let prev = 'embed';
   for (let k = 0; k < blocks; k++) {
-    comps.push({ componentType: 'groupedQueryAttention', name: `attn${k + 1}`, params: { embedDim: D, numHeads: 8, numKVHeads: kv } });
+    comps.push({ componentType: 'groupedQueryAttention', name: `attn${k + 1}`, params: { embedDim: D, numHeads: heads, numKVHeads: kv } });
     conns.push({ from: prev, to: `attn${k + 1}` });
     comps.push({ componentType: 'layerNorm', name: `norm${k + 1}`, params: { normalizedShape: [D] } });
     conns.push({ from: `attn${k + 1}`, to: `norm${k + 1}` });
@@ -284,17 +290,20 @@ function genGQAEncoder(i, r) {
 // ─── Edit-in-place families ──────────────────────────────────────────────────
 
 function genRepairAttention(i, r) {
-  const seq = pick(r, [64, 128]);
-  const D = pick(r, [96, 128, 192, 256]);
-  const C = pick(r, [2, 5]);
-  const vocab = pick(r, [20_000, 30_000]);
+  const seq = randInt(r, 32, 512);
+  const C = randInt(r, 2, 100);
+  const vocab = randInt(r, 8_000, 50_000);
   const gqa = r() < 0.5;
+  // GQA branch keeps numHeads=8, so its D must be divisible by 8 (the planted
+  // defect is ONLY the KV divisibility); MHA branch just needs an even D.
+  const D = gqa ? 8 * randInt(r, 8, 64) : 2 * randInt(r, 32, 256);
 
-  // Broken by construction: none of these head counts divide any D above /
-  // none of these KV counts divide 8.
-  const badHeads = pick(r, [5, 7, 11]);
+  // Broken by construction: pick an odd prime that does NOT divide D (falls
+  // back to D-1, which never divides D for D>2) / a KV count that does not
+  // divide 8.
+  const badHeads = [5, 7, 11, 13].find(h => D % h !== 0) ?? (D - 1);
   const badKV = pick(r, [3, 5, 7]);
-  const fixHeads = pick(r, [4, 8]); // divides every D above
+  const fixHeads = [16, 8, 4, 2].find(h => D % h === 0);  // D is even, so >=2 divides
   const fixKV = pick(r, [2, 4]);    // divides 8
 
   const attn = gqa
@@ -330,11 +339,11 @@ function genRepairAttention(i, r) {
 }
 
 function genBudgetTrim(i, r) {
-  const D = pick(r, [64, 128]);
-  const C = pick(r, [2, 10]);
-  const depth = pick(r, [2, 3]);
-  const bigW = pick(r, [2048, 4096]);
-  const smallW = pick(r, [128, 256]);
+  const D = randInt(r, 32, 256);
+  const C = randInt(r, 2, 50);
+  const depth = randInt(r, 2, 4);
+  const bigW = randInt(r, 1536, 4096);          // start always exceeds the 2M budget
+  const smallW = randInt(r, 64, 384);           // reference always fits it
   const budget = 2_000_000;
 
   const { nodes, edges } = mlpNodes(D, Array.from({ length: depth }, () => bigW), C);
@@ -364,10 +373,10 @@ function genBudgetTrim(i, r) {
 }
 
 function genInsertNorm(i, r) {
-  const D = pick(r, [32, 64, 128]);
-  const C = pick(r, [2, 3, 10]);
-  const depth = pick(r, [2, 3]);
-  const widths = Array.from({ length: depth }, () => pick(r, [64, 128, 256]));
+  const D = randInt(r, 16, 256);
+  const C = randInt(r, 2, 100);
+  const depth = randInt(r, 2, 5);
+  const widths = Array.from({ length: depth }, () => randInt(r, 32, 512));
 
   const { nodes, edges } = mlpNodes(D, widths, C);
   const inserts = widths.map((w, k) => ({
@@ -378,7 +387,7 @@ function genInsertNorm(i, r) {
   return {
     task: {
       id: `gen-norm-${i}`,
-      spec: `This MLP trains unstably. Insert a batchNorm1d after each of the ${depth} hidden linear layers (between the linear and its activation), with numFeatures matching each layer's output width. Do not rebuild the model from scratch.`,
+      spec: `This ${D}-feature, ${C}-class MLP trains unstably. Insert a batchNorm1d after each of the ${depth} hidden linear layers (between the linear and its activation), with numFeatures matching each layer's output width. Do not rebuild the model from scratch.`,
       constraints: {
         forbidBlockers: true, minScore: 50, mustContainTypes: ['batchNorm1d'],
         minComponents: nodes.length + depth, mustReachOutput: true,
@@ -393,9 +402,9 @@ function genInsertNorm(i, r) {
 /** Two-tower retrieval: two inputs -> two equal-width MLP towers ->
  *  concatenate -> scoring head. Exercises multi-input graphs. */
 function genTwoTower(i, r) {
-  const Du = pick(r, [32, 64, 128]);
-  const Di = pick(r, [32, 64, 128]);
-  const W = pick(r, [64, 128, 256]);
+  const Du = randInt(r, 16, 256);
+  const Di = randInt(r, 16, 256);
+  const W = randInt(r, 32, 512);
 
   const comps = [
     { componentType: 'input', name: 'user_input', params: { shape: [1, Du] } },
@@ -451,10 +460,10 @@ function genTwoTower(i, r) {
  *  params land inside [min, max]. The inverse of genBudgetTrim, and the first
  *  family with a two-sided budget. */
 function genParamGrow(i, r) {
-  const D = pick(r, [32, 64]);
-  const C = pick(r, [2, 10]);
-  const tinyW = pick(r, [8, 16]);
-  const bigW = pick(r, [768, 1024]);
+  const D = randInt(r, 16, 128);
+  const C = randInt(r, 2, 50);
+  const tinyW = randInt(r, 4, 24);
+  const bigW = randInt(r, 640, 1400);           // lands params inside [400k, 4M] for all D, C here
   const minP = 400_000;
   const maxP = 4_000_000;
 
@@ -469,7 +478,7 @@ function genParamGrow(i, r) {
   return {
     task: {
       id: `gen-grow-${i}`,
-      spec: `This 2-hidden-layer MLP is far too small for its workload. Widen the hidden layers in place so total params land between ${minP / 1000}k and ${maxP / 1e6}M, keeping consistent in/out features. Do not rebuild the model from scratch.`,
+      spec: `This 2-hidden-layer MLP (${D}-feature input, ${C} classes) is far too small for its workload. Widen the hidden layers in place so total params land between ${minP / 1000}k and ${maxP / 1e6}M, keeping consistent in/out features. Do not rebuild the model from scratch.`,
       budget: { maxParams: maxP },
       constraints: {
         forbidBlockers: true, minScore: 50, minParams: minP, maxParams: maxP,
