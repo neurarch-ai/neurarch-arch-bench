@@ -285,8 +285,23 @@ def run_train(args):
         print(f"[warn] GRPOConfig (TRL {getattr(__import__('trl'), '__version__', '?')}) "
               f"does not accept {dropped}; using its defaults for those.")
     cfg = GRPOConfig(**cfg_kwargs)
+    # If --model is a LoRA adapter dir (what train_sft.py saves), GRPOTrainer
+    # cannot load it as a path; merge the adapter into its base model first.
+    import os as _os, json as _json2
+    model_arg = args.model
+    _acfg = _os.path.join(str(args.model), "adapter_config.json")
+    if _os.path.isdir(str(args.model)) and _os.path.exists(_acfg):
+        import torch as _torch
+        from transformers import AutoModelForCausalLM as _AM
+        from peft import PeftModel as _PM
+        _base = _json2.load(open(_acfg)).get("base_model_name_or_path") or "Qwen/Qwen2.5-1.5B-Instruct"
+        _dtype = _torch.bfloat16 if (_torch.cuda.is_available() and _torch.cuda.is_bf16_supported()) else _torch.float16
+        print(f"[info] {args.model} is a LoRA adapter; merging into base {_base} for RL")
+        _m = _AM.from_pretrained(_base, torch_dtype=_dtype, low_cpu_mem_usage=True)
+        model_arg = _PM.from_pretrained(_m, args.model).merge_and_unload()
+
     trainer = GRPOTrainer(
-        model=args.model,
+        model=model_arg,
         reward_funcs=arch_reward,
         args=cfg,
         train_dataset=ds,
