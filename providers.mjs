@@ -120,9 +120,32 @@ function evalIntExpr(expr) {
 export function parseActions(raw) {
   let s = raw.trim();
   if (s.startsWith('```')) s = s.replace(/```json?\n?/g, '').replace(/```\n?/g, '');
-  const m = s.match(/\{[\s\S]*\}/);
-  if (!m) throw new Error('no JSON object in reply');
-  const json = m[0];
+  // Prefer the FIRST balanced {...} block that contains "actions": models
+  // sometimes append prose ("Wait, ...") or a second JSON attempt after a valid
+  // object, which a greedy first-{-to-last-} match would swallow.
+  let json = null;
+  for (let i = 0; i < s.length && json === null; i++) {
+    if (s[i] !== '{') continue;
+    let depth = 0, inStr = false, esc = false;
+    for (let j = i; j < s.length; j++) {
+      const ch = s[j];
+      if (esc) { esc = false; continue; }
+      if (ch === '\\') { esc = true; continue; }
+      if (ch === '"') { inStr = !inStr; continue; }
+      if (inStr) continue;
+      if (ch === '{') depth++;
+      else if (ch === '}' && --depth === 0) {
+        const cand = s.slice(i, j + 1);
+        if (cand.includes('"actions"')) json = cand;
+        break;
+      }
+    }
+  }
+  if (json === null) {
+    const m = s.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('no JSON object in reply');
+    json = m[0];
+  }
   let obj;
   try {
     obj = JSON.parse(json);

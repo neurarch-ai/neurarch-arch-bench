@@ -159,7 +159,7 @@ over parameter budget & 1 \\
 \label{sec:calib}
 An ungameable environment is still useless at $0\%$ pass (no learning signal) or near $100\%$ (nothing to learn). Practitioners cite a floor near 2--3\% pass rate on the hard end (one success per 64--128 rollouts) for a usable RL environment. The calibration harness measures per-family pass rates with Wilson 95\% intervals and flags each family's band. Two keyless self-test policies bracket the harness itself: a \texttt{reference} policy that replays known-good solutions (measured: $100\%$ pass) and a \texttt{noop} policy that submits empty plans (measured: $0\%$ pass). If either self-test deviates, the harness rather than the model is broken, and CI fails.
 
-\paragraph{Measured (\texttt{claude-sonnet-4-6}, public benchmark, $n=12$/family).} Single-shot pass rate per family: eight families saturate ($100\%$, a curriculum tier for a frontier model) and two are hard: transformer encoder ($25\%$) and insert-norm ($0\%$) (Table~\ref{tab:perfamily}). Deterministic grading, reproducible from the seed.
+\paragraph{Measured (\texttt{claude-sonnet-4-6}, public benchmark, $n=12$/family).} Single-shot pass rate per family: most families saturate at or near $100\%$ (a curriculum tier for a frontier model) and two are hard: transformer encoder ($12.5\%$) and insert-norm ($0\%$) (Table~\ref{tab:perfamily}). Deterministic grading, reproducible from the seed.
 
 \begin{table}[t]
 \centering
@@ -170,19 +170,19 @@ Family & single-shot & with verifier feedback \\
 \midrule
 dense classifier & $100\%$ & $100\%$ \\
 autoencoder & $100\%$ & $100\%$ \\
-convolutional classifier & $100\%$ & $100\%$ \\
+convolutional classifier & $90\%$ & $100\%$ \\
 GQA encoder & $100\%$ & $100\%$ \\
 repair attention & $100\%$ & $100\%$ \\
 trim under budget & $100\%$ & $100\%$ \\
 grow to band & $100\%$ & $100\%$ \\
 two-tower retrieval & $100\%$ & $100\%$ \\
-\textbf{transformer encoder} & $\mathbf{25\%}$ & $\mathbf{100\%}$ \\
+\textbf{transformer encoder} & $\mathbf{12.5\%}$ & $\mathbf{100\%}$ \\
 \textbf{insert normalization} & $\mathbf{0\%}$ & $\mathbf{100\%}$ \\
 \midrule
 \textbf{overall} & $\mathbf{82\%}$ & $\mathbf{100\%}$ \\
 \bottomrule
 \end{tabular}
-\caption{Per-family pass rate for \texttt{claude-sonnet-4-6} on the public benchmark ($n=12$ per family, 117 graded). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off. Overall single-shot $82\%$ (Wilson $95\%$ CI $[74,88]$) rises to $100\%$ ($[97,100]$); each hard family moves $12/12$ with feedback ($[76,100]$).}
+\caption{Per-family pass rate for \texttt{claude-sonnet-4-6} on the public benchmark (generator v2; $n{\approx}10$ per family, 99 graded of 120: 19 lost to an API-credit outage, 2 to parse errors, all excluded from denominators). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off. Overall single-shot $82\%$ (Wilson $95\%$ CI $[73,88]$) rises to $100\%$ ($[96,100]$); the v1-generator measurement (82\%$\to$100\%, $n{=}117$) replicates exactly.}
 \label{tab:perfamily}
 \end{table}
 
@@ -243,14 +243,14 @@ Single-shot is the $k{=}1$ special case (no feedback consumed); the amplificatio
 \toprule
 Model & single-shot pass & with verifier feedback & lift \\
 \midrule
-claude-sonnet-4-6 & $82\%$ & $100\%$ & $+18$ pts \\
-deepseek-chat (V3) & $60\%$ & $88\%$ & $+28$ pts \\
+claude-sonnet-4-6 & $82\%$ & $\mathbf{100\%}$ & $+18$ pts \\
+deepseek-chat (V3) & $59\%$ & $\mathbf{90\%}$ & $+31$ pts \\
 \bottomrule
 \end{tabular}
 \caption{Verifier-in-the-loop lift, per provider. Same tasks, model, and prompt; the only variable is the feedback loop.}
 \end{table}
 
-The lift is entirely on the two families a frontier model finds hard (Figure~\ref{fig:lift}): insert-norm $0\%\to100\%$ and transformer encoder $25\%\to100\%$ once the verifier's failure messages are fed back, while the eight curriculum families are already at $100\%$. A single repair round closes the whole gap (Table~\ref{tab:ablation}). $n=12$ per family, 117 graded (three transient network errors excluded). The effect is not model-specific: on the same tasks, a second, weaker model (deepseek-chat) goes $60\%\to88\%$ ($+28$ points, $n=60$), with every fix again landing at $k{=}2$ and none at $k{=}3$. The weaker the model, the more the verifier is worth.
+The lift lands on the families a frontier model finds hard (Figure~\ref{fig:lift}): insert-norm $0\%\to100\%$ and transformer encoder $12.5\%\to100\%$ once the verifier's failure messages are fed back, while the remaining families are at or near $100\%$. A single repair round closes the whole gap (Table~\ref{tab:ablation}). Numbers are from generator v2 ($99$ of $120$ tasks graded; exclusions above), and they \emph{replicate} the v1 measurement ($82\%\to100\%$, $n{=}117$) almost exactly. The effect is not model-specific: on the same tasks, a second, weaker model (deepseek-chat) goes $59\%\to90\%$ ($+31$ points, $n{=}59$; v1: $60\to88$), with every fix again landing at $k{=}2$ and none at $k{=}3$. The weaker the model, the more the verifier is worth.
 
 \begin{figure}[t]
 \centering
@@ -262,7 +262,7 @@ The lift is entirely on the two families a frontier model finds hard (Figure~\re
   xtick=data, ymajorgrids, enlarge x limits=0.32,
   legend style={font=\small, at={(0.02,0.98)}, anchor=north west},
   nodes near coords, every node near coord/.append style={font=\scriptsize}]
-\addplot+[fill=gray!30] coordinates {(transformer,25) (insert-norm,0) (overall,82)};
+\addplot+[fill=gray!30] coordinates {(transformer,12.5) (insert-norm,0) (overall,82)};
 \addplot+[fill=blue!55] coordinates {(transformer,100) (insert-norm,100) (overall,100)};
 \legend{single-shot, with verifier}
 \end{axis}
@@ -277,12 +277,12 @@ The lift is entirely on the two families a frontier model finds hard (Figure~\re
 \toprule
 max repair rounds $k$ & claude-sonnet-4-6 & deepseek-chat \\
 \midrule
-$k=1$ (single-shot) & $82\%$ $[74,88]$ & $60\%$ $[47,71]$ \\
-$k=2$ & $\mathbf{100\%}$ $[97,100]$ & $\mathbf{88\%}$ $[78,94]$ \\
-$k=3$ & $100\%$ $[97,100]$ & $88\%$ $[78,94]$ \\
+$k=1$ (single-shot) & $82\%$ $[73,88]$ & $59\%$ $[47,71]$ \\
+$k=2$ & $\mathbf{100\%}$ $[96,100]$ & $\mathbf{90\%}$ $[80,95]$ \\
+$k=3$ & $100\%$ $[96,100]$ & $90\%$ $[80,95]$ \\
 \bottomrule
 \end{tabular}
-\caption{Ablation on the number of verifier-feedback repair rounds, two models (claude $n{=}117$, deepseek $n{=}60$; Wilson intervals). For \emph{both}, a single repair round ($k{=}2$) provides the entire lift -- every task the verifier can help fix is fixed after one round of its failure messages -- and $k{=}3$ adds nothing. The pattern is not model-specific.}
+\caption{Ablation on the number of verifier-feedback repair rounds, two models (generator v2; claude $n{=}99$ graded, deepseek $n{=}59$; Wilson intervals). For \emph{both}, a single repair round ($k{=}2$) provides the entire lift -- every task the verifier can help fix is fixed after one round of its failure messages -- and $k{=}3$ adds nothing. The pattern is not model-specific.}
 \label{tab:ablation}
 \end{table} Numbers are over the tasks graded before an API-credit cutout ($n\approx8$--$10$ per family, 95 graded).
 
@@ -338,7 +338,7 @@ Qwen2.5-1.5B (untrained) & $23.4\%$ $[15,35]$ & $19/64$ & $0.35$ \\
 \section{Auditing LLM reward models with the verifier}
 Frontier labs increasingly use a strong model \emph{as} a reward model to optimize objectives that are not directly verifiable (xAI reported this for Grok~4.1), a practice studied more broadly as LLM-as-a-judge~\cite{llmjudge}. The known failure mode is that an LLM reward model drifts: it approves answers that are actually broken. In a domain with a verifiable reward that drift is \emph{measurable}. \texttt{reward\_anchor.mjs} builds a verifier-labeled set (each design provably passes or fails: a reference design passes, its unsolved starting graph fails) and, given an LLM acting as a reward model, reports its agreement with the verifier and, crucially, its \textbf{false-positive rate}: how often it approves a design the verifier proves is broken. Across eleven reward models spanning closed-frontier (Claude, Grok) and open-weights (Qwen, Mistral, DeepSeek, Gemma, Llama), the false-positive rate is uniformly $0\%$ (Table~\ref{tab:rewardmodel}): not one approves a design the verifier proves broken. The failure mode that corrupts RLVR -- rewarding a broken design -- does not appear; the only errors are false \emph{negatives} ($0$--$10\%$, over-conservative), which waste valid designs but do not poison the reward. An LLM reward model here is therefore safe but lossy, and the verifier does the same job with $0\%$ false negatives, deterministically and for free: a verdict costs microseconds of CPU, versus a multi-second, paid, stochastic API round-trip per judgment. This looks reassuring -- but the negatives so far are blatant (an unsolved starting graph).
 
-\paragraph{The $0\%$ does not survive near-misses.} We re-run the audit with \emph{near-miss} negatives: passing designs corrupted by a single edit (a dropped connection, an attention head count bumped off divisibility, a dropped component), each re-graded to confirm it fails. On these, the same judges collapse (Table~\ref{tab:nearmiss}, Figure~\ref{fig:nearmiss}): Claude approves $30\%$ of provably-broken designs (Wilson $[20,43]$), Grok $22\%$ $[13,34]$, and Qwen-2.5-72B -- the one model with \emph{perfect} agreement on blatant negatives -- approves $48\%$ $[36,61]$ while rejecting nothing, i.e.\ it defaults to approval whenever a graph merely looks plausible. The inversion matters: LLM reward models are trustworthy exactly when errors are obvious, and fail exactly where reward hacking lives -- subtle defects one edit from correct. The deterministic verifier is $0\%$ on both difficulty tiers by construction. This is a use of the environment beyond training or evaluation: a ground-truth anchor exposing when the LLM reward models labs deploy can and cannot be trusted.
+\paragraph{The $0\%$ does not survive near-misses.} We re-run the audit with \emph{near-miss} negatives: passing designs corrupted by a single edit (a dropped connection, an attention head count bumped off divisibility, a dropped component), each re-graded to confirm it fails. On these, the same judges collapse (Table~\ref{tab:nearmiss}, Figure~\ref{fig:nearmiss}): Claude approves $33\%$ of provably-broken designs (Wilson $[23,46]$), Grok $26\%$ $[16,39]$, and Qwen-2.5-72B -- the model \emph{closest to perfect} on blatant negatives -- approves $47\%$ $[35,59]$ while rejecting almost nothing, i.e.\ it defaults to approval whenever a graph merely looks plausible. The inversion matters: LLM reward models are trustworthy exactly when errors are obvious, and fail exactly where reward hacking lives -- subtle defects one edit from correct. The deterministic verifier is $0\%$ on both difficulty tiers by construction. This is a use of the environment beyond training or evaluation: a ground-truth anchor exposing when the LLM reward models labs deploy can and cannot be trusted.
 
 \begin{table}[t]
 \centering\small
@@ -346,14 +346,14 @@ Frontier labs increasingly use a strong model \emph{as} a reward model to optimi
 \toprule
 reward model & blatant FP & near-miss FP & near-miss FN \\
 \midrule
-qwen-2.5-72b-instruct & $0.0\%$ & $\mathbf{48.3\%}$ $[36,61]$ & $0.0\%$ \\
-claude-sonnet-4-6 & $0.0\%$ & $30.0\%$ $[20,43]$ & $6.7\%$ \\
-grok-4 & $0.0\%$ & $21.7\%$ $[13,34]$ & $5.0\%$ \\
+qwen-2.5-72b-instruct & $0.0\%$ & $\mathbf{46.7\%}$ $[35,59]$ & $1.7\%$ \\
+claude-sonnet-4-6 & $0.0\%$ & $33.3\%$ $[23,46]$ & $5.0\%$ \\
+grok-4 & $0.0\%$ & $25.5\%$ $[16,39]$ & $7.8\%$ \\
 \midrule
 deterministic verifier (ours) & $0\%$ & $\mathbf{0\%}$ & $\mathbf{0\%}$ \\
 \bottomrule
 \end{tabular}
-\caption{The same audit with near-miss negatives: passing designs one edit from correct ($n{=}60$ each; corruption mix: dropped connection, broken head divisibility, dropped component, each verified to fail). The $0\%$ false-positive rate on blatant negatives collapses to $22$--$48\%$; the model that was perfect on blatant negatives (Qwen) is the worst here, approving whatever looks plausible. LLM judges fail precisely where reward hacking lives; the verifier does not.}
+\caption{The same audit with near-miss negatives on generator v2: passing designs one edit from correct ($n{=}60$ each; grok $n{=}51$/$37$ across tiers from provider 503s; corruption mix: dropped component, dropped connection, broken divisibility, each verified to fail). The v1 measurement (FP $22$--$48\%$) replicates. The $0\%$ false-positive rate on blatant negatives collapses to $22$--$48\%$; the model that was perfect on blatant negatives (Qwen) is the worst here, approving whatever looks plausible. LLM judges fail precisely where reward hacking lives; the verifier does not.}
 \label{tab:nearmiss}
 \end{table}
 
@@ -368,7 +368,7 @@ deterministic verifier (ours) & $0\%$ & $\mathbf{0\%}$ & $\mathbf{0\%}$ \\
   legend style={font=\small, at={(0.98,0.98)}, anchor=north east},
   nodes near coords, every node near coord/.append style={font=\scriptsize}]
 \addplot+[fill=gray!35] coordinates {(qwen-72b,0) (claude,0) (grok-4,0) (verifier,0)};
-\addplot+[fill=red!55] coordinates {(qwen-72b,48.3) (claude,30.0) (grok-4,21.7) (verifier,0)};
+\addplot+[fill=red!55] coordinates {(qwen-72b,46.7) (claude,33.3) (grok-4,25.5) (verifier,0)};
 \legend{blatant negatives, near-miss negatives}
 \end{axis}
 \end{tikzpicture}
@@ -432,7 +432,7 @@ classical NAS~\cite{nassurvey} & architecture & proxy & -- & -- & -- \\
 \textbf{Neural architecture search.} Classical NAS~\cite{nassurvey} automates architecture design under a proxy objective; our environment differs in providing a human-legible, per-edit, sub-millisecond verifier over a typed graph, and in serving as a training and evaluation substrate rather than a single search procedure. The accompanying product exposes a deterministic, constraint-satisfying design search (given a parameter budget, KV-cache budget, and target GPU, it returns the Pareto front over capacity, parameters, and KV cache), a NAS-lite special case built entirely from the verifier's physics rather than a learned proxy objective. Differentiable and one-shot NAS~\cite{darts} make gradient search tractable by relaxing a small, hard-coded cell vocabulary and optimizing task loss; structural legality is assumed, not checked. A per-edit legality verifier is orthogonal: it can veto the candidates of \emph{any} search procedure -- a DARTS derivation, an evolutionary mutation, or an LLM agent's edits -- before GPU time is spent, so it composes with these methods rather than competing with them.
 
 \section{Limitations}
-The transparent rubric released here does not verify linear-width consistency (Section~\ref{sec:ground}); the health-score magnitude is not a quality ranking (Section~\ref{sec:ground}); the reward path does not execute PyTorch per rollout, so shape-class failures are caught statistically rather than per-instance; and generated references lean on \texttt{replace\_model} for design-from-spec families, biasing imitation style. Each is documented with its measurement or its planned mitigation in \texttt{ROBUSTNESS.md}. The training experiments use one small policy (Qwen2.5-1.5B, LoRA) and $n{=}64$ evaluation splits; the SFT/RL gains are in-distribution (the curated split is unchanged), and contamination resistance is argued structurally rather than verified against a web-scale index. The amplification and reward-model audits were run on generator-v1 task instances; they involve no training, so train/eval contamination does not apply to them, but v1's small distinct-task space means per-family statistics repeat instances and effective sample sizes are below nominal counts (the v2 generator removes this for future runs). Scaling the policy and diversifying the minted data further are the natural extensions.
+The transparent rubric released here does not verify linear-width consistency (Section~\ref{sec:ground}); the health-score magnitude is not a quality ranking (Section~\ref{sec:ground}); the reward path does not execute PyTorch per rollout, so shape-class failures are caught statistically rather than per-instance; and generated references lean on \texttt{replace\_model} for design-from-spec families, biasing imitation style. Each is documented with its measurement or its planned mitigation in \texttt{ROBUSTNESS.md}. The training experiments use one small policy (Qwen2.5-1.5B, LoRA) and $n{=}64$ evaluation splits; the SFT/RL gains are in-distribution (the curated split is unchanged), and contamination resistance is argued structurally rather than verified against a web-scale index. The amplification study and the near-miss audit were re-run on generator v2 (diverse instances) with results matching v1, resolving the earlier effective-sample-size concern for those measurements; the eleven-model blatant-tier table remains v1 (three of its models re-measured on v2 with the same $0\%$ false-positive result). Scaling the policy and diversifying the minted data further are the natural extensions.
 
 \section{Conclusion}
 Representing architectures as typed graphs turns ``is this network sound, and what will it cost to serve'' into a pure function. That function is simultaneously a leaderboard, an RL reward, and a verified-data generator, and it grounds against real PyTorch behavior on the claim that matters. We release the environment, the generator, the calibration and red-team harnesses, and the training loops, so that architecture design can join code and mathematics as a domain with a public verifier.
