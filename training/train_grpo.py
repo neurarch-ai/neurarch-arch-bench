@@ -298,7 +298,17 @@ def run_train(args):
         _dtype = _torch.bfloat16 if (_torch.cuda.is_available() and _torch.cuda.is_bf16_supported()) else _torch.float16
         print(f"[info] {args.model} is a LoRA adapter; merging into base {_base} for RL")
         _m = _AM.from_pretrained(_base, torch_dtype=_dtype, low_cpu_mem_usage=True)
-        model_arg = _PM.from_pretrained(_m, args.model).merge_and_unload()
+        _merged = _PM.from_pretrained(_m, args.model).merge_and_unload()
+        # Save the merged model to disk and pass the PATH: the new RL adapter's
+        # config then records this dir as its base, so a later --eval-only load
+        # stacks the RL adapter on the SFT-merged weights, not the raw base.
+        _merged_dir = _os.path.join(args.out, "merged-base")
+        _merged.save_pretrained(_merged_dir)
+        from transformers import AutoTokenizer as _AT
+        _AT.from_pretrained(_base).save_pretrained(_merged_dir)
+        del _merged, _m
+        model_arg = _merged_dir
+        print(f"[info] merged model saved to {_merged_dir}; training on it")
 
     trainer = GRPOTrainer(
         model=model_arg,
