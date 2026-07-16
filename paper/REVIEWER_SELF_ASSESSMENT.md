@@ -39,7 +39,9 @@ environment-minted verified pairs lifts a 1.5B model from 23.4% to 85.9%
 held-out pass@1 (+62 pts, non-overlapping Wilson CIs), with the GRPO null kept
 and *explained* (raw policy cannot emit valid edits, so the gradient starves —
 the classic SFT-then-RL split, and the environment supplies both stages). The
-training-value claim is demonstrated; scaled SFT-then-RL is future work.
+training-value claim is demonstrated end to end: SFT 23->86%, then GRPO on the
+SFT checkpoint 79.7->89.1% with zero parse failures. The full SFT-then-RL
+recipe runs on the environment alone.
 
 The original objection, kept for the record: The paper ships a GRPO loop
 and a STaR loop but reports no training curve showing a policy *improving* on a
