@@ -10,7 +10,7 @@ A **borderline-to-weak-accept as a workshop paper today; borderline for a main
 track** without one more experiment. The environment, the verifier, the
 calibration/red-team methodology, and the 11-model reward-model audit are a
 genuine, well-scoped contribution with unusually honest reporting. The former blocker — no
-training result — is now resolved by the 62-point SFT lift from
+training result — is now resolved by the 59-point zero-overlap SFT lift (17.2 to 76.0, then 80.2 with GRPO) from
 environment-minted data; this is a solid main-track submission.
 
 ## Strengths a reviewer will credit
@@ -28,20 +28,23 @@ environment-minted data; this is a solid main-track submission.
 ## The one objection that matters most
 
 **"You call it an RL environment, but you never train a policy with RL against
-it. The headline 82→100 is inference-time repair (Alg. 2), not RL."**
+it. The headline 79→100 is inference-time repair (Alg. 2), not RL."**
 
 *Update: partially addressed.* The paper now includes an honest RL section: the
 released GRPO loop runs end-to-end on a free T4 (Qwen2.5-1.5B, LoRA), all
 checkpoints reported without cherry-picking, with the plain statement that at
 this scale the held-out metrics are within noise and non-monotonic. This
-*Resolved.* The paper now has a strong positive training result: SFT on 3,000
-environment-minted verified pairs lifts a 1.5B model from 23.4% to 85.9%
-held-out pass@1 (+62 pts, non-overlapping Wilson CIs), with the GRPO null kept
-and *explained* (raw policy cannot emit valid edits, so the gradient starves —
-the classic SFT-then-RL split, and the environment supplies both stages). The
-training-value claim is demonstrated end to end: SFT 23->86%, then GRPO on the
-SFT checkpoint 79.7->89.1% with zero parse failures. The full SFT-then-RL
-recipe runs on the environment alone.
+*Resolved (final, corrected protocol).* The paper now has a strong positive
+training result under a verified zero-overlap protocol (n=192): SFT on ~3,000
+environment-minted verified pairs lifts a 1.5B model from 17.2% to 76.0%
+held-out pass@1 (+59 pts, non-overlapping Wilson CIs), and 100 GRPO steps on
+the SFT checkpoint reach 80.2% (an independent GRPO rerun reproduces 154/192
+exactly). The GRPO-from-raw null is kept and *explained*: the raw policy cannot
+emit valid edits, so the gradient starves (the classic SFT-then-RL split, and
+the environment supplies both stages). The pre-audit chain (23.4->85.9, then
+79.7->89.1) is retained in the paper as the memorization measurement uncovered
+by our own contamination audit. The full SFT-then-RL recipe runs on the
+environment alone.
 
 The original objection, kept for the record: The paper ships a GRPO loop
 and a STaR loop but reports no training curve showing a policy *improving* on a
