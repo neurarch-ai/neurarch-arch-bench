@@ -1,0 +1,1093 @@
+{
+  "split": {
+    "kind": "generated",
+    "count": 120,
+    "seed": 7
+  },
+  "turns": 3,
+  "generatedAt": "2026-07-08T05:19:11.173Z",
+  "results": [
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4-6",
+      "n": 120,
+      "singleShot": 0.8,
+      "withVerifier": 0.975,
+      "liftPoints": 17.5,
+      "errors": 3,
+      "rescuedBy": {
+        "turn2": 21
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-0",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1561,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-1",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1375,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-2",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-3",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2927,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-4",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1107,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-5",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-6",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1335,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-7",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2108,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-8",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-9",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1148,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-10",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1178,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-11",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1375,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-12",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-13",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2422,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-14",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1069,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-15",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 823,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-16",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1275,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-17",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2362,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-18",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-19",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1179,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-20",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1565,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-21",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1375,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-22",
+      "error": "TypeError: fetch failed"
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-23",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2262,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-24",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1058,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-25",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 840,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-26",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1335,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-27",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2332,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-28",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-29",
+      "error": "TypeError: fetch failed"
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-30",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1565,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-31",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1360,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-32",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-33",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2269,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-34",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1179,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-35",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 840,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-36",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1330,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-37",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2335,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-38",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-39",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1206,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-40",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1183,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-41",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1360,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-42",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-43",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2272,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-44",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1183,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-45",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 840,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-46",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1461,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-47",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2204,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-48",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-49",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1166,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-50",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1367,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-51",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1648,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-52",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-53",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2272,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-54",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1053,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-55",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-56",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1488,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-57",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2330,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-58",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-59",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1227,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-60",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1561,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-61",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 2236,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-62",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1202,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-63",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2396,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-64",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1189,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-65",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 840,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-66",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1387,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-67",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2137,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-68",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-69",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1157,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-70",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1178,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-71",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1375,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-72",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1329,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-73",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2529,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-74",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1183,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-75",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-76",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1338,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-77",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2665,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-78",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-79",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1069,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-80",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1556,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-81",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1596,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-82",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1085,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-83",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1258,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-84",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1189,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-85",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-86",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1361,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-87",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2099,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-88",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-89",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1146,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-90",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1367,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-91",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 2232,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-92",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-93",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1087,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-94",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1276,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-95",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-96",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1440,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-97",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2153,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-98",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1500,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-99",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1273,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-100",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1556,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-101",
+      "error": "TypeError: fetch failed"
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-102",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-103",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2272,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-104",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1207,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-105",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-106",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1422,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-107",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2306,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-108",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-109",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1191,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-110",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1367,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-111",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1360,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-112",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1202,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-113",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1090,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-114",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1107,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-115",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-116",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1300,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-117",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2329,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-118",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-119",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1301,
+      "finalFailures": []
+    }
+  ]
+}

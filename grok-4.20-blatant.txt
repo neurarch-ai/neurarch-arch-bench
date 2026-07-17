@@ -1,0 +1,9 @@
+Verifier-labeled set: 60 examples (30 pass, 30 fail), seed 7.
+
+LLM reward model "grok" vs the verifier (n=60):
+  agreement:      95.0% (57/60)
+  FALSE POSITIVE: 0.0% (0/60)  <- approved a design the verifier proves is broken
+  false negative: 5.0% (3/60)
+
+The false-positive rate is the number a lab needs to trust an LLM reward model here.
+It can only be measured where a ground-truth verifier exists. That is the point.

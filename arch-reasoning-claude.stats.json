@@ -1,0 +1,11 @@
+{
+  "out": "arch-reasoning-claude.jsonl",
+  "mode": "claude (rejection-sampled, tries=2)",
+  "attempted": 500,
+  "kept": 327,
+  "rejected": 124,
+  "errored": 49,
+  "keptRate": 0.654,
+  "solveRate": 0.725,
+  "seed": 20260708
+}

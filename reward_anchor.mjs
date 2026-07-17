@@ -131,7 +131,7 @@ async function run() {
     } catch (e) { errored += 1; if (!firstErr) firstErr = e.message; }
   }
   const pct = x => `${(100 * x / Math.max(1, n)).toFixed(1)}%`;
-  console.log(`\nLLM reward model "${PROVIDER}" vs the verifier (n=${n}${errored ? `, ${errored} errored` : ''}):`);
+  console.log(`\nLLM reward model "${PROVIDER}" (${REGISTRY[PROVIDER].modelId()}) vs the verifier (n=${n}${errored ? `, ${errored} errored` : ''}):`);
   console.log(`  agreement:      ${pct(agree)} (${agree}/${n})`);
   console.log(`  FALSE POSITIVE: ${pct(falsePos)} (${falsePos}/${n})  <- approved a design the verifier proves is broken`);
   console.log(`  false negative: ${pct(falseNeg)} (${falseNeg}/${n})`);
