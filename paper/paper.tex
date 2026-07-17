@@ -17,7 +17,7 @@
 
 \title{A Verifiable Environment for Neural Architecture Design}
 \author{Xin Gao\\ Neurarch\\ \texttt{\href{https://neurarch.com}{neurarch.com}}}
-\date{Draft, \today}
+\date{Preprint, \today}
 
 \begin{document}
 \maketitle
@@ -26,7 +26,7 @@
 Reinforcement learning and agent evaluation both depend on a \emph{verifier}: a function that scores a candidate cheaply and without a human. Code and mathematics have compilers and unit tests; neural architecture design has had no public verifier. We present an environment in which an agent designs a neural network by emitting edits to a typed, structured graph, and a deterministic, sub-millisecond verifier grades the result against structural, budget, and serving-physics constraints -- no human or LLM in the scoring loop. The environment ships a procedural task generator (ten families, satisfiability and non-vacuity proofs, red-teamed anti-gaming constraints), a difficulty-calibration harness, and a grounding study: across $264$ architectures, verifier blockers predict PyTorch forward-pass failure at $96/96$, and we report honestly that the $0$--$100$ health score is a validity margin, not a quality ranking. Three findings follow. \emph{As a repair signal}, one round of verifier feedback lifts \texttt{claude-sonnet-4-6} from $79\%$ to $100\%$ and \texttt{deepseek-chat} from $59\%$ to $90\%$. \emph{As a data foundry}, fine-tuning a 1.5B model on $3{,}000$ minted verified pairs lifts strictly-unseen pass@1 from $17\%$ to $76\%$, and $100$ GRPO steps on top reach $80\%$ ($n{=}192$); a contamination audit we ran on ourselves, disclose, and ship shows the naive protocol would have reported $86\%$, quantifying the memorization share. \emph{As ground truth}, eleven LLM reward models score $0\%$ false-positive on blatantly broken designs yet approve $26$--$47\%$ of near-miss designs one edit from correct, failing exactly where reward hacking lives; the verifier is $0\%$ on both tiers. The same pure function is a leaderboard, an RL gym, and a verified-data generator; we release all of it.
 \end{abstract}
 
-\paragraph{Reproducibility note.} All results marked \emph{measured} are reproduced by the commands in the repository; the calibration, amplification, and reward-model results use provider API keys, the rest need neither keys nor GPUs. Code and data: \url{https://github.com/neurarch-ai/neurarch-arch-bench} (MIT).
+\paragraph{Reproducibility note.} All results marked \emph{measured} are reproduced by the commands in the repository; the calibration, amplification, and reward-model results use provider API keys, the rest need neither keys nor GPUs. Code and data: \url{https://github.com/neurarch-ai/neurarch-arch-bench} (MIT); verified reasoning traces: \url{https://huggingface.co/datasets/neurarch-ai/arch-reasoning-claude}; live leaderboard: \url{https://neurarch.com/leaderboard.html}.
 
 \section{Introduction}
 The scarce ingredient in modern agent training and evaluation is not the policy but the verifier. SWE-Bench~\cite{swebench} grades a code patch by running the project's own test suite; $\tau$-bench~\cite{taubench} grades a tool-using dialogue by diffing the resulting database state against a goal; in mathematics, programmatic answer checking underpins both benchmark grading and verifier training~\cite{gsm8k}. None of these requires a human judge or a second model, and this is precisely why they are trusted and why they can be used as training signals.
@@ -488,6 +488,9 @@ The twelve curated tasks are hand-authored from real production architectures. F
 
 \begin{figure}[h]
 \centering
+% To swap in real canvas renders (arXiv version only): export each template as
+% PNG from the Neurarch editor, save as figs/curated-{cnn,dlrm,bst,twotower}.png,
+% and replace this TikZ block with four \includegraphics{figs/curated-*.png} rows.
 \definecolor{nSlate}{HTML}{64748B}
 \definecolor{nCyan}{HTML}{06B6D4}
 \definecolor{nIndigo}{HTML}{4F46E5}
