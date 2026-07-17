@@ -314,7 +314,7 @@ The environment trains models through two channels, and we report both honestly.
 \label{fig:chain}
 \end{figure}
 
-\paragraph{Scaling, replication, and transfer.} Data scaling is steep and non-monotonic at the low end (Figure~\ref{fig:sftscale}, measured under the pre-audit protocol): $250$ and $500$ pairs \emph{underperform} the raw instruct model ($9.4\%$ and $14.1\%$ vs.\ $25.0\%$) -- a half-learned edit format displaces the base model's occasional valid outputs before replacing them -- while $1{,}000$ pairs recover to $34.4\%$ and $3{,}000$ reach that protocol's ceiling. The lift replicates across independent sessions ($85.9\%$ and $79.7\%$ under matching conditions). Transfer tracks data diversity, and the audit gave us a controlled comparison: models fine-tuned on the v1 data ($127$ distinct tasks) left the twelve hand-authored curated tasks unchanged ($3/12$, the untrained level), while the same recipe on the diverse v2 data doubles them to $6/12$ ($n{=}12$, suggestive rather than conclusive; surviving failures are substantive, e.g.\ missing attention). Diversity is the operative lever for out-of-distribution transfer, and the generator makes it a parameter rather than a labeling effort.
+\paragraph{Scaling, replication, and transfer.} Data scaling is steep and non-monotonic at the low end (Figure~\ref{fig:sftscale}; corrected zero-overlap protocol, $n{=}192$): $236$ and $474$ verified pairs \emph{underperform} the raw instruct model ($12.5\%$ and $15.1\%$ vs.\ $17.2\%$) -- a half-learned edit format displaces the base model's occasional valid outputs before replacing them -- while $945$ pairs cross above the baseline ($26.6\%$) and $3{,}010$ reach $76.0\%$; parse failures fall monotonically with data ($97\to58\to56\to14$ of $192$). The same U-shape appeared under the pre-audit protocol ($9.4\%$, $14.1\%$, $34.4\%$ against a $25.0\%$ baseline), so the non-monotonic onset is a property of the recipe rather than of a particular split. Transfer tracks data diversity, and the audit gave us a controlled comparison: models fine-tuned on the v1 data ($127$ distinct tasks) left the twelve hand-authored curated tasks unchanged ($3/12$, the untrained level), while the same recipe on the diverse v2 data doubles them to $6/12$ ($n{=}12$, suggestive rather than conclusive; surviving failures are substantive, e.g.\ missing attention). Diversity is the operative lever for out-of-distribution transfer, and the generator makes it a parameter rather than a labeling effort.
 
 \begin{figure}[t]
 \centering
@@ -322,17 +322,17 @@ The environment trains models through two channels, and we report both honestly.
 \begin{axis}[
   width=0.7\linewidth, height=5.2cm, xmode=log, log ticks with fixed point,
   xlabel={verified SFT pairs (log scale)}, ylabel={held-out pass@1 (\%)},
-  xtick={250,500,1000,3000}, ymin=0, ymax=100, ymajorgrids,
+  xtick={236,474,945,3010}, ymin=0, ymax=100, ymajorgrids,
   legend style={font=\small, at={(0.02,0.98)}, anchor=north west}]
-\addplot+[mark=*, thick] coordinates {(250,9.4) (500,14.1) (1000,34.4) (3000,85.9)};
+\addplot+[mark=*, thick] coordinates {(236,12.5) (474,15.1) (945,26.6) (3010,76.0)};
 \addlegendentry{SFT on minted pairs}
-\addplot+[only marks, mark=star, mark size=4.5pt] coordinates {(3000,89.1)};
+\addplot+[only marks, mark=star, mark size=4.5pt] coordinates {(3010,80.2)};
 \addlegendentry{+100 GRPO steps}
-\addplot[dashed, domain=250:3000] {25.0};
-\addlegendentry{untrained baseline ($25.0\%$)}
+\addplot[dashed, domain=236:3010] {17.2};
+\addlegendentry{untrained baseline ($17.2\%$)}
 \end{axis}
 \end{tikzpicture}
-\caption{Held-out pass@1 vs.\ number of environment-minted verified SFT pairs (Qwen2.5-1.5B, LoRA, 2 epochs, seed-999 split, $n{=}64$). The curve is steep: below ${\sim}1$k pairs the half-learned format underperforms the raw instruct model; $3$k pairs reach $85.9\%$. Pairs are free to mint, so the x-axis costs seconds of generation. The star marks $100$ GRPO steps on the $3$k checkpoint. Curve measured under the pre-audit v1 protocol (includes seen tasks); the corrected zero-overlap $3$k numbers are $76.0\%$ (SFT) and $80.2\%$ (+GRPO) at $n{=}192$.}
+\caption{Held-out pass@1 vs.\ environment-minted verified SFT pairs (Qwen2.5-1.5B, LoRA, 2 epochs; corrected zero-overlap protocol, seed-999 split, $n{=}192$). The x-axis is the number of verified rows actually trained on (nominal mints of $250/500/1000/3000$ minus rows colliding with the holdout). The curve is steep and non-monotonic: below ${\sim}1$k pairs the half-learned edit format underperforms the untrained model ($17.2\%$, dashed); $945$ pairs cross above ($26.6\%$); $3{,}010$ reach $76.0\%$. Pairs are free to mint, so the x-axis costs seconds of generation. The star marks $100$ GRPO steps on the $3$k checkpoint ($80.2\%$).}
 \label{fig:sftscale}
 \end{figure}
 
