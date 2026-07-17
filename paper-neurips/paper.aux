@@ -30,8 +30,8 @@
 \@writefile{toc}{\contentsline {paragraph}{Satisfiability and non-vacuity (measured).}{4}{section*.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Anti-gaming.}{4}{section*.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{A benchmark that bites (measured).}{4}{section*.7}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Per-family pass rate for \texttt  {claude-sonnet-4-6} on the public benchmark (generator v2; $n{=}12$ per family, all $120$ tasks graded with zero exclusions). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off. Overall single-shot $79\%$ (Wilson $95\%$ CI $[71,85]$) rises to $100\%$ ($[97,100]$); the v1-generator measurement ($82\%\to 100\%$, $n{=}117$) replicates within three points.}}{5}{table.2}\protected@file@percent }
-\newlabel{tab:perfamily}{{2}{5}{Per-family pass rate for \texttt {claude-sonnet-4-6} on the public benchmark (generator v2; $n{=}12$ per family, all $120$ tasks graded with zero exclusions). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off. Overall single-shot $79\%$ (Wilson $95\%$ CI $[71,85]$) rises to $100\%$ ($[97,100]$); the v1-generator measurement ($82\%\to 100\%$, $n{=}117$) replicates within three points}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Per-family pass rate for \texttt  {claude-sonnet-4-6} on the public benchmark (generator v2; $n{=}12$ per family, all $120$ tasks graded with zero exclusions). Seven families sit at $100\%$ and the convolutional classifier at $83\%$; the two the model finds hard are exactly where verifier-in-the-loop feedback (second column; Section~\ref {sec:amp}) pays off. Overall single-shot $79\%$ (Wilson $95\%$ CI $[71,85]$) rises to $100\%$ ($[97,100]$); the v1-generator measurement ($82\%\to 100\%$, $n{=}117$) replicates within three points.}}{5}{table.2}\protected@file@percent }
+\newlabel{tab:perfamily}{{2}{5}{Per-family pass rate for \texttt {claude-sonnet-4-6} on the public benchmark (generator v2; $n{=}12$ per family, all $120$ tasks graded with zero exclusions). Seven families sit at $100\%$ and the convolutional classifier at $83\%$; the two the model finds hard are exactly where verifier-in-the-loop feedback (second column; Section~\ref {sec:amp}) pays off. Overall single-shot $79\%$ (Wilson $95\%$ CI $[71,85]$) rises to $100\%$ ($[97,100]$); the v1-generator measurement ($82\%\to 100\%$, $n{=}117$) replicates within three points}{table.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Difficulty calibration}{5}{section.4}\protected@file@percent }
 \newlabel{sec:calib}{{4}{5}{Difficulty calibration}{section.4}{}}
 \@writefile{toc}{\contentsline {paragraph}{Measured (\texttt  {claude-sonnet-4-6}, public benchmark, $n=12$/family).}{5}{section*.8}\protected@file@percent }
@@ -49,20 +49,20 @@
 \citation{qwen25}
 \citation{lora}
 \citation{carlini}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Verifier-in-the-loop lift for \texttt  {claude-sonnet-4-6}. The overall gain ($79\to 100$) lands entirely on the two families a frontier model finds hard; the eight saturated families (all at $100\%$) are omitted for clarity.}}{7}{figure.4}\protected@file@percent }
-\newlabel{fig:lift}{{4}{7}{Verifier-in-the-loop lift for \texttt {claude-sonnet-4-6}. The overall gain ($79\to 100$) lands entirely on the two families a frontier model finds hard; the eight saturated families (all at $100\%$) are omitted for clarity}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Verifier-in-the-loop lift for \texttt  {claude-sonnet-4-6}. The overall gain ($79\to 100$; $25$ tasks rescued) is concentrated on the two families the model finds hard ($11$ fixes on the transformer encoder, $12$ on insert-norm), with the convolutional classifier contributing the remaining $2$; the seven families already at $100\%$ single-shot are omitted.}}{7}{figure.4}\protected@file@percent }
+\newlabel{fig:lift}{{4}{7}{Verifier-in-the-loop lift for \texttt {claude-sonnet-4-6}. The overall gain ($79\to 100$; $25$ tasks rescued) is concentrated on the two families the model finds hard ($11$ fixes on the transformer encoder, $12$ on insert-norm), with the convolutional classifier contributing the remaining $2$; the seven families already at $100\%$ single-shot are omitted}{figure.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Ablation on the number of verifier-feedback repair rounds, two models (generator v2; claude $n{=}120$, deepseek $n{=}59$; Wilson intervals). For \emph  {both}, a single repair round ($k{=}2$) provides the entire lift -- every task the verifier can help fix is fixed after one round of its failure messages -- and $k{=}3$ adds nothing. The pattern is not model-specific.}}{7}{table.4}\protected@file@percent }
 \newlabel{tab:ablation}{{4}{7}{Ablation on the number of verifier-feedback repair rounds, two models (generator v2; claude $n{=}120$, deepseek $n{=}59$; Wilson intervals). For \emph {both}, a single repair round ($k{=}2$) provides the entire lift -- every task the verifier can help fix is fixed after one round of its failure messages -- and $k{=}3$ adds nothing. The pattern is not model-specific}{table.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {7}Training on the environment}{7}{section.7}\protected@file@percent }
 \newlabel{sec:rl}{{7}{7}{Training on the environment}{section.7}{}}
 \@writefile{toc}{\contentsline {paragraph}{Verified SFT: the data foundry works.}{7}{section*.11}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{An audit, disclosed.}{7}{section*.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Scaling, replication, and transfer.}{7}{section*.13}\protected@file@percent }
 \citation{grpo}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The corrected-protocol checkpoint chain (Qwen2.5-1.5B, seed-999 strictly-unseen split, $n{=}192$; error bars are Wilson 95\% intervals). SFT on $3$k environment-minted verified pairs lifts pass@1 from $17.2\%$ to $76.0\%$ with non-overlapping intervals; $100$ GRPO steps on the merged SFT checkpoint reach $80.2\%$, a level an independent GRPO rerun reproduces exactly.}}{8}{figure.5}\protected@file@percent }
 \newlabel{fig:chain}{{5}{8}{The corrected-protocol checkpoint chain (Qwen2.5-1.5B, seed-999 strictly-unseen split, $n{=}192$; error bars are Wilson 95\% intervals). SFT on $3$k environment-minted verified pairs lifts pass@1 from $17.2\%$ to $76.0\%$ with non-overlapping intervals; $100$ GRPO steps on the merged SFT checkpoint reach $80.2\%$, a level an independent GRPO rerun reproduces exactly}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Held-out pass@1 vs.\ number of environment-minted verified SFT pairs (Qwen2.5-1.5B, LoRA, 2 epochs, seed-999 split, $n{=}64$). The curve is steep: below ${\sim }1$k pairs the half-learned format underperforms the raw instruct model; $3$k pairs reach $85.9\%$. Pairs are free to mint, so the x-axis costs seconds of generation. The star marks $100$ GRPO steps on the $3$k checkpoint. Curve measured under the pre-audit v1 protocol (includes seen tasks); the corrected zero-overlap $3$k numbers are $76.0\%$ (SFT) and $80.2\%$ (+GRPO) at $n{=}192$.}}{8}{figure.6}\protected@file@percent }
 \newlabel{fig:sftscale}{{6}{8}{Held-out pass@1 vs.\ number of environment-minted verified SFT pairs (Qwen2.5-1.5B, LoRA, 2 epochs, seed-999 split, $n{=}64$). The curve is steep: below ${\sim }1$k pairs the half-learned format underperforms the raw instruct model; $3$k pairs reach $85.9\%$. Pairs are free to mint, so the x-axis costs seconds of generation. The star marks $100$ GRPO steps on the $3$k checkpoint. Curve measured under the pre-audit v1 protocol (includes seen tasks); the corrected zero-overlap $3$k numbers are $76.0\%$ (SFT) and $80.2\%$ (+GRPO) at $n{=}192$}{figure.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Scaling, replication, and transfer.}{8}{section*.13}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{RL alone at small scale: an honest null, now explained.}{8}{section*.14}\protected@file@percent }
 \citation{llmjudge}
 \citation{prm}
@@ -100,10 +100,10 @@
 \newlabel{tab:compare}{{8}{11}{Where this environment sits: architecture design as a verifiable-reward domain, with a contamination-resistant procedural generator, red-teamed anti-gaming defenses, and a typed-graph action space}{table.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {11}Limitations}{11}{section.11}\protected@file@percent }
 \bibcite{swebench}{{1}{}{{}}{{}}}
-\bibcite{taubench}{{2}{}{{}}{{}}}
 \@writefile{toc}{\contentsline {section}{\numberline {12}Conclusion}{12}{section.12}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {A}Example curated tasks}{12}{appendix.A}\protected@file@percent }
 \newlabel{app:examples}{{A}{12}{Example curated tasks}{appendix.A}{}}
+\bibcite{taubench}{{2}{}{{}}{{}}}
 \bibcite{swegym}{{3}{}{{}}{{}}}
 \bibcite{rlvr}{{4}{}{{}}{{}}}
 \bibcite{r1}{{5}{}{{}}{{}}}
@@ -116,9 +116,9 @@
 \bibcite{llmjudge}{{12}{}{{}}{{}}}
 \bibcite{netron}{{13}{}{{}}{{}}}
 \bibcite{gsm8k}{{14}{}{{}}{{}}}
-\bibcite{wilson}{{15}{}{{}}{{}}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Four of the twelve curated tasks, as typed graphs, coloured by layer type (the same convention the accompanying production editor uses): a CIFAR-10 CNN, a DLRM click-through-rate ranker, a Behavior Sequence Transformer (which \emph  {requires} an attention layer), and a two-tower retrieval model (two encoders scored by a dot product). These are the states an agent edits and the verifier grades.}}{13}{figure.8}\protected@file@percent }
 \newlabel{fig:examples}{{8}{13}{Four of the twelve curated tasks, as typed graphs, coloured by layer type (the same convention the accompanying production editor uses): a CIFAR-10 CNN, a DLRM click-through-rate ranker, a Behavior Sequence Transformer (which \emph {requires} an attention layer), and a two-tower retrieval model (two encoders scored by a dot product). These are the states an agent edits and the verifier grades}{figure.8}{}}
+\bibcite{wilson}{{15}{}{{}}{{}}}
 \bibcite{lora}{{16}{}{{}}{{}}}
 \bibcite{qwen25}{{17}{}{{}}{{}}}
 \bibcite{carlini}{{18}{}{{}}{{}}}

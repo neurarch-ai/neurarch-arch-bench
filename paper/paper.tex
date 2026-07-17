@@ -180,7 +180,7 @@ two-tower retrieval & $100\%$ & $100\%$ \\
 \textbf{overall} & $\mathbf{79\%}$ & $\mathbf{100\%}$ \\
 \bottomrule
 \end{tabular}
-\caption{Per-family pass rate for \texttt{claude-sonnet-4-6} on the public benchmark (generator v2; $n{=}12$ per family, all $120$ tasks graded with zero exclusions). Eight families saturate; the two the model finds hard are exactly where verifier-in-the-loop feedback pays off. Overall single-shot $79\%$ (Wilson $95\%$ CI $[71,85]$) rises to $100\%$ ($[97,100]$); the v1-generator measurement ($82\%\to100\%$, $n{=}117$) replicates within three points.}
+\caption{Per-family pass rate for \texttt{claude-sonnet-4-6} on the public benchmark (generator v2; $n{=}12$ per family, all $120$ tasks graded with zero exclusions). Seven families sit at $100\%$ and the convolutional classifier at $83\%$; the two the model finds hard are exactly where verifier-in-the-loop feedback (second column; Section~\ref{sec:amp}) pays off. Overall single-shot $79\%$ (Wilson $95\%$ CI $[71,85]$) rises to $100\%$ ($[97,100]$); the v1-generator measurement ($82\%\to100\%$, $n{=}117$) replicates within three points.}
 \label{tab:perfamily}
 \end{table}
 
@@ -248,7 +248,7 @@ deepseek-chat (V3) & $59\%$ & $\mathbf{90\%}$ & $+31$ pts \\
 \caption{Verifier-in-the-loop lift, per provider. Same tasks, model, and prompt; the only variable is the feedback loop.}
 \end{table}
 
-The lift lands on the families a frontier model finds hard (Figure~\ref{fig:lift}): insert-norm $0\%\to100\%$ and transformer encoder $8.3\%\to100\%$ once the verifier's failure messages are fed back, while the remaining families are at or near $100\%$. A single repair round closes the whole gap (Table~\ref{tab:ablation}). Numbers are from generator v2 with all $120$ tasks graded, and they \emph{replicate} the v1 measurement ($82\%\to100\%$, $n{=}117$) within three points. The effect is not model-specific: on the same tasks, a second, weaker model (deepseek-chat) goes $59\%\to90\%$ ($+31$ points, $n{=}59$; v1: $60\to88$), with every fix again landing at $k{=}2$ and none at $k{=}3$. The weaker the model, the more the verifier is worth.
+The lift is concentrated on the families a frontier model finds hard (Figure~\ref{fig:lift}): of the $25$ tasks feedback rescues, the transformer encoder ($8.3\%\to100\%$) accounts for $11$ and insert-norm ($0\%\to100\%$) for $12$, with the convolutional classifier ($83\%\to100\%$) contributing the remaining $2$; the seven other families are already at $100\%$ single-shot. A single repair round closes the whole gap (Table~\ref{tab:ablation}). Numbers are from generator v2 with all $120$ tasks graded, and they \emph{replicate} the v1 measurement ($82\%\to100\%$, $n{=}117$) within three points. The effect is not model-specific: on the same tasks, a second, weaker model (deepseek-chat) goes $59\%\to90\%$ ($+31$ points, $n{=}59$; v1: $60\to88$), with every fix again landing at $k{=}2$ and none at $k{=}3$. The weaker the model, the more the verifier is worth.
 
 \begin{figure}[t]
 \centering
@@ -256,16 +256,16 @@ The lift lands on the families a frontier model finds hard (Figure~\ref{fig:lift
 \begin{axis}[
   ybar, bar width=11pt, width=0.82\linewidth, height=5.2cm,
   ymin=0, ymax=112, ylabel={pass rate (\%)},
-  symbolic x coords={transformer, insert-norm, overall},
+  symbolic x coords={transformer, insert-norm, conv, overall},
   xtick=data, ymajorgrids, enlarge x limits=0.32,
   legend style={font=\small, at={(0.02,0.98)}, anchor=north west},
   nodes near coords, every node near coord/.append style={font=\scriptsize}]
-\addplot+[fill=gray!30] coordinates {(transformer,8.3) (insert-norm,0) (overall,79)};
-\addplot+[fill=blue!55] coordinates {(transformer,100) (insert-norm,100) (overall,100)};
+\addplot+[fill=gray!30] coordinates {(transformer,8.3) (insert-norm,0) (conv,83) (overall,79)};
+\addplot+[fill=blue!55] coordinates {(transformer,100) (insert-norm,100) (conv,100) (overall,100)};
 \legend{single-shot, with verifier}
 \end{axis}
 \end{tikzpicture}
-\caption{Verifier-in-the-loop lift for \texttt{claude-sonnet-4-6}. The overall gain ($79\to100$) lands entirely on the two families a frontier model finds hard; the eight saturated families (all at $100\%$) are omitted for clarity.}
+\caption{Verifier-in-the-loop lift for \texttt{claude-sonnet-4-6}. The overall gain ($79\to100$; $25$ tasks rescued) is concentrated on the two families the model finds hard ($11$ fixes on the transformer encoder, $12$ on insert-norm), with the convolutional classifier contributing the remaining $2$; the seven families already at $100\%$ single-shot are omitted.}
 \label{fig:lift}
 \end{figure}
 
