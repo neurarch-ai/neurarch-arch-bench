@@ -18,6 +18,16 @@ never publish gives you an evaluation set that has never existed anywhere
 public (no contamination argument to have), while staying fully reproducible
 inside your infra. Includes rotation on your schedule.
 
+## Frontier-tier families (MoE, MLA-KV, long-context retrofit)
+
+The opt-in frontier tier (`split=frontier`) grades the design problems 2026
+labs actually have: Mixture-of-Experts routing validity, KV-cache budgets a
+full-attention layout provably cannot meet, and in-place GQA retrofits under
+serving constraints, all against the canonical KV formula (MHA `2d`, GQA
+`2*kvHeads*headDim`, MLA latent+RoPE). Custom variants of these families
+(your expert counts, your context lengths, your byte budgets) are the fastest
+path to a split that matches your serving reality.
+
 ## Custom task families
 
 The generator's families are built from a typed graph vocabulary of 182 layer

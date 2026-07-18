@@ -124,6 +124,37 @@ Every generated case carries its own reference solution; the test suite asserts 
 node leaderboard.mjs --providers=grok --generate=50 --seed=7
 ```
 
+### The frontier tier (opt-in): tasks shaped like 2026 production models
+
+`generate-frontier.mjs` adds a separate, opt-in tier of three families built
+around what labs actually design and serve: a **Mixture-of-Experts block**
+(router validity: `topK <= numExperts` is a hard blocker; param band around the
+reference), a **long-context encoder under a KV-cache budget** that full
+attention provably cannot meet (multi-head latent attention compresses the
+cache), and a **GQA retrofit**: edit an existing MHA encoder to fit a KV
+budget in at most 3 actions, `replace_model` forbidden. KV budgets are graded
+by the same canonical `kvBytesPerToken` formula (MHA `2d`, GQA
+`2*kvHeads*headDim`, MLA latent+RoPE). The core ten families and every number
+published on them are untouched.
+
+```bash
+node env-server.mjs   # then: GET /tasks?split=frontier&count=30&seed=7
+```
+
+## The verifier as a tool: tool-integrated reasoning
+
+Reasoning models are trained to call tools mid-thought. `tool_use.mjs` hands
+the model the verifier as a function tool (`audit_architecture` = dry-run
+grade, `submit_actions` = final answer) and measures, on identical tasks, the
+model with the tool against the same model single-shot. Complementary to the
+amplification study (post-hoc repair); this is in-reasoning verification.
+
+```bash
+node tool_use.mjs --self-check                                     # keyless
+XAI_API_KEY=... node tool_use.mjs --provider=grok --generate=30 --seed=7
+XAI_API_KEY=... node tool_use.mjs --provider=grok --generate=30 --tier=frontier
+```
+
 ## Train on it: the RL loop
 
 `env-server.mjs` (zero deps) serves tasks and shaped rewards over HTTP, and [`training/`](./training/) contains a TRL GRPO script plus a Colab notebook that trains a small open model against the verifier end to end: baseline pass@1 on a held-out split, train, reward curve, re-eval.
