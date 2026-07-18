@@ -189,6 +189,13 @@ export function estimateParams(model) {
       case 'transformerBlock': {
         const d = num(p, 'hiddenDim') || num(p, 'embedDim') || num(p, 'dModel'); sum += 12 * d * d; break;
       }
+      case 'mixtureOfExperts': {
+        // E experts of (D->H->D) + a D->E router. New type: no existing task
+        // or dataset uses it, so adding this changes no frozen measurement.
+        const d = num(p, 'embedDim'); const h = num(p, 'hiddenDim');
+        const e = Math.max(1, num(p, 'numExperts'));
+        sum += e * (2 * d * h) + d * e; break;
+      }
       default: break;
     }
   }
@@ -254,6 +261,9 @@ export function findBlockers(model) {
       const kv = num(p, 'numKVHeads');
       if (kv > 0 && heads % kv !== 0) blockers.push(`${c.name}: numHeads ${heads} not divisible by numKVHeads ${kv}`);
     }
+    const experts = num(p, 'numExperts');
+    const topK = num(p, 'topK');
+    if (experts > 0 && topK > 0 && topK > experts) blockers.push(`${c.name}: topK ${topK} > numExperts ${experts}`);
   }
   if (!inputReachesOutput(model)) blockers.push('input does not reach output (disconnected)');
   return blockers;
@@ -299,6 +309,10 @@ export function gradeTask(task, model, actionCount = 0, actionTypes = []) {
   if (typeof c.minScore === 'number' && score < c.minScore) failures.push(`score ${score} < min ${c.minScore}`);
   if (typeof c.maxParams === 'number' && params > c.maxParams) failures.push(`params ${params} > budget ${c.maxParams}`);
   if (typeof c.minParams === 'number' && params < c.minParams) failures.push(`params ${params} < required minimum ${c.minParams}`);
+  if (typeof c.maxKvBytesPerToken === 'number') {
+    const kv = kvBytesPerToken(model);
+    if (kv > c.maxKvBytesPerToken) failures.push(`KV ${kv} bytes/token > budget ${c.maxKvBytesPerToken}`);
+  }
   if (typeof c.minComponents === 'number' && model.components.length < c.minComponents) failures.push(`${model.components.length} components < min ${c.minComponents}`);
   for (const t of c.mustContainTypes ?? []) if (!present.has(t)) failures.push(`missing layer type "${t}"`);
   if (c.mustContainTypesAny && !c.mustContainTypesAny.some(t => present.has(t))) failures.push(`needs one of: ${c.mustContainTypesAny.join(', ')}`);
@@ -320,6 +334,8 @@ export function categorizeFailure(failure) {
   const f = String(failure).toLowerCase();
   if (f.includes('no json object') || f.includes('"actions" array')) return 'parse-error';
   if (f.includes('not divisible')) return 'attention-divisibility';
+  if (f.includes('bytes/token > budget')) return 'kv-over-budget';
+  if (f.includes('topk') && f.includes('numexperts')) return 'moe-routing';
   if (f.includes('does not reach output') || f.includes('disconnected') || f.includes('empty graph')) return 'connectivity';
   if (f.includes('> budget')) return 'over-budget';
   if (f.includes('< required minimum')) return 'under-band';

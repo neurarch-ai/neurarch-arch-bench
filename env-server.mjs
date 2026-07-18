@@ -46,17 +46,19 @@
 import http from 'node:http';
 import { loadBenchmark, buildFixture, applyActions, gradeTask, serializeModel } from './bench.mjs';
 import { generateCases } from './generate.mjs';
+import { generateFrontierCases } from './generate-frontier.mjs';
 
 const PORT = Number(process.env.PORT || 8737);
 const BENCH = loadBenchmark();
 
-// Splits are deterministic functions of (count, seed); memoize the recent ones.
+// Splits are deterministic functions of (count, seed, tier); memoize recents.
 const splitCache = new Map();
-function getSplit(count, seed) {
-  const key = `${count}:${seed}`;
+function getSplit(count, seed, tier = 'generated') {
+  const key = `${tier}:${count}:${seed}`;
   if (!splitCache.has(key)) {
     if (splitCache.size > 16) splitCache.delete(splitCache.keys().next().value);
-    splitCache.set(key, generateCases(count, seed));
+    const gen = tier === 'frontier' ? generateFrontierCases : generateCases;
+    splitCache.set(key, gen(count, seed));
   }
   return splitCache.get(key);
 }
@@ -135,7 +137,7 @@ const server = http.createServer(async (req, res) => {
       }
       const count = Math.max(1, Math.min(100_000, Number(url.searchParams.get('count') ?? 256)));
       const seed = Number(url.searchParams.get('seed') ?? 1);
-      return json(res, 200, getSplit(count, seed).map((c, index) => ({
+      return json(res, 200, getSplit(count, seed, split).map((c, index) => ({
         index, id: c.task.id, spec: c.task.spec,
         observation: serializeModel(c.start),
         constraints: c.task.constraints,
@@ -153,7 +155,7 @@ const server = http.createServer(async (req, res) => {
         const count = Math.max(1, Math.min(100_000, Number(body.count ?? 256)));
         const seed = Number(body.seed ?? 1);
         const index = Number(body.index ?? -1);
-        const split = getSplit(count, seed);
+        const split = getSplit(count, seed, body.split ?? 'generated');
         if (!(index >= 0 && index < split.length)) {
           return json(res, 400, { error: `index ${body.index} out of range for count=${count}` });
         }
@@ -179,7 +181,7 @@ const server = http.createServer(async (req, res) => {
         const count = Math.max(1, Math.min(100_000, Number(body.count ?? 256)));
         const seed = Number(body.seed ?? 1);
         const index = Number(body.index ?? -1);
-        const split = getSplit(count, seed);
+        const split = getSplit(count, seed, body.split ?? 'generated');
         if (!(index >= 0 && index < split.length)) {
           return json(res, 400, { error: `index ${body.index} out of range for count=${count}` });
         }
