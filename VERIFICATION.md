@@ -32,7 +32,8 @@ honestly:
 | Near-miss collapse | qwen 46.7%, claude 33.3%, grok 25.5% FP | B | `node reward_anchor.mjs --provider=<p> --near-miss` |
 | Grounding study | 96/96 blocked fail forward; 80/80 clean construct, 90% train; 88/88 width-corrupted crash; Spearman -0.581 | B | `training/README.md` records the run table (2026-07-04, torch 2.8, seeds 123+777); regenerate via `dump_grounding_set.mjs` + `training/grounding_at_scale.py` |
 | Curated split | claude 7/12, mean score 76; 5 failed tasks, 7 failure reasons | A | `leaderboard-data.json` on the public leaderboard (transcribed from the harness run of 2026-07-08; failure categories are per-reason, a task can trigger more than one) |
-| Reasoning traces | 327 verified / 451 graded = 72.5% (49 API errors excluded) | A | `arch-reasoning-claude.stats.json`; dataset public on Hugging Face |
+| Reasoning traces (claude) | mint yield 327/451 = 72.5% (49 API errors excluded); 306 survive rubric v2 and are the released set | A | `arch-reasoning-claude.stats.json` + `arch-reasoning-claude.card.md`; dataset public on Hugging Face |
+| Reasoning traces (grok-4) | mint yield 439/500 = 87.8% (zero API errors); 376 survive rubric v2 and are the released set | A | `arch-reasoning-grok.stats.json` + `arch-reasoning-grok.card.md` (2026-07-21) |
 | Verifier-as-tool (grok-4) | generated: raw 24/28 = 85.7% -> tool 29/29 = 100% (+14.3 pts, 1.17 audits/task); frontier: raw 28/29 = 96.6% -> tool 30/30 = 100% | A | `tooluse-grok.json`, `tooluse-grok-frontier.json` (2026-07-17); `node tool_use.mjs --provider=grok --generate=30 --seed=7 [--tier=frontier]`; one provider 429 excluded from both arms |
 | Harness self-tests | reference 100%, noop 0% | A | keyless, in CI: `node calibrate.mjs --policy=reference` / `--policy=noop` |
 | Satisfiability + non-vacuity | 500/500 references pass; edit-in-place starts fail untouched | A | `npx vitest run` (`generate.test.ts`) |
@@ -40,6 +41,13 @@ honestly:
 
 Notes:
 
+- **Rubric versioning.** All numbers above were measured under rubric v1.
+  Rubric v2 (commit `f3f3bff`) later implemented Algorithm 1's linear-width
+  and orphan checks, closing the grounding study's documented blind spot.
+  Tier A replays that recompute from stored rows (e.g. `amp-full.json`) are
+  unaffected; live re-runs at HEAD grade stricter, so convolutional-head
+  tasks score lower than the v1 numbers. To reproduce v1 grading exactly:
+  `git checkout f8e95fd -- bench.mjs`. `bench.mjs` exports `RUBRIC_VERSION`.
 - Tier B exists because early runs did not set `AMPLIFY_OUT` (amplify) or `tee`
   (reward audits, training evals). The numbers were transcribed at run time and
   are consistent under the cross-locks above, but the raw JSON for those

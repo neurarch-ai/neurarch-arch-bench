@@ -18,6 +18,12 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Rubric version. v1 lacked the linear-width (shapeMismatch) and orphan
+// checks that Algorithm 1 specifies; both were implemented in v2 (see the
+// commit history). Numbers published before v2 were measured under v1 and are
+// labeled as such in the paper and in VERIFICATION.md.
+export const RUBRIC_VERSION = 2;
+
 // ─── Benchmark loading ───────────────────────────────────────────────────────
 
 export function loadBenchmark() {
