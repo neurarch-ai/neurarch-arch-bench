@@ -1,0 +1,491 @@
+{
+ "provider": "grok",
+ "model": "grok-4",
+ "tier": "generated",
+ "count": 30,
+ "seed": 7,
+ "rows": [
+  {
+   "arm": "raw",
+   "taskId": "gen-mlp-0",
+   "pass": true,
+   "score": 90,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-mlp-0",
+   "pass": true,
+   "score": 90,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-ae-1",
+   "pass": true,
+   "score": 67,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-ae-1",
+   "pass": true,
+   "score": 67,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-cnn-2",
+   "pass": false,
+   "score": 60,
+   "audits": 0,
+   "failures": [
+    "5 components < min 7"
+   ]
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-cnn-2",
+   "pass": true,
+   "score": 82,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-txf-3",
+   "pass": true,
+   "score": 60,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-txf-3",
+   "pass": true,
+   "score": 60,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-gqa-4",
+   "pass": true,
+   "score": 81,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-gqa-4",
+   "pass": true,
+   "score": 81,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-fix-5",
+   "pass": true,
+   "score": 60,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-fix-5",
+   "pass": true,
+   "score": 60,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-trim-6",
+   "pass": true,
+   "score": 84,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-trim-6",
+   "pass": true,
+   "score": 84,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-norm-7",
+   "pass": true,
+   "score": 100,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-norm-7",
+   "pass": true,
+   "score": 100,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-tower-8",
+   "pass": false,
+   "score": 69,
+   "audits": 0,
+   "failures": [
+    "9 components < min 11",
+    "missing layer type \"relu\""
+   ]
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-tower-8",
+   "pass": true,
+   "score": 90,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-grow-9",
+   "pass": true,
+   "score": 80,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-grow-9",
+   "pass": true,
+   "score": 80,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-mlp-10",
+   "pass": true,
+   "score": 90,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-mlp-10",
+   "pass": true,
+   "score": 90,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-ae-11",
+   "pass": true,
+   "score": 63,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-ae-11",
+   "pass": true,
+   "score": 63,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-cnn-12",
+   "pass": true,
+   "score": 86,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-cnn-12",
+   "pass": true,
+   "score": 84,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-txf-13",
+   "pass": true,
+   "score": 63,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-txf-13",
+   "pass": true,
+   "score": 63,
+   "audits": 2,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-gqa-14",
+   "pass": true,
+   "score": 81,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-gqa-14",
+   "pass": true,
+   "score": 81,
+   "audits": 2,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-fix-15",
+   "pass": true,
+   "score": 60,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-fix-15",
+   "pass": true,
+   "score": 60,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-trim-16",
+   "pass": true,
+   "score": 88,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-trim-16",
+   "pass": true,
+   "score": 88,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-norm-17",
+   "pass": true,
+   "score": 100,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-norm-17",
+   "pass": true,
+   "score": 100,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-tower-18",
+   "pass": false,
+   "score": 69,
+   "audits": 0,
+   "failures": [
+    "9 components < min 11",
+    "missing layer type \"relu\""
+   ]
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-tower-18",
+   "pass": true,
+   "score": 90,
+   "audits": 2,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-grow-19",
+   "pass": true,
+   "score": 80,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-grow-19",
+   "pass": true,
+   "score": 80,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-mlp-20",
+   "pass": true,
+   "score": 84,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-mlp-20",
+   "pass": true,
+   "score": 84,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-ae-21",
+   "pass": true,
+   "score": 63,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-ae-21",
+   "pass": true,
+   "score": 67,
+   "audits": 2,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-cnn-22",
+   "error": "Error: bad JSON (Expected ',' or ']' after array element in JSON at position 997 (line 49 column 6)); near >>>annels\": 64,\\n        \"kernelSize\": 3\\n      }\\n    }<<<"
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-cnn-22",
+   "pass": true,
+   "score": 88,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-txf-23",
+   "error": "Error: https://api.x.ai/v1 429: {\"code\":\"resource-exhausted\",\"error\":\"The model is currently at capacity due to high demand. Please try again in a few minutes, or use a higher service tier for priorit"
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-txf-23",
+   "error": "Error: https://api.x.ai/v1 429: {\"code\":\"resource-exhausted\",\"error\":\"The model is currently at capacity due to high demand. Please try again in a few minutes, or use a higher service tier for priorit"
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-gqa-24",
+   "pass": true,
+   "score": 73,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-gqa-24",
+   "pass": true,
+   "score": 73,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-fix-25",
+   "pass": true,
+   "score": 60,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-fix-25",
+   "pass": true,
+   "score": 60,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-trim-26",
+   "pass": true,
+   "score": 84,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-trim-26",
+   "pass": true,
+   "score": 84,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-norm-27",
+   "pass": true,
+   "score": 100,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-norm-27",
+   "pass": true,
+   "score": 100,
+   "audits": 1,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-tower-28",
+   "pass": false,
+   "score": 69,
+   "audits": 0,
+   "failures": [
+    "9 components < min 11",
+    "missing layer type \"relu\""
+   ]
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-tower-28",
+   "pass": true,
+   "score": 90,
+   "audits": 2,
+   "failures": []
+  },
+  {
+   "arm": "raw",
+   "taskId": "gen-grow-29",
+   "pass": true,
+   "score": 80,
+   "audits": 0,
+   "failures": []
+  },
+  {
+   "arm": "tool",
+   "taskId": "gen-grow-29",
+   "pass": true,
+   "score": 80,
+   "audits": 1,
+   "failures": []
+  }
+ ]
+}

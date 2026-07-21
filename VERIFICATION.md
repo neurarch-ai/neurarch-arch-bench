@@ -31,6 +31,7 @@ honestly:
 | Grounding study | 96/96 blocked fail forward; 80/80 clean construct, 90% train; 88/88 width-corrupted crash; Spearman -0.581 | B | `training/README.md` records the run table (2026-07-04, torch 2.8, seeds 123+777); regenerate via `dump_grounding_set.mjs` + `training/grounding_at_scale.py` |
 | Curated split | claude 7/12, mean score 76; 5 failed tasks, 7 failure reasons | A | `leaderboard-data.json` on the public leaderboard (transcribed from the harness run of 2026-07-08; failure categories are per-reason, a task can trigger more than one) |
 | Reasoning traces | 327 verified / 451 graded = 72.5% (49 API errors excluded) | A | `arch-reasoning-claude.stats.json`; dataset public on Hugging Face |
+| Verifier-as-tool (grok-4) | generated: raw 24/28 = 85.7% -> tool 29/29 = 100% (+14.3 pts, 1.17 audits/task); frontier: raw 28/29 = 96.6% -> tool 30/30 = 100% | A | `tooluse-grok.json`, `tooluse-grok-frontier.json` (2026-07-17); `node tool_use.mjs --provider=grok --generate=30 --seed=7 [--tier=frontier]`; one provider 429 excluded from both arms |
 | Harness self-tests | reference 100%, noop 0% | A | keyless, in CI: `node calibrate.mjs --policy=reference` / `--policy=noop` |
 | Satisfiability + non-vacuity | 500/500 references pass; edit-in-place starts fail untouched | A | `npx vitest run` (`generate.test.ts`) |
 | Wilson 95% intervals | all bracketed values | A | recompute: `python3 -c "import math; k,n=95,120; z=1.959964; p=k/n; d=1+z*z/n; c=p+z*z/(2*n); h=z*math.sqrt(p*(1-p)/n+z*z/(4*n*n)); print(round(100*(c-h)/d), round(100*(c+h)/d))"` |

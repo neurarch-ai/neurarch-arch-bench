@@ -155,6 +155,13 @@ XAI_API_KEY=... node tool_use.mjs --provider=grok --generate=30 --seed=7
 XAI_API_KEY=... node tool_use.mjs --provider=grok --generate=30 --tier=frontier
 ```
 
+**First measured run** (grok-4, 2026-07-17, seed 7, 30 tasks/tier; raw rows in
+`tooluse-grok.json` / `tooluse-grok-frontier.json`): generated split
+**85.7% single-shot (24/28 graded) -> 100% with the tool (29/29)**, +14.3
+points at a mean of 1.17 audits per task; frontier tier 96.6% -> 100%. The
+single-shot arm loses tasks to free-text parse errors; the tool arm has none
+by construction, because function calls are structured.
+
 ## Train on it: the RL loop
 
 `env-server.mjs` (zero deps) serves tasks and shaped rewards over HTTP, and [`training/`](./training/) contains a TRL GRPO script plus a Colab notebook that trains a small open model against the verifier end to end: baseline pass@1 on a held-out split, train, reward curve, re-eval.
