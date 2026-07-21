@@ -18,6 +18,8 @@ honestly:
 | Amplification, v1 generator | 82.1% -> 100% (96/117 -> 117/117, 3 errors excluded) | A | `amp-full.json` (`rows[]`: recompute from `passAtTurn1` / `passFinal`) |
 | Amplification, v2, claude | 79.2% -> 100% (95/120 -> 120/120, zero exclusions) | B | run 2026-07-16; `AMPLIFY_OUT=amp-claude-v2.json node amplify.mjs --providers=claude --generate=120 --seed=7 --turns=3` |
 | Amplification, v2, deepseek | 59.3% -> 89.8% (35/59 -> 53/59) | B | same command with `--providers=deepseek` |
+| Amplification, v2, grok-4 | 86.2% -> 100% (100/116 -> 116/116; 4 parse-error rows excluded; all 16 fixes at k=2) | A | `amp-grok.json` (2026-07-20) |
+| Leaderboard, grok-4 | curated 10/12 avg 71 (2474 tok/solve); generated seed-7 88/120 avg 67 | A | `lb-grok-curated.json`, `lb-grok-gen.json` (2026-07-20; the generated run includes transport errors counted as misses) |
 | Repair-round ablation (all fixes at k=2) | Table in paper | A (v1) / B (v2) | v1: `amp-full.json` `turnsUsed`; v2: transcribed |
 | Per-family pass rates (Table 2) | 7 families 100%, conv 83%, txf 8.3%, norm 0% | B | arithmetic-locked: 7x12 + 10 + 1 + 0 = 95/120 = the reported 79.2% overall |
 | Training chain, corrected protocol | 17.2% -> 76.0% (SFT) -> 80.2% (+GRPO), n=192 | B | Colab T4 runs 2026-07-16/17; commands in the paper's Reproducibility block; an independent GRPO rerun reproduced 154/192 exactly |

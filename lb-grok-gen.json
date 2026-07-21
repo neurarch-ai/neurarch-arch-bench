@@ -1,0 +1,1682 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "generated",
+    "count": 120,
+    "seed": 7
+  },
+  "models": {
+    "grok": "grok-4"
+  },
+  "generatedAt": "2026-07-21T08:40:17.276Z",
+  "board": [
+    {
+      "provider": "grok",
+      "passed": 88,
+      "total": 120,
+      "avgScore": 67,
+      "tokensPerSolve": 2387,
+      "failureCategories": {
+        "too-shallow": 15,
+        "missing-layer-type": 13,
+        "other": 9,
+        "parse-error": 6,
+        "connectivity": 4,
+        "low-score": 2
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-0",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 85376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2109,
+      "ms": 25877
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-1",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 1690368,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1913,
+      "ms": 18893
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-2",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 5135440,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2211,
+      "ms": 22727
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-3",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 14594048,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2488,
+      "ms": 28574
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-4",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 5585408,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2542,
+      "ms": 26948
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-5",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 13073032,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1379,
+      "ms": 9366
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-6",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1969800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1791,
+      "ms": 12728
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-7",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 232823,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1489,
+      "ms": 9836
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-8",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 143250,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2469,
+      "ms": 23758
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-9",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1114112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1528,
+      "ms": 9418
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-10",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1155584,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2069,
+      "ms": 18139
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-11",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1986560,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1804,
+      "ms": 12569
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-12",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1696176,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2390,
+      "ms": 31044
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-13",
+      "status": "ERROR",
+      "score": 0,
+      "error": "TypeError: fetch failed",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 1830921
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-14",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 9584640,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2451,
+      "ms": 19173
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-15",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 11316552,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1333,
+      "ms": 6109
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-16",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1998270,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1812,
+      "ms": 8913
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-17",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 398422,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1585,
+      "ms": 8219
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-18",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 535704,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2176,
+      "ms": 76917
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-19",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 430200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1604,
+      "ms": 10212
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-20",
+      "status": "ERROR",
+      "score": 0,
+      "error": "TypeError: fetch failed",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 614198
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-21",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1820672,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1993,
+      "ms": 16912
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-22",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: no JSON object in reply",
+      "failureCategories": [
+        "parse-error"
+      ],
+      "tokens": 767,
+      "ms": 10021
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-23",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: no JSON object in reply",
+      "failureCategories": [
+        "parse-error"
+      ],
+      "tokens": 1132,
+      "ms": 72064
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-24",
+      "status": "ERROR",
+      "score": 0,
+      "error": "TypeError: fetch failed",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 707748
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-25",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 6713912,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1306,
+      "ms": 7775
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-26",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1998170,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1604,
+      "ms": 8918
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-27",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 355559,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1803,
+      "ms": 385967
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-28",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 416559,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2021,
+      "ms": 44459
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-29",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 409260,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1518,
+      "ms": 8667
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-30",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: no JSON object in reply",
+      "failureCategories": [
+        "parse-error"
+      ],
+      "tokens": 761,
+      "ms": 19146
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-31",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 2366464,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1862,
+      "ms": 271718
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-32",
+      "status": "ERROR",
+      "score": 0,
+      "error": "TypeError: fetch failed",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 1078695
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-33",
+      "status": "FAIL",
+      "score": 63,
+      "pass": false,
+      "params": 13420800,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 2494,
+      "ms": 24781
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-34",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 2575872,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2244,
+      "ms": 48500
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-35",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5252800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1433,
+      "ms": 8899
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-36",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1996000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1565,
+      "ms": 5938
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-37",
+      "status": "PASS",
+      "score": 94,
+      "pass": true,
+      "params": 207963,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1310,
+      "ms": 4316
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-38",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 377625,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2224,
+      "ms": 19190
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-39",
+      "status": "ERROR",
+      "score": 0,
+      "error": "TypeError: fetch failed",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 920399
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-40",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 415232,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2520,
+      "ms": 20079
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-41",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 2011648,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2024,
+      "ms": 15728
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-42",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 1951584,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2042,
+      "ms": 9606
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-43",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 3663616,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2191,
+      "ms": 18657
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-44",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 5121024,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2273,
+      "ms": 17773
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-45",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 2273292,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1312,
+      "ms": 7615
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-46",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1996890,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1833,
+      "ms": 12663
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-47",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 224577,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1486,
+      "ms": 6552
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-48",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 186384,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2008,
+      "ms": 15703
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-49",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 469120,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1549,
+      "ms": 10517
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-50",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 608128,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2352,
+      "ms": 19670
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-51",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 1513216,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1874,
+      "ms": 12893
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-52",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 10322784,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2625,
+      "ms": 20376
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-53",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 20689920,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2207,
+      "ms": 17558
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-54",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 5167616,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2484,
+      "ms": 21556
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-55",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1499808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1405,
+      "ms": 9464
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-56",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: no JSON object in reply",
+      "failureCategories": [
+        "parse-error"
+      ],
+      "tokens": 1441,
+      "ms": 19333
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-57",
+      "status": "PASS",
+      "score": 94,
+      "pass": true,
+      "params": 79019,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1292,
+      "ms": 4784
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-58",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 590912,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2264,
+      "ms": 17000
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-59",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1190912,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1566,
+      "ms": 6661
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-60",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1061376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1976,
+      "ms": 17483
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-61",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: no JSON object in reply",
+      "failureCategories": [
+        "parse-error"
+      ],
+      "tokens": 729,
+      "ms": 8948
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-62",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 21215072,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2568,
+      "ms": 33503
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-63",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: https://api.x.ai/v1 429: {\"code\":\"resource-exhausted\",\"error\":\"The model is currently at capacity due to high demand. Please try again in a few minutes, or use a higher service tier for priority processing: https://docs.x.ai/",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 759
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-64",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: https://api.x.ai/v1 429: {\"code\":\"resource-exhausted\",\"error\":\"The model is currently at capacity due to high demand. Please try again in a few minutes, or use a higher service tier for priority processing: https://docs.x.ai/",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 8381
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-65",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3115200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1337,
+      "ms": 3622
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-66",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1995450,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2102,
+      "ms": 8735
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-67",
+      "status": "PASS",
+      "score": 94,
+      "pass": true,
+      "params": 40181,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1395,
+      "ms": 21857
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-68",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 21638,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2531,
+      "ms": 18873
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-69",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1155072,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1443,
+      "ms": 16026
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-70",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 422656,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2556,
+      "ms": 22118
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-71",
+      "status": "FAIL",
+      "score": 58,
+      "pass": false,
+      "params": 70800,
+      "blockers": [],
+      "failures": [
+        "4 components < min 6"
+      ],
+      "failureCategories": [
+        "too-shallow"
+      ],
+      "tokens": 1614,
+      "ms": 10454
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-72",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 9846296,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2823,
+      "ms": 28462
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-73",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 937216,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2817,
+      "ms": 33494
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-74",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 5133824,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2195,
+      "ms": 21183
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-75",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3214264,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1607,
+      "ms": 11970
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-76",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1997694,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1780,
+      "ms": 11402
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-77",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 99141,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1687,
+      "ms": 9407
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-78",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 605709,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2206,
+      "ms": 19798
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-79",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1173504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1521,
+      "ms": 10843
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-80",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 373760,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1795,
+      "ms": 14081
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-81",
+      "status": "FAIL",
+      "score": 58,
+      "pass": false,
+      "params": 486222,
+      "blockers": [],
+      "failures": [
+        "4 components < min 6"
+      ],
+      "failureCategories": [
+        "too-shallow"
+      ],
+      "tokens": 1901,
+      "ms": 17492
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-82",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 424880,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2386,
+      "ms": 24107
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-83",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: no JSON object in reply",
+      "failureCategories": [
+        "parse-error"
+      ],
+      "tokens": 767,
+      "ms": 13739
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-84",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 2570752,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2259,
+      "ms": 26911
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-85",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1508544,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1225,
+      "ms": 8229
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-86",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1997674,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1575,
+      "ms": 4229
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-87",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 649195,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1627,
+      "ms": 11036
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-88",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 433328,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "7 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 1928,
+      "ms": 17058
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-89",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 400800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1549,
+      "ms": 12949
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-90",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: bad JSON (Expected ',' or ']' after array element in JSON at position 521 (line 6 column 106)); near >>>\"name\": \"relu2\", \"afterName\": \"fc2\", \"params\": {}}<<<",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 1871,
+      "ms": 23166
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-91",
+      "status": "ERROR",
+      "score": 0,
+      "error": "Error: https://api.x.ai/v1 429: {\"code\":\"resource-exhausted\",\"error\":\"The model is currently at capacity due to high demand. Please try again in a few minutes, or use a higher service tier for priority processing: https://docs.x.ai/",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 12148
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-92",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 5817760,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2369,
+      "ms": 12704
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-93",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 3438592,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2789,
+      "ms": 111620
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-94",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 9083392,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2833,
+      "ms": 44338
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-95",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5543424,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1281,
+      "ms": 4497
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-96",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1992120,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1689,
+      "ms": 6457
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-97",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 334349,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1569,
+      "ms": 5322
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-98",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 263981,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1865,
+      "ms": 11062
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-99",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1163264,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1551,
+      "ms": 10095
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-100",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 349184,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2217,
+      "ms": 16838
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-101",
+      "status": "FAIL",
+      "score": 58,
+      "pass": false,
+      "params": 73602,
+      "blockers": [],
+      "failures": [
+        "4 components < min 6"
+      ],
+      "failureCategories": [
+        "too-shallow"
+      ],
+      "tokens": 1375,
+      "ms": 8494
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-102",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 4078368,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2383,
+      "ms": 20646
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-103",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 4214784,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2012,
+      "ms": 19090
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-104",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 1286656,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2339,
+      "ms": 23376
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-105",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5232672,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1411,
+      "ms": 9594
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-106",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1988550,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1489,
+      "ms": 9829
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-107",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 226127,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1519,
+      "ms": 2720
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-108",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 299640,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2105,
+      "ms": 19825
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-109",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1173504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1593,
+      "ms": 11047
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-110",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 262848,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2540,
+      "ms": 23845
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-111",
+      "status": "PASS",
+      "score": 71,
+      "pass": true,
+      "params": 1351936,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1930,
+      "ms": 15627
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-112",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 1351008,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2530,
+      "ms": 26675
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-113",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 27712512,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2533,
+      "ms": 26229
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-114",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 7701504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2267,
+      "ms": 22001
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-115",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 23561376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1223,
+      "ms": 2768
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-116",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1996904,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1615,
+      "ms": 9577
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-117",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 489551,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1560,
+      "ms": 8818
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-118",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 496062,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2011,
+      "ms": 17034
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-119",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 588000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1760,
+      "ms": 13924
+    }
+  ]
+}

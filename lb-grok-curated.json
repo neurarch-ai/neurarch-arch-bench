@@ -1,0 +1,196 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "curated",
+    "count": 12
+  },
+  "models": {
+    "grok": "grok-4"
+  },
+  "generatedAt": "2026-07-21T06:30:27.829Z",
+  "board": [
+    {
+      "provider": "grok",
+      "passed": 10,
+      "total": 12,
+      "avgScore": 71,
+      "tokensPerSolve": 2474,
+      "failureCategories": {
+        "too-shallow": 2,
+        "missing-layer-type": 3
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "grok",
+      "taskId": "cnn-cifar",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 674656,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2006,
+      "ms": 18068
+    },
+    {
+      "provider": "grok",
+      "taskId": "mlp-tabular",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 4128,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1896,
+      "ms": 18270
+    },
+    {
+      "provider": "grok",
+      "taskId": "text-encoder",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1412352,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2187,
+      "ms": 23619
+    },
+    {
+      "provider": "grok",
+      "taskId": "fix-broken-attention",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3040200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1425,
+      "ms": 9263
+    },
+    {
+      "provider": "grok",
+      "taskId": "deepen-resnet",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 5200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1898,
+      "ms": 16476
+    },
+    {
+      "provider": "grok",
+      "taskId": "add-normalization",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 9472,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1538,
+      "ms": 10808
+    },
+    {
+      "provider": "grok",
+      "taskId": "scale-under-budget",
+      "status": "PASS",
+      "score": 71,
+      "pass": true,
+      "params": 65508864,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2637,
+      "ms": 28924
+    },
+    {
+      "provider": "grok",
+      "taskId": "autoencoder",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 417792,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1728,
+      "ms": 14550
+    },
+    {
+      "provider": "grok",
+      "taskId": "two-tower-retrieval",
+      "status": "FAIL",
+      "score": 60,
+      "pass": false,
+      "params": 8513536,
+      "blockers": [],
+      "failures": [
+        "5 components < min 6",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2540,
+      "ms": 31430
+    },
+    {
+      "provider": "grok",
+      "taskId": "dlrm-ctr-ranking",
+      "status": "FAIL",
+      "score": 63,
+      "pass": false,
+      "params": 73792,
+      "blockers": [],
+      "failures": [
+        "6 components < min 8",
+        "missing layer type \"embedding\"",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type",
+        "missing-layer-type"
+      ],
+      "tokens": 2322,
+      "ms": 24868
+    },
+    {
+      "provider": "grok",
+      "taskId": "bst-sequence-ranking",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 5329984,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2253,
+      "ms": 11992
+    },
+    {
+      "provider": "grok",
+      "taskId": "semantic-search-encoder",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 7974912,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2313,
+      "ms": 27470
+    }
+  ]
+}
