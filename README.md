@@ -14,6 +14,8 @@ The scarce ingredient in RL and agent evaluation is a **verifier**: a function t
 
 It measures something narrow and real: **can a model turn a natural-language spec into a valid, connected, budget-respecting neural network**, expressed as edits to a structured graph. A model that hallucinates a layer that doesn't wire up, picks an attention head count that doesn't divide the embedding dim, or blows the parameter budget, fails, and the failure is machine-checkable.
 
+This makes the loop **evidence-gated**: a policy cannot turn "I designed it" into "it passed" on its own say-so. The edits are applied, the resulting graph is re-read, and the grade is a fact the verifier computes, never a claim the model asserts. Every score in this repo is a read-back, not a judgment call.
+
 ## Run it
 
 Zero dependencies, no build step.
