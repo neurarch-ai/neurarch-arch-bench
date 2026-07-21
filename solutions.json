@@ -184,6 +184,22 @@
       "paramKey": "hiddenDim",
       "factor": 2,
       "namePattern": "^block"
+    },
+    {
+      "type": "update_params",
+      "name": "embed",
+      "params": {
+        "numEmbeddings": 30000,
+        "embeddingDim": 512
+      }
+    },
+    {
+      "type": "update_params",
+      "name": "head",
+      "params": {
+        "inFeatures": 512,
+        "outFeatures": 2
+      }
     }
   ],
   "autoencoder": [

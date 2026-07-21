@@ -163,3 +163,98 @@ describe('degenerate solutions must fail (anti-gaming floor)', () => {
     }
   });
 });
+
+// Algorithm 1 line 8 (shapeMismatch) and the orphan check. Both classes are
+// forward-pass failures in PyTorch that the earlier rubric scored as clean;
+// these tests are pinned so the checks cannot be silently weakened again.
+describe('width propagation and orphan detection', () => {
+  const chain = (nodes: any[]) => {
+    const components = nodes.map((n, i) => ({
+      id: `n${i}`, type: n.t, name: n.name, params: n.params ?? {}, inputs: [], outputs: [],
+    }));
+    const connections = components.slice(0, -1).map((c, i) => ({ id: `c${i}`, from: c.id, to: components[i + 1].id }));
+    for (const cn of connections) {
+      components.find(c => c.id === cn.from)!.outputs.push(cn.to);
+      components.find(c => c.id === cn.to)!.inputs.push(cn.from);
+    }
+    return { name: 'probe', components, connections };
+  };
+
+  it('flags a mid-chain linear whose inFeatures disagree with the upstream width', () => {
+    const m = chain([
+      { t: 'input', name: 'input', params: { shape: [1, 128] } },
+      { t: 'embedding', name: 'embed', params: { numEmbeddings: 1000, embeddingDim: 256 } },
+      { t: 'linear', name: 'fc1', params: { inFeatures: 512, outFeatures: 64 } },
+      { t: 'output', name: 'output' },
+    ]);
+    expect(findBlockers(m).join(' ')).toMatch(/fc1: linear declares input width 512 but upstream emits 256/);
+  });
+
+  it('accepts the same chain once the widths agree', () => {
+    const m = chain([
+      { t: 'input', name: 'input', params: { shape: [1, 128] } },
+      { t: 'embedding', name: 'embed', params: { numEmbeddings: 1000, embeddingDim: 256 } },
+      { t: 'linear', name: 'fc1', params: { inFeatures: 256, outFeatures: 64 } },
+      { t: 'output', name: 'output' },
+    ]);
+    expect(findBlockers(m)).toEqual([]);
+  });
+
+  it('propagates through normalization and activation without losing the width', () => {
+    const m = chain([
+      { t: 'input', name: 'input', params: { shape: [1, 128] } },
+      { t: 'embedding', name: 'embed', params: { numEmbeddings: 1000, embeddingDim: 256 } },
+      { t: 'layerNorm', name: 'ln' },
+      { t: 'relu', name: 'act' },
+      { t: 'linear', name: 'fc1', params: { inFeatures: 128, outFeatures: 64 } },
+      { t: 'output', name: 'output' },
+    ]);
+    expect(findBlockers(m).join(' ')).toMatch(/fc1: .* upstream emits 256/);
+  });
+
+  it('flags attention fed a width other than its embedDim', () => {
+    const m = chain([
+      { t: 'input', name: 'input', params: { shape: [1, 128] } },
+      { t: 'embedding', name: 'embed', params: { numEmbeddings: 1000, embeddingDim: 256 } },
+      { t: 'multiHeadAttention', name: 'attn', params: { embedDim: 512, numHeads: 8 } },
+      { t: 'output', name: 'output' },
+    ]);
+    expect(findBlockers(m).join(' ')).toMatch(/attn: multiHeadAttention declares input width 512/);
+  });
+
+  it('stays silent when the upstream width is not statically known', () => {
+    // conv2d straight off a raw input tensor: the rubric cannot tell channels
+    // from spatial dims, so it must not guess. No false positive.
+    const m = chain([
+      { t: 'input', name: 'input', params: { shape: [3, 32, 32] } },
+      { t: 'conv2d', name: 'c1', params: { inChannels: 3, outChannels: 32, kernelSize: 3 } },
+      { t: 'output', name: 'output' },
+    ]);
+    expect(findBlockers(m)).toEqual([]);
+  });
+
+  it('flags an orphaned middle layer even while another path still reaches the output', () => {
+    // Two towers; the edge into the user tower's activation is severed. Some
+    // input still reaches some output, so reachability alone cannot see this.
+    const components = [
+      { id: 'i', type: 'input', name: 'input', params: { shape: [1, 64] }, inputs: [], outputs: [] },
+      { id: 'u', type: 'linear', name: 'user_fc', params: { inFeatures: 64, outFeatures: 32 }, inputs: [], outputs: [] },
+      { id: 'ua', type: 'relu', name: 'user_act', params: {}, inputs: [], outputs: [] },
+      { id: 'v', type: 'linear', name: 'item_fc', params: { inFeatures: 64, outFeatures: 32 }, inputs: [], outputs: [] },
+      { id: 'o', type: 'output', name: 'output', params: {}, inputs: [], outputs: [] },
+    ];
+    const connections = [
+      { id: 'c0', from: 'i', to: 'u' },
+      { id: 'c1', from: 'i', to: 'v' },
+      { id: 'c2', from: 'v', to: 'o' },
+      // c3 (u -> ua) deliberately absent: user_act is orphaned.
+    ];
+    for (const cn of connections) {
+      components.find(c => c.id === cn.from)!.outputs.push(cn.to);
+      components.find(c => c.id === cn.to)!.inputs.push(cn.from);
+    }
+    const m = { name: 'two-tower-severed', components, connections };
+    expect(inputReachesOutput(m)).toBe(true);
+    expect(findBlockers(m).join(' ')).toMatch(/user_act: no incoming connection \(orphaned\)/);
+  });
+});

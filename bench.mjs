@@ -248,6 +248,98 @@ export function inputReachesOutput(model) {
   return false;
 }
 
+/** Types that carry their input width through unchanged. */
+const PASSTHROUGH = new Set([
+  ...NONLINEARITIES, ...NORMS,
+  'dropout', 'softmax', 'residual', 'output',
+]);
+
+/** Width-bearing families. Attention declares one width for both sides: its
+ *  embedDim is simultaneously what it consumes and what it emits. */
+const ATTENTION_LIKE = new Set([
+  'multiHeadAttention', 'attention', 'selfAttention', 'causalAttention',
+  'groupedQueryAttention', 'transformerBlock', 'mla', 'mixtureOfExperts',
+]);
+
+const attnWidth = p => num(p, 'embedDim') || num(p, 'hiddenDim') || num(p, 'dModel') || null;
+
+/** The width a node emits, or null when it is not statically known. */
+function declaredOutWidth(c) {
+  const p = c.params ?? {};
+  if (ATTENTION_LIKE.has(c.type)) return attnWidth(p);
+  switch (c.type) {
+    case 'linear': return num(p, 'outFeatures') || null;
+    case 'embedding': return num(p, 'embeddingDim') || null;
+    case 'conv1d': case 'conv2d': case 'conv3d': return num(p, 'outChannels') || null;
+    default: return null;
+  }
+}
+
+/** The input width a node explicitly declares, or null when it declares none. */
+function declaredInWidth(c) {
+  const p = c.params ?? {};
+  if (ATTENTION_LIKE.has(c.type)) return attnWidth(p);
+  switch (c.type) {
+    case 'linear': return num(p, 'inFeatures') || null;
+    case 'conv1d': case 'conv2d': case 'conv3d': return num(p, 'inChannels') || null;
+    default: return null;
+  }
+}
+
+/**
+ * Propagate feature widths along the graph and report interface mismatches:
+ * Algorithm 1's shapeMismatch check. Deliberately conservative — an unknown
+ * upstream width (an `input` node's raw shape, an untyped layer) yields null
+ * and suppresses the check downstream, so a reference solution can never be
+ * failed by a width this rubric merely could not infer. O(|V| + |E|).
+ */
+export function propagateWidths(model) {
+  const byId = new Map(model.components.map(c => [c.id, c]));
+  const parents = new Map(model.components.map(c => [c.id, []]));
+  const children = new Map(model.components.map(c => [c.id, []]));
+  const indeg = new Map(model.components.map(c => [c.id, 0]));
+  for (const cn of model.connections) {
+    if (!byId.has(cn.from) || !byId.has(cn.to)) continue;
+    parents.get(cn.to).push(cn.from);
+    children.get(cn.from).push(cn.to);
+    indeg.set(cn.to, indeg.get(cn.to) + 1);
+  }
+  // Kahn order; nodes inside a cycle are simply never visited (a cycle is a
+  // separate defect, and we do not want to report a width artifact for it).
+  const queue = [...indeg.entries()].filter(([, d]) => d === 0).map(([id]) => id);
+  const deg = new Map(indeg);
+  const width = new Map();
+  const mismatches = [];
+  while (queue.length) {
+    const id = queue.shift();
+    const c = byId.get(id);
+    const pw = parents.get(id).map(p => width.get(p) ?? null);
+    const known = pw.filter(w => typeof w === 'number' && w > 0);
+    let inW = null;
+    if (c.type === 'concatenate') {
+      // Only defined once every branch is known; a partial sum would be wrong.
+      if (pw.length > 0 && known.length === pw.length) inW = known.reduce((a, b) => a + b, 0);
+    } else if (known.length) {
+      const uniq = [...new Set(known)];
+      if (uniq.length > 1) {
+        mismatches.push(`${c.name}: merges parents of differing widths (${uniq.join(' vs ')})`);
+      }
+      inW = uniq[0];
+    }
+    const dIn = declaredInWidth(c);
+    if (dIn !== null && inW !== null && dIn !== inW) {
+      mismatches.push(`${c.name}: ${c.type} declares input width ${dIn} but upstream emits ${inW}`);
+    }
+    const dOut = declaredOutWidth(c);
+    width.set(id, dOut ?? (PASSTHROUGH.has(c.type) || c.type === 'concatenate' ? inW : null));
+    for (const v of children.get(id)) {
+      deg.set(v, deg.get(v) - 1);
+      if (deg.get(v) === 0) queue.push(v);
+    }
+  }
+  return { width, mismatches };
+}
+
 /** Hard structural failures — a genuinely broken graph, not a caution. */
 export function findBlockers(model) {
   const blockers = [];
@@ -266,6 +358,15 @@ export function findBlockers(model) {
     if (experts > 0 && topK > 0 && topK > experts) blockers.push(`${c.name}: topK ${topK} > numExperts ${experts}`);
   }
   if (!inputReachesOutput(model)) blockers.push('input does not reach output (disconnected)');
+  // A severed middle layer leaves an orphan whose tower is dead even though
+  // some other path still joins an input to an output, so the reachability
+  // check above cannot see it.
+  const indeg = new Map(model.components.map(c => [c.id, 0]));
+  for (const cn of model.connections) if (indeg.has(cn.to)) indeg.set(cn.to, indeg.get(cn.to) + 1);
+  for (const c of model.components) {
+    if (c.type !== 'input' && indeg.get(c.id) === 0) blockers.push(`${c.name}: no incoming connection (orphaned)`);
+  }
+  for (const m of propagateWidths(model).mismatches) blockers.push(m);
   return blockers;
 }
 
