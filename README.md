@@ -171,7 +171,9 @@ accumulate on the graph, done on pass or turn budget.
 
 There is also a [verifiers](https://github.com/PrimeIntellect-ai/verifiers)-compatible
 package in [`environments/neurarch_arch_design/`](./environments/neurarch_arch_design/)
-for the Prime Intellect Environments Hub (`prime env install neurarch-arch-design`).
+for the Prime Intellect Environments Hub. The maintained, verifiers-v1-native
+taskset is [`environments/neurarch_arch_design_v1`](environments/neurarch_arch_design_v1)
+(`verifiers>=0.2`, run with the `null` harness); the v0 package is frozen.
 
 See [training/README.md](./training/README.md) for hardware notes, the reward
 formula, and the **grounding study** (does the verifier's verdict predict real

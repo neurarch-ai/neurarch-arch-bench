@@ -1,3 +1,5 @@
+> **Frozen (v0 API).** verifiers 0.2 rewrote the core; the v1-native port lives in `../neurarch_arch_design_v1` and is the maintained package. This one stays for verifiers<=0.1.x users.
+
 # neurarch-arch-design
 
 A [verifiers](https://github.com/PrimeIntellect-ai/verifiers) environment where
