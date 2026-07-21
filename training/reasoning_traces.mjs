@@ -142,7 +142,12 @@ async function run() {
           if (grade.pass) { reasoning = parts.reasoning; actions = acts; source = `${provider}:verified`; ok = true; }
         } catch { /* parse/apply failed; try again */ }
       }
-      if (!ok) { if (apiError) errored += 1; else rejected += 1; continue; }
+      if (!ok) {
+        if (apiError) errored += 1; else rejected += 1;
+        console.log(`[${apiError ? 'ERR ' : 'REJ '}] ${task.id.padEnd(16)} (${attempted}/${COUNT}, kept ${kept})`);
+        continue;
+      }
+      console.log(`[KEEP] ${task.id.padEnd(16)} (${attempted}/${COUNT}, kept ${kept + 1})`);
     } else {
       // Keyless: reference-derived (verified by construction; assert it).
       const grade = gradeTask(task, applyActions(start, reference).model, reference.length, reference.map(a => a.type));
