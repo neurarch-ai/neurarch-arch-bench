@@ -1,0 +1,265 @@
+taskId,variant,verifierScore,verifierBlocked,constructs,forward_ok,trains,initial_loss,final_loss,error
+gen-mlp-0,clean,88,False,True,True,True,3.6109,0.0,
+gen-mlp-0,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x249 and 498x395)
+gen-mlp-0,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-1,clean,63,False,True,True,True,7.5508,0.0,
+gen-ae-1,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x817 and 1634x107)
+gen-ae-1,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-2,clean,80,False,True,True,False,4.6266,3.9201,
+gen-cnn-2,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x41 and 82x100)
+gen-cnn-2,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-3,clean,60,False,True,True,True,3.9606,0.013,
+gen-txf-3,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-3,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x164 and 328x52)
+gen-txf-3,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-4,clean,81,False,True,True,True,3.3635,0.3238,
+gen-gqa-4,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-4,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x48 and 96x27)
+gen-gqa-4,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-5,clean,60,False,True,True,True,4.2782,0.0001,
+gen-fix-5,divisibility,15,True,False,False,False,,,numHeads % numKVHeads != 0
+gen-fix-5,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x336 and 672x72)
+gen-fix-5,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-6,clean,80,False,True,True,True,3.3614,0.0011,
+gen-trim-6,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x252 and 504x252)
+gen-trim-6,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-7,clean,100,False,True,True,True,3.3353,0.0026,
+gen-norm-7,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x253 and 506x437)
+gen-norm-7,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-8,clean,88,False,True,True,True,0.9051,0.0008,
+gen-tower-8,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x67 and 134x67)
+gen-tower-8,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-9,clean,80,False,True,True,True,3.4335,0.0,
+gen-grow-9,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x1061 and 2122x1061)
+gen-grow-9,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-mlp-10,clean,84,False,True,True,True,5.0861,0.0,
+gen-mlp-10,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x917 and 1834x185)
+gen-mlp-10,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-11,clean,63,False,True,True,True,7.483,0.0,
+gen-ae-11,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x350 and 700x138)
+gen-ae-11,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-12,clean,80,False,True,True,False,2.9339,2.7996,
+gen-cnn-12,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x50 and 100x19)
+gen-cnn-12,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-13,clean,60,False,True,True,True,4.5138,2.0971,
+gen-txf-13,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-13,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x88 and 176x90)
+gen-txf-13,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-14,clean,81,False,True,True,True,4.2764,0.0012,
+gen-gqa-14,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-14,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x376 and 752x55)
+gen-gqa-14,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-15,clean,60,False,True,True,True,4.3144,0.0,
+gen-fix-15,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-fix-15,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x380 and 760x75)
+gen-fix-15,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-16,clean,80,False,True,True,True,3.2679,0.0006,
+gen-trim-16,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x315 and 630x315)
+gen-trim-16,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-17,clean,100,False,True,True,True,3.2302,0.0344,
+gen-norm-17,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x159 and 318x329)
+gen-norm-17,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-18,clean,88,False,True,True,True,0.9806,0.0008,
+gen-tower-18,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x71 and 142x71)
+gen-tower-18,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-19,clean,80,False,True,True,True,3.3367,0.0012,
+gen-grow-19,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x674 and 1348x674)
+gen-grow-19,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-mlp-20,clean,90,False,True,True,True,3.4968,0.0,
+gen-mlp-20,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x183 and 366x747)
+gen-mlp-20,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-21,clean,63,False,True,True,True,6.7042,0.0,
+gen-ae-21,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x341 and 682x242)
+gen-ae-21,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-22,clean,80,False,True,True,False,3.321,3.0106,
+gen-cnn-22,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x32 and 64x27)
+gen-cnn-22,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-23,clean,63,False,True,True,True,3.5299,0.0,
+gen-txf-23,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-23,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x236 and 472x34)
+gen-txf-23,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-24,clean,77,False,True,True,True,3.8732,0.1053,
+gen-gqa-24,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-24,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x72 and 144x39)
+gen-gqa-24,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-25,clean,60,False,True,True,True,3.5305,0.0002,
+gen-fix-25,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-fix-25,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x328 and 656x34)
+gen-fix-25,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-26,clean,80,False,True,True,True,1.6005,0.0748,
+gen-trim-26,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x70 and 140x70)
+gen-trim-26,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-27,clean,94,False,True,True,True,3.5766,0.0232,
+gen-norm-27,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x431 and 862x197)
+gen-norm-27,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-28,clean,88,False,True,True,True,1.0042,0.0003,
+gen-tower-28,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x82 and 164x82)
+gen-tower-28,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-29,clean,80,False,True,True,True,3.6379,0.0,
+gen-grow-29,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x916 and 1832x916)
+gen-grow-29,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-mlp-30,clean,88,False,True,True,True,3.8564,0.0,
+gen-mlp-30,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x1005 and 2010x266)
+gen-mlp-30,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-31,clean,63,False,True,True,True,5.4648,0.0002,
+gen-ae-31,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x151 and 302x148)
+gen-ae-31,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-32,clean,84,False,True,True,False,4.5917,3.9027,
+gen-cnn-32,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x17 and 34x98)
+gen-cnn-32,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-33,clean,60,False,True,True,True,3.6896,0.0043,
+gen-txf-33,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-33,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x184 and 368x40)
+gen-txf-33,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-34,clean,73,False,True,True,True,4.5767,0.0002,
+gen-gqa-34,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-34,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x656 and 1312x87)
+gen-gqa-34,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-35,clean,60,False,True,True,True,4.5983,0.0251,
+gen-fix-35,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-fix-35,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x170 and 340x99)
+gen-fix-35,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-36,clean,84,False,True,True,True,3.8994,0.0001,
+gen-trim-36,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x279 and 558x279)
+gen-trim-36,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-37,clean,100,False,True,True,True,3.8107,0.0298,
+gen-norm-37,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x427 and 854x445)
+gen-norm-37,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-38,clean,88,False,True,True,True,0.8795,0.0004,
+gen-tower-38,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x323 and 646x323)
+gen-tower-38,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-39,clean,80,False,True,True,True,3.4826,0.0001,
+gen-grow-39,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x847 and 1694x847)
+gen-grow-39,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-mlp-40,clean,90,False,True,True,True,5.1349,0.0,
+gen-mlp-40,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x151 and 302x748)
+gen-mlp-40,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-41,clean,63,False,True,True,True,6.4324,0.0,
+gen-ae-41,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x315 and 630x139)
+gen-ae-41,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-42,clean,80,False,True,True,False,2.4065,2.2382,
+gen-cnn-42,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x50 and 100x11)
+gen-cnn-42,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-43,clean,63,False,True,True,True,3.9765,0.0,
+gen-txf-43,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-43,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x232 and 464x53)
+gen-txf-43,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-44,clean,73,False,True,True,True,2.5348,0.1691,
+gen-gqa-44,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-44,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x44 and 88x11)
+gen-gqa-44,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-45,clean,60,False,True,True,True,3.4959,0.0006,
+gen-fix-45,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-fix-45,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x248 and 496x33)
+gen-fix-45,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-46,clean,84,False,True,True,True,3.0476,0.0,
+gen-trim-46,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x363 and 726x363)
+gen-trim-46,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-47,clean,100,False,True,True,True,4.2255,0.0195,
+gen-norm-47,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x189 and 378x140)
+gen-norm-47,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-48,clean,88,False,True,True,True,0.9856,0.0003,
+gen-tower-48,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x382 and 764x382)
+gen-tower-48,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-49,clean,80,False,True,True,True,2.6319,0.0,
+gen-grow-49,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x1067 and 2134x1067)
+gen-grow-49,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-mlp-50,clean,80,False,True,True,True,4.4162,0.0231,
+gen-mlp-50,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x214 and 428x22)
+gen-mlp-50,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-51,clean,63,False,True,True,True,7.3401,0.0,
+gen-ae-51,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x396 and 792x136)
+gen-ae-51,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-52,clean,84,False,True,True,False,1.7806,1.7442,
+gen-cnn-52,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x59 and 118x6)
+gen-cnn-52,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-53,clean,63,False,True,True,True,3.4069,2.0602,
+gen-txf-53,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-53,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x36 and 72x30)
+gen-txf-53,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-54,clean,81,False,True,True,True,4.4772,0.0099,
+gen-gqa-54,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-54,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x192 and 384x74)
+gen-gqa-54,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-55,clean,60,False,True,True,True,3.9712,0.0027,
+gen-fix-55,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-fix-55,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x216 and 432x53)
+gen-fix-55,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-56,clean,80,False,True,True,True,3.7854,0.0009,
+gen-trim-56,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x340 and 680x340)
+gen-trim-56,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-57,clean,100,False,True,True,True,4.3393,0.011,
+gen-norm-57,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x486 and 972x195)
+gen-norm-57,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-58,clean,88,False,True,True,True,0.9914,0.0003,
+gen-tower-58,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x327 and 654x327)
+gen-tower-58,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-59,clean,80,False,True,True,True,2.5174,0.0,
+gen-grow-59,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x1203 and 2406x1203)
+gen-grow-59,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-mlp-60,clean,90,False,True,True,True,4.5124,0.0,
+gen-mlp-60,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x739 and 1478x613)
+gen-mlp-60,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-61,clean,63,False,True,True,True,6.9876,0.0,
+gen-ae-61,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x187 and 374x47)
+gen-ae-61,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-62,clean,88,False,True,True,False,3.6202,3.2557,
+gen-cnn-62,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x42 and 84x38)
+gen-cnn-62,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-63,clean,65,False,True,True,True,3.549,0.0227,
+gen-txf-63,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-63,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x74 and 148x35)
+gen-txf-63,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-64,clean,77,False,True,True,True,4.4355,0.0117,
+gen-gqa-64,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-64,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x176 and 352x71)
+gen-gqa-64,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-65,clean,60,False,True,True,True,4.558,0.0012,
+gen-fix-65,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-fix-65,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x216 and 432x96)
+gen-fix-65,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-66,clean,80,False,True,True,True,3.3912,0.0004,
+gen-trim-66,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x346 and 692x346)
+gen-trim-66,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-67,clean,100,False,True,True,True,0.704,0.0004,
+gen-norm-67,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x290 and 580x206)
+gen-norm-67,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-68,clean,88,False,True,True,True,0.9256,0.0005,
+gen-tower-68,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x409 and 818x409)
+gen-tower-68,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-69,clean,80,False,True,True,True,2.7216,0.0,
+gen-grow-69,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x810 and 1620x810)
+gen-grow-69,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-mlp-70,clean,90,False,True,True,True,3.4357,0.0006,
+gen-mlp-70,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x68 and 136x147)
+gen-mlp-70,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-ae-71,clean,63,False,True,True,True,7.3859,0.0,
+gen-ae-71,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x911 and 1822x199)
+gen-ae-71,disconnect,10,True,True,False,False,,,node enc2 has no computed input (disconnected)
+gen-cnn-72,clean,80,False,True,True,False,4.0217,3.4363,
+gen-cnn-72,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x57 and 114x54)
+gen-cnn-72,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-txf-73,clean,65,False,True,True,True,1.0996,0.0,
+gen-txf-73,divisibility,15,True,False,False,False,,,embed_dim must be divisible by num_heads
+gen-txf-73,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x120 and 240x3)
+gen-txf-73,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-gqa-74,clean,77,False,True,True,True,3.0902,0.0011,
+gen-gqa-74,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-gqa-74,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x352 and 704x21)
+gen-gqa-74,disconnect,10,True,True,False,False,,,node attn1 has no computed input (disconnected)
+gen-fix-75,clean,60,False,True,True,True,4.5942,0.0691,
+gen-fix-75,divisibility,10,True,False,False,False,,,embedDim % numHeads != 0
+gen-fix-75,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x176 and 352x99)
+gen-fix-75,disconnect,10,True,True,False,False,,,node attn has no computed input (disconnected)
+gen-trim-76,clean,84,False,True,True,True,3.0415,0.0001,
+gen-trim-76,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x206 and 412x206)
+gen-trim-76,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-norm-77,clean,100,False,True,True,True,4.0843,0.1718,
+gen-norm-77,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x36 and 72x465)
+gen-norm-77,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
+gen-tower-78,clean,88,False,True,True,True,0.9773,0.0004,
+gen-tower-78,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x270 and 540x270)
+gen-tower-78,disconnect,15,True,True,False,False,,,node user_act has no computed input (disconnected)
+gen-grow-79,clean,80,False,True,True,True,1.9702,0.0,
+gen-grow-79,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x667 and 1334x667)
+gen-grow-79,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)

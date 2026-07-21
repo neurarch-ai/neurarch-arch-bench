@@ -115,19 +115,23 @@ fails or `noop` ever passes, the harness (not the model) is broken.
 
 ## Residual risks (open, tracked, not hidden)
 
-1. **Linear width mismatches pass this rubric.** The transparent grader does
-   not chase shapes through the graph, so a plan whose linear `inFeatures`
-   disagrees with the upstream width can pass here and crash in PyTorch. This
-   is measured, not suspected: in the 264-graph grounding study
-   ([training/README.md](./training/README.md)), such graphs passed the rubric
-   and failed 100% of real forward passes. The Neurarch product's shape
-   propagator catches this class; porting a minimal width-chase into
-   `findBlockers` is the highest-value hardening item.
+1. **Linear width mismatches pass this rubric.** *(Closed in rubric v2.)*
+   v1 did not chase shapes through the graph, so a plan whose linear
+   `inFeatures` disagreed with the upstream width passed here and crashed in
+   PyTorch. `propagateWidths` in `bench.mjs` now performs that chase, and a
+   sibling gap closed with it: v1's connectivity test asked only whether some
+   input reached some output, so a two-tower graph with one branch severed
+   passed as healthy. Re-measured on the same 264-graph grounding set,
+   v2 blocks 184 of 184 corrupted graphs, none of which completes a forward
+   pass, and clears 80 of 80 clean ones. v1 missed 88 of those 184. Both
+   checks are pinned by regression tests in `bench.test.ts`; a residual risk
+   remains in the narrower sense of item 3.
 2. **Score magnitude is not a quality ranking.** Same study: among clean
    graphs, Spearman rho between the rubric score and real training progress
-   was -0.581. Treat pass/blocked as the grounded claim and the score as a
-   validity margin; quality calibration against real runs is the open
-   flywheel (`training/grounding_at_scale.py`).
+   was -0.15 under v2 and -0.581 under v1. The sign is stable across runs and
+   the magnitude is not, which is itself the point. Treat pass/blocked as the
+   grounded claim and the score as a validity margin; quality calibration
+   against real runs is the open flywheel (`training/grounding_at_scale.py`).
 3. **No torch execution in the reward path.** Shape-class failures are
    caught statistically (via the grounding study), not per-rollout; a sampled
    async forward-pass audit is the planned shape, kept out of the sub-ms path.

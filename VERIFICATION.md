@@ -30,7 +30,8 @@ honestly:
 | Reward audit, blatant tier (8 models) | 0% FP across all; agreement 86.7-98.3% | B | `node reward_anchor.mjs --provider=<p>` per provider (v2, n=60); the tool now prints the resolved model id |
 | Reward audit, Grok variants | 95.0% agreement, 0% FP, 5.0% FN, each | A | `grok-4.5-blatant.txt`, `grok-4.20-blatant.txt`, `grok-4-fast-blatant.txt` (runs of 2026-07-17, `XAI_MODEL` per file name) |
 | Near-miss collapse | qwen 46.7%, claude 33.3%, grok 25.5% FP | B | `node reward_anchor.mjs --provider=<p> --near-miss` |
-| Grounding study | 96/96 blocked fail forward; 80/80 clean construct, 90% train; 88/88 width-corrupted crash; Spearman -0.581 | B | `training/README.md` records the run table (2026-07-04, torch 2.8, seeds 123+777); regenerate via `dump_grounding_set.mjs` + `training/grounding_at_scale.py` |
+| Grounding study (rubric v2) | 184/184 corrupted blocked and 0/184 complete a forward pass; 80/80 clean construct and run, 90% train; Spearman -0.15 | A | `grounding_results.csv` (2026-07-21, torch 2.8, seed 123). Keyless, no GPU: `node training/dump_grounding_set.mjs --count=80 --seed=123 --out=g.jsonl` then `python training/grounding.py --set g.jsonl --steps 60` |
+| Grounding study (rubric v1, superseded) | 96/96 blocked fail forward; 88 width-corrupted graphs passed the rubric and crashed; Spearman -0.581 | B | `training/README.md` run table (2026-07-04, seeds 123+777). Retained because the v1-to-v2 delta measures what a shape-blind rubric misses |
 | Curated split | claude 7/12, mean score 76; 5 failed tasks, 7 failure reasons | A | `leaderboard-data.json` on the public leaderboard (transcribed from the harness run of 2026-07-08; failure categories are per-reason, a task can trigger more than one) |
 | Reasoning traces (claude) | mint yield 327/451 = 72.5% (49 API errors excluded); 306 survive rubric v2 and are the released set | A | `arch-reasoning-claude.stats.json` + `arch-reasoning-claude.card.md`; dataset public on Hugging Face |
 | Reasoning traces (grok-4) | mint yield 439/500 = 87.8% (zero API errors); 376 survive rubric v2 and are the released set | A | `arch-reasoning-grok.stats.json` + `arch-reasoning-grok.card.md` (2026-07-21) |
@@ -41,7 +42,10 @@ honestly:
 
 Notes:
 
-- **Rubric versioning.** All numbers above were measured under rubric v1.
+- **Rubric versioning.** Every number above was measured under rubric v1
+  except the grounding study and the oracle row, which were re-measured under
+  v2 on 2026-07-21 (both are keyless, so they were the two that could be
+  re-run immediately).
   Rubric v2 (commit `f3f3bff`) later implemented Algorithm 1's linear-width
   and orphan checks, closing the grounding study's documented blind spot.
   Tier A replays that recompute from stored rows (e.g. `amp-full.json`) are
