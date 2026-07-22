@@ -53,8 +53,18 @@ function corruptions(reference) {
     { const a = base(); const rm = a[0]; if ((rm.components?.length ?? 0) > 4) { rm.components = [...rm.components.slice(0, -2), rm.components[rm.components.length - 1]]; rm.connections = rm.connections?.filter(cn => rm.components.some(c => c.name === cn.from) && rm.components.some(c => c.name === cn.to)); variants.push(['dropped-component', a]); } }
   } else {
     if (reference.length > 1) variants.push(['incomplete-repair', reference.slice(0, -1)]);
-    { const a = base(); const withParams = a.find(x => x.params && Object.keys(x.params).length);
-      if (withParams) { const k = Object.keys(withParams.params)[0]; withParams.params = { ...withParams.params, [k]: 1 }; variants.push(['wrong-param', a]); } }
+    // Try several candidate wrong values: 1 often trivially passes (numHeads=1
+    // divides everything), so 7 / 13 / value+1 are tried too; every variant is
+    // re-graded below, so only ones that provably fail survive.
+    for (const bad of [7, 13, 1, null]) {
+      const a = base(); const withParams = a.find(x => x.params && Object.keys(x.params).length);
+      if (!withParams) break;
+      const k = Object.keys(withParams.params)[0];
+      const v = bad === null ? Number(withParams.params[k]) + 1 : bad;
+      if (v === withParams.params[k]) continue;
+      withParams.params = { ...withParams.params, [k]: v };
+      variants.push(['wrong-param', a]);
+    }
   }
   return variants;
 }
