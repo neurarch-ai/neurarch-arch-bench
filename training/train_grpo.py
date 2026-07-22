@@ -107,10 +107,14 @@ def build_repair_prompt(row) -> list:
     import json as _json
     user = (
         f"SPEC:\n{row['spec']}\n\n"
-        f"CURRENT MODEL:\n{row['observation']}\n\n"
-        f"PREVIOUS ATTEMPT (failed):\n{_json.dumps({'actions': row['attempt']})}\n\n"
-        "VERIFIER FAILURES:\n- " + "\n- ".join(row["failures"]) + "\n\n"
-        "Return the corrected actions that fulfil the spec."
+        f"CURRENT MODEL (unchanged -- the previous attempt below was NOT applied):\n{row['observation']}\n\n"
+        f"A PREVIOUS ATTEMPT failed:\n{_json.dumps({'actions': row['attempt']})}\n\n"
+        "THE VERIFIER REPORTED:\n- " + "\n- ".join(row["failures"]) + "\n\n"
+        "Return the COMPLETE corrected action list to apply to the CURRENT MODEL "
+        "above. Do NOT return a patch on the previous attempt: its actions were "
+        "never applied, and names it introduced do not exist unless your list "
+        "creates them. Fix what the verifier reported and output one full "
+        "actions JSON."
     )
     return [
         {"role": "system", "content": SYSTEM},
