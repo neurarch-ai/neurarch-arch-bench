@@ -1,5 +1,5 @@
 taskId,variant,verifierScore,verifierBlocked,constructs,forward_ok,trains,initial_loss,final_loss,error
-gen-mlp-0,clean,88,False,True,True,True,3.6109,0.0,
+gen-mlp-0,clean,88,False,True,True,True,3.6112,0.0,
 gen-mlp-0,linear-mismatch,15,True,True,False,False,,,mat1 and mat2 shapes cannot be multiplied (64x249 and 498x395)
 gen-mlp-0,disconnect,10,True,True,False,False,,,node act1 has no computed input (disconnected)
 gen-ae-1,clean,63,False,True,True,True,7.5508,0.0,

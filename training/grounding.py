@@ -147,6 +147,18 @@ class GraphModel(nn.Module):
             if t == "concatenate":
                 vals[cid] = torch.cat(srcs, dim=-1)
                 continue
+            # A non-merging node fed by parents of differing width is not a
+            # graph this builder may quietly repair. Taking srcs[0] silently
+            # discards an edge the designer drew, and which edge survives is
+            # decided by list order: the same graph then runs or raises a shape
+            # error depending on the sequence its connections happen to be
+            # emitted in. Refusing here keeps "it ran" a statement about the
+            # graph rather than about the ordering.
+            widths = {s.shape[-1] for s in srcs}
+            if len(widths) > 1:
+                raise RuntimeError(
+                    f"node {c['name']} merges parents of differing widths "
+                    f"({', '.join(str(w) for w in sorted(widths))}); graph is under-determined")
             x = srcs[0]
             if t == "output":
                 vals[cid] = x
