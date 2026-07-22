@@ -26,7 +26,9 @@ full-attention layout provably cannot meet, and in-place GQA retrofits under
 serving constraints, all against the canonical KV formula (MHA `2d`, GQA
 `2*kvHeads*headDim`, MLA latent+RoPE). Custom variants of these families
 (your expert counts, your context lengths, your byte budgets) are the fastest
-path to a split that matches your serving reality.
+path to a split that matches your serving reality. The edge tier
+(`split=edge`) adds joint param + KV-cache budgets for on-device and
+embedded deployments; the same customization applies.
 
 ## Custom task families
 

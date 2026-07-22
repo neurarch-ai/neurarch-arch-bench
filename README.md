@@ -143,6 +143,13 @@ published on them are untouched.
 node env-server.mjs   # then: GET /tasks?split=frontier&count=30&seed=7
 ```
 
+A second opt-in tier, `split=edge` (`generate-edge.mjs`), grades **joint
+on-device budgets**: design or shrink an encoder under a hard parameter
+budget AND a KV-cache byte budget simultaneously (satellite, vehicle, and
+hardened-compute deployments serve under exactly this pair). The shrink
+family's start graph fails both budgets and must be repaired in at most 4
+surgical actions, `replace_model` forbidden.
+
 ## The verifier as a tool: tool-integrated reasoning
 
 Reasoning models are trained to call tools mid-thought. `tool_use.mjs` hands

@@ -47,6 +47,7 @@ import http from 'node:http';
 import { loadBenchmark, buildFixture, applyActions, gradeTask, serializeModel } from './bench.mjs';
 import { generateCases } from './generate.mjs';
 import { generateFrontierCases } from './generate-frontier.mjs';
+import { generateEdgeCases } from './generate-edge.mjs';
 
 const PORT = Number(process.env.PORT || 8737);
 const BENCH = loadBenchmark();
@@ -57,7 +58,7 @@ function getSplit(count, seed, tier = 'generated') {
   const key = `${tier}:${count}:${seed}`;
   if (!splitCache.has(key)) {
     if (splitCache.size > 16) splitCache.delete(splitCache.keys().next().value);
-    const gen = tier === 'frontier' ? generateFrontierCases : generateCases;
+    const gen = tier === 'frontier' ? generateFrontierCases : tier === 'edge' ? generateEdgeCases : generateCases;
     splitCache.set(key, gen(count, seed));
   }
   return splitCache.get(key);

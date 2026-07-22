@@ -28,6 +28,7 @@
 import { applyActions, gradeTask, serializeModel, kvBytesPerToken } from './bench.mjs';
 import { generateCases } from './generate.mjs';
 import { generateFrontierCases } from './generate-frontier.mjs';
+import { generateEdgeCases } from './generate-edge.mjs';
 import { SYSTEM_PROMPT, parseActions } from './providers.mjs';
 import fs from 'node:fs';
 
@@ -145,7 +146,7 @@ function gradeCase(taskCase, actions) {
 
 // ─── Keyless self-check: the harness itself must be sound ────────────────────
 function selfCheck() {
-  const cases = [...generateCases(10, 7), ...generateFrontierCases(9, 7)];
+  const cases = [...generateCases(10, 7), ...generateFrontierCases(9, 7), ...generateEdgeCases(6, 7)];
   let ok = true;
   for (const c of cases) {
     const audit = auditFor(c);
@@ -177,7 +178,7 @@ async function main() {
   const delay = Math.max(0, parseInt(args.delay ?? '0', 10) || 0);
   const arm = args.arm ?? 'both';
 
-  const cases = (tier === 'frontier' ? generateFrontierCases : generateCases)(count, seed);
+  const cases = (tier === 'frontier' ? generateFrontierCases : tier === 'edge' ? generateEdgeCases : generateCases)(count, seed);
   console.log(`tool-integrated reasoning vs single-shot | ${providerName} (${model}) | ${tier} split, count=${count}, seed=${seed}\n`);
 
   const rows = [];
