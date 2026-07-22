@@ -66,7 +66,13 @@ async function episode(call, task, start) {
     if (turn === 0) passAtTurn1 = grade.pass;
     if (grade.pass) break;
   }
-  return { passAtTurn1, passFinal: grade.pass, turnsUsed, tokens, finalFailures: grade.failures };
+  // Keep the graph behind a surviving failure. A blocker that ends an episode
+  // is a claim about the model's output, and a reader is entitled to inspect
+  // the graph rather than take the verdict on trust.
+  return {
+    passAtTurn1, passFinal: grade.pass, turnsUsed, tokens, finalFailures: grade.failures,
+    ...(grade.pass ? {} : { finalGraph: { components: model.components, connections: model.connections } }),
+  };
 }
 
 async function run() {

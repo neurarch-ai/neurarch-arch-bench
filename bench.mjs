@@ -444,6 +444,9 @@ export function categorizeFailure(failure) {
   if (f.includes('bytes/token > budget')) return 'kv-over-budget';
   if (f.includes('topk') && f.includes('numexperts')) return 'moe-routing';
   if (f.includes('does not reach output') || f.includes('disconnected') || f.includes('empty graph')) return 'connectivity';
+  // v2 rubric: the two shape-level classes, named rather than dumped in 'other'.
+  if (f.includes('declares input width') || f.includes('differing widths')) return 'shape-mismatch';
+  if (f.includes('no incoming connection')) return 'orphan-node';
   if (f.includes('> budget')) return 'over-budget';
   if (f.includes('< required minimum')) return 'under-band';
   if (f.includes('missing layer type') || f.includes('needs one of')) return 'missing-layer-type';
