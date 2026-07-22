@@ -35,6 +35,12 @@ const OUT = args.out ?? 'repair-prompts.jsonl';
 // policy can be TAUGHT the feedback-consumption format before RL refines it.
 // The user text must stay byte-identical to train_grpo.py::build_repair_prompt.
 const CHAT_OUT = args['chat-out'] ?? null;
+// --families=fix,trim,norm,grow restricts minting to those families. The
+// edit-in-place families are the natural repair setting: attempts and targets
+// are short surgical action lists that fit training and completion budgets,
+// unlike design families whose 'repair' degenerates to regenerating the full
+// graph and blows past max-len (the mixed-run failure mode).
+const FAMS = args.families ? new Set(args.families.split(',').map(s => s.trim())) : null;
 
 function corruptions(reference) {
   const variants = [];
@@ -59,6 +65,7 @@ let skipped = 0;
 const kinds = {};
 const cases = generateCases(COUNT, SEED);
 cases.forEach((c, index) => {
+  if (FAMS && !FAMS.has(c.task.id.split('-')[1])) return;
   for (const [kind, attempt] of corruptions(c.reference)) {
     const g = gradeTask(c.task, applyActions(c.start, attempt).model, attempt.length, attempt.map(a => a?.type).filter(Boolean));
     if (g.pass) continue; // corruption did not bite; try the next kind
