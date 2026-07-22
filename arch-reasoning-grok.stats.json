@@ -1,12 +1,20 @@
 {
   "out": "arch-reasoning-grok.jsonl",
-  "mode": "grok (rejection-sampled, tries=2; deduped + re-verified after a concurrent-write incident)",
-  "attempted": 500,
-  "kept": 376,
-  "torn": 1,
-  "dupes": 2,
-  "failedRegrade": 62,
-  "keptRate": 0.752,
+  "mode": "grok (rejection-sampled, tries=2; union of two independent 500-task mint runs, every row re-graded under rubric v2 at merge)",
+  "mintRuns": [
+    {
+      "attempted": 500,
+      "kept": 439,
+      "yield": 0.878
+    },
+    {
+      "attempted": 500,
+      "kept": 437,
+      "yield": 0.874
+    }
+  ],
+  "released": 392,
+  "rubricVersion": 2,
   "seed": 20260708,
   "generator": "v2"
 }

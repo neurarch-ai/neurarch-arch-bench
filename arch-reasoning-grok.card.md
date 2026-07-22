@@ -17,7 +17,7 @@ size_categories:
 
 # arch-reasoning-grok
 
-**376 verified (spec -> reasoning -> design) traces for neural-architecture
+**392 verified (spec -> reasoning -> design) traces for neural-architecture
 design, minted by grok-4 and filtered by a deterministic verifier.**
 
 Each row pairs a natural-language architecture spec with grok-4's reasoning and
@@ -33,12 +33,13 @@ judge, no LLM judge.
 - Tasks: 500 procedurally generated (generator v2, seed 20260708), spanning
   ten families (MLP, autoencoder, CNN, transformer, GQA encoder, two-tower,
   and four edit-in-place repair/scaling families).
-- Mint-time yield: 439/500 = 87.8% verified (zero API failures).
-- Released rows: **376**, each re-verified under the repository's current
-  rubric (v2), which adds the linear-width consistency check of the paper's
-  Algorithm 1. The 63 mint-time-verified rows that fail v2's stricter width
-  check are excluded; they are exactly the blind-spot class the paper's
-  grounding study documents.
+- Mint-time yield: 87.8% and 87.4% across two independent 500-task runs
+  (439/500 and 437/500; zero API failures in either).
+- Released rows: **392**, the union of the two runs with every row
+  re-graded under the repository's current rubric (v2, which adds the
+  linear-width consistency check of the paper's Algorithm 1) at merge time.
+  Mint-time-verified rows that fail v2's stricter width check are excluded;
+  they are exactly the blind-spot class the paper's grounding study documents.
 
 ## Schema
 

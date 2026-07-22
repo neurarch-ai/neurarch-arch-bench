@@ -1,0 +1,11 @@
+{
+  "out": "arch-reasoning-grok-union.jsonl",
+  "rubricVersion": 2,
+  "kept": 392,
+  "rejected": 0,
+  "unmatched": 0,
+  "dupes": 365,
+  "perSource": {
+    "grok:verified": 392
+  }
+}
