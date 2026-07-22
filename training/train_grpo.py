@@ -98,6 +98,26 @@ def build_prompt(task) -> list:
     ]
 
 
+def load_repair_rows(path):
+    import json as _json
+    return [_json.loads(l) for l in open(path) if l.strip()]
+
+
+def build_repair_prompt(row) -> list:
+    import json as _json
+    user = (
+        f"SPEC:\n{row['spec']}\n\n"
+        f"CURRENT MODEL:\n{row['observation']}\n\n"
+        f"PREVIOUS ATTEMPT (failed):\n{_json.dumps({'actions': row['attempt']})}\n\n"
+        "VERIFIER FAILURES:\n- " + "\n- ".join(row["failures"]) + "\n\n"
+        "Return the corrected actions that fulfil the spec."
+    )
+    return [
+        {"role": "system", "content": SYSTEM},
+        {"role": "user", "content": user},
+    ]
+
+
 def parse_actions(text: str):
     """Extract {"actions": [...]} from a completion. None if unparseable."""
     s = text.strip()
@@ -132,7 +152,11 @@ def run_eval(args):
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     import os, json as _json
-    if getattr(args, "curated", False):
+    if getattr(args, "repair_prompts", None):
+        rows = load_repair_rows(args.repair_prompts)
+        tasks = [{"id": r["task_id"], "index": r["index"], "_repair": r} for r in rows]
+        print(f"evaluating REPAIR-CONDITIONED on {len(tasks)} prompts from {args.repair_prompts}")
+    elif getattr(args, "curated", False):
         tasks = http_json(f"{args.env_url}/tasks?split=curated")
         print(f"evaluating on the curated split ({len(tasks)} hand-authored tasks)")
     else:
@@ -167,7 +191,8 @@ def run_eval(args):
     passed, parse_failures, total_reward = 0, 0, 0.0
     for t in tasks:
         text = tok.apply_chat_template(
-            build_prompt(t), tokenize=False, add_generation_prompt=True
+            build_repair_prompt(t["_repair"]) if "_repair" in t else build_prompt(t),
+            tokenize=False, add_generation_prompt=True,
         )
         inputs = tok(text, return_tensors="pt").to(model.device)
         with torch.no_grad():
@@ -184,7 +209,10 @@ def run_eval(args):
             total_reward += PARSE_FAILURE_REWARD
             print(f"[PARSE-FAIL] {t['id']}")
             continue
-        if getattr(args, "curated", False):
+        if "_repair" in t:
+            r0 = t["_repair"]
+            g = grade(args.env_url, r0["seed"], r0["count"], t["index"], actions)
+        elif getattr(args, "curated", False):
             g = http_json(f"{args.env_url}/grade", {"taskId": t["id"], "actions": actions})
         else:
             g = grade(args.env_url, args.seed, args.count, t["index"], actions)
@@ -207,17 +235,30 @@ def run_train(args):
     from datasets import Dataset
     from trl import GRPOConfig, GRPOTrainer
 
-    tasks = fetch_tasks(args.env_url, args.count, args.seed)
-    ds = Dataset.from_list([
-        {
-            "prompt": build_prompt(t),
-            "task_index": t["index"],
-            "task_seed": args.seed,
-            "task_count": args.count,
-        }
-        for t in tasks
-    ])
-    print(f"training split: seed={args.seed}, {len(ds)} tasks")
+    if getattr(args, "repair_prompts", None):
+        rows = load_repair_rows(args.repair_prompts)
+        ds = Dataset.from_list([
+            {
+                "prompt": build_repair_prompt(r),
+                "task_index": r["index"],
+                "task_seed": r["seed"],
+                "task_count": r["count"],
+            }
+            for r in rows
+        ])
+        print(f"REPAIR-CONDITIONED training: {len(ds)} prompts from {args.repair_prompts}")
+    else:
+        tasks = fetch_tasks(args.env_url, args.count, args.seed)
+        ds = Dataset.from_list([
+            {
+                "prompt": build_prompt(t),
+                "task_index": t["index"],
+                "task_seed": args.seed,
+                "task_count": args.count,
+            }
+            for t in tasks
+        ])
+        print(f"training split: seed={args.seed}, {len(ds)} tasks")
 
     def arch_reward(completions, task_index=None, task_seed=None, task_count=None, **kwargs):
         rewards = []
@@ -341,6 +382,8 @@ def main():
     p.add_argument("--bf16", action="store_true")
     p.add_argument("--eval-only", action="store_true", help="report pass@1 on the split, no training")
     p.add_argument("--curated", action="store_true", help="eval on the 12 curated tasks instead of a generated split")
+    p.add_argument("--repair-prompts", default=None,
+                   help="jsonl from mint_repair_prompts.mjs: repair-conditioned mode (failed attempt + verifier failures in-context) for train and eval")
     args = p.parse_args()
 
     ok = http_json(f"{args.env_url}/health")

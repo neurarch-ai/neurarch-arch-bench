@@ -112,3 +112,23 @@ This runs single-shot vs up-to-3 repair rounds on 60 tasks (~a few dollars).
 Paste the printed summary (or the `amp-deepseek.json`) back and I will compute the
 per-k cumulative pass (k=1/2/3) and add a second row to the ablation table, so it
 reads "two models, the gap closes in one repair round for both."
+
+
+## Repair-conditioned RL (train the amplification behaviour in)
+
+The amplification study shows one round of verifier feedback closes the gap at
+inference time. To TRAIN that behaviour, mint prompts that carry a provably
+failing attempt plus the verifier's failure messages, then run the same GRPO
+loop over them (reward path unchanged):
+
+```bash
+node training/mint_repair_prompts.mjs --count=256 --seed=123 --out=repair-train.jsonl
+node training/mint_repair_prompts.mjs --count=192 --seed=999 --out=repair-eval.jsonl
+python training/train_grpo.py --eval-only --repair-prompts repair-eval.jsonl --model <ckpt>
+python training/train_grpo.py --steps 100 --lora --lr 1e-5 --repair-prompts repair-train.jsonl --model <ckpt>
+python training/train_grpo.py --eval-only --repair-prompts repair-eval.jsonl --model out/grpo-arch/checkpoint-final
+```
+
+Start from the SFT checkpoint (the raw model's parse rate starves the
+gradient, same as plain GRPO). Compare against the plain --eval-only number on
+the same seed to separate repair skill from design skill.

@@ -8,7 +8,7 @@
  *   1. leaderboard, curated split (12 production tasks)
  *   2. leaderboard, generated split (120 tasks, seed 7)
  *   3. verifier-in-the-loop amplification (120 tasks, 3 turns)
- *   4. verifier-as-tool, standard + frontier tiers (30 tasks each)
+ *   4. verifier-as-tool, standard + frontier + edge tiers (30 tasks each)
  *   5. reward-model audit, blatant + near-miss tiers (60 examples each)
  *
  * Everything lands in day0-<label>/ with one JSON/txt artifact per step, ready
@@ -53,17 +53,19 @@ const dir = `day0-${label}`;
 fs.mkdirSync(dir, { recursive: true });
 console.log(`day-zero battery: provider=${provider}, label=${label} -> ${dir}/`);
 
-run('1/6 leaderboard, curated', 'node', ['leaderboard.mjs', `--providers=${provider}`],
+run('1/7 leaderboard, curated', 'node', ['leaderboard.mjs', `--providers=${provider}`],
   { LEADERBOARD_OUT: `${dir}/lb-curated.json` });
-run('2/6 leaderboard, generated (120, seed 7)', 'node', ['leaderboard.mjs', `--providers=${provider}`, '--generate=120', '--seed=7'],
+run('2/7 leaderboard, generated (120, seed 7)', 'node', ['leaderboard.mjs', `--providers=${provider}`, '--generate=120', '--seed=7'],
   { LEADERBOARD_OUT: `${dir}/lb-generated.json` });
-run('3/6 amplification (120, seed 7, 3 turns)', 'node', ['amplify.mjs', `--providers=${provider}`, '--generate=120', '--seed=7', '--turns=3'],
+run('3/7 amplification (120, seed 7, 3 turns)', 'node', ['amplify.mjs', `--providers=${provider}`, '--generate=120', '--seed=7', '--turns=3'],
   { AMPLIFY_OUT: `${dir}/amplify.json` });
-run('4/6 verifier-as-tool, standard tier', 'node', ['tool_use.mjs', `--provider=${provider}`, '--generate=30', '--seed=7', `--delay=${delay}`],
+run('4/7 verifier-as-tool, standard tier', 'node', ['tool_use.mjs', `--provider=${provider}`, '--generate=30', '--seed=7', `--delay=${delay}`],
   { TOOLUSE_OUT: `${dir}/tooluse-standard.json` });
-run('5/6 verifier-as-tool, frontier tier', 'node', ['tool_use.mjs', `--provider=${provider}`, '--generate=30', '--seed=7', '--tier=frontier', `--delay=${delay}`],
+run('5/7 verifier-as-tool, frontier tier', 'node', ['tool_use.mjs', `--provider=${provider}`, '--generate=30', '--seed=7', '--tier=frontier', `--delay=${delay}`],
   { TOOLUSE_OUT: `${dir}/tooluse-frontier.json` });
-run('6/6 reward audit, blatant + near-miss', 'sh', ['-c',
+run('6/7 verifier-as-tool, edge tier', 'node', ['tool_use.mjs', `--provider=${provider}`, '--generate=30', '--seed=7', '--tier=edge', `--delay=${delay}`],
+  { TOOLUSE_OUT: `${dir}/tooluse-edge.json` });
+run('7/7 reward audit, blatant + near-miss', 'sh', ['-c',
   `node reward_anchor.mjs --provider=${provider} --delay=${delay} | tee ${dir}/reward-blatant.txt; ` +
   `node reward_anchor.mjs --provider=${provider} --near-miss --delay=${delay} | tee ${dir}/reward-nearmiss.txt`]);
 
