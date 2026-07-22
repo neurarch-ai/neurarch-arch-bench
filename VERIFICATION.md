@@ -16,7 +16,11 @@ honestly:
 | Paper claim | Value | Tier | Source / reproduce |
 | --- | --- | --- | --- |
 | Amplification, v1 generator | 82.1% -> 100% (96/117 -> 117/117, 3 errors excluded) | A | `amp-full.json` (`rows[]`: recompute from `passAtTurn1` / `passFinal`) |
-| Amplification, v2, claude | 79.2% -> 100% (95/120 -> 120/120, zero exclusions) | B | run 2026-07-16; `AMPLIFY_OUT=amp-claude-v2.json node amplify.mjs --providers=claude --generate=120 --seed=7 --turns=3` |
+| Amplification, rubric v2 grader | claude 66.7 -> 92.5%, grok 78.3 -> 95.8%, deepseek 48.3 -> 93.3% (zero exclusions) | A | `amp-claude-v3.json`, `amp-grok-v3.json`, `amp-deepseek-v3.json` (2026-07-21); recompute from `rows[].passAtTurn1` / `passFinal` / `turnsUsed` |
+| Shape-blind overstatement | claude +13.3 pts (3.3 crash + 10.0 ill-formed), grok +14.3 pts (all crash) | A | keyless: `node rubric_delta.mjs lb-claude-grok-gen.json`; fidelity check reproduces the published v1 rates to 0.4 pts |
+| Determinacy is order-dependent | same graph: forward_ok 100% -> `mat1 and mat2 shapes cannot be multiplied (64x332 and 664x1)` after swapping two edges | A | `amp-claude-tower.json` (`gen-tower-18.finalGraph`) rebuilt through `training/grounding.py` with the two edges into `score_head` reversed |
+| Frontier tier calibration | claude 27.8% (eval-useful x3), grok 97.2% (saturated x3) | A | `calib-claude-frontier.json`, `calib-grok-frontier.json`; `node calibrate.mjs --provider=<p> --tier=frontier --per-family=12 --seed=11` |
+| Amplification, v1 grader (superseded) | 79.2% -> 100% (95/120 -> 120/120) | B | run 2026-07-16; retained because the v1-to-v2 gap is itself a measurement |
 | Amplification, v2, deepseek | 59.3% -> 89.8% (35/59 -> 53/59) | B | same command with `--providers=deepseek` |
 | Amplification, v2, grok-4 | 86.2% -> 100% (100/116 -> 116/116; 4 parse-error rows excluded; all 16 fixes at k=2) | A | `amp-grok.json` (2026-07-20) |
 | Leaderboard, grok-4 | curated 10/12 avg 71 (2474 tok/solve); generated seed-7 88/120 avg 67 | A | `lb-grok-curated.json`, `lb-grok-gen.json` (2026-07-20; the generated run includes transport errors counted as misses) |
