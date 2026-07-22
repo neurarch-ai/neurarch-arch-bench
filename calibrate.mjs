@@ -11,6 +11,7 @@
  *
  *   node calibrate.mjs --policy=reference
  *   node calibrate.mjs --policy=noop
+ *   node calibrate.mjs --policy=reference --tier=frontier   # harder MoE/MLA/KV tier
  *   XAI_API_KEY=... node calibrate.mjs --provider=grok --per-family=16 --seed=11
  *   CALIBRATE_OUT=calib.json node calibrate.mjs ...
  */
@@ -18,6 +19,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { applyActions, gradeTask, serializeModel } from './bench.mjs';
 import { generateCases } from './generate.mjs';
+import { generateFrontierCases } from './generate-frontier.mjs';
 import { SYSTEM_PROMPT, REGISTRY, parseActions, runnableProviders } from './providers.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => {
@@ -29,7 +31,12 @@ const PER_FAMILY = Math.max(2, parseInt(args['per-family'] ?? '16', 10) || 16);
 const SEED = parseInt(args.seed ?? '11', 10) || 11;
 const OUT = process.env.CALIBRATE_OUT;
 
-const FAMILY_COUNT = 10; // families cycle i % 10 in generate.mjs
+// Which tier to calibrate. The core tier is the ten published families; the
+// frontier tier is the harder MoE / MLA / KV-budget set, which is the band a
+// saturated core tier cannot measure.
+const TIER = args.tier === 'frontier' ? 'frontier' : 'core';
+const generate = TIER === 'frontier' ? generateFrontierCases : generateCases;
+const FAMILY_COUNT = TIER === 'frontier' ? 3 : 10; // families cycle i % N in the generator
 const familyOf = (id) => id.replace(/^gen-/, '').replace(/-\d+$/, '');
 
 /** Wilson 95% interval: honest uncertainty at small n. */
@@ -77,9 +84,9 @@ async function run() {
     if (!ok.length) { console.error(`Provider ${PROVIDER} not runnable (missing key?).`); process.exit(2); }
   }
   const total = PER_FAMILY * FAMILY_COUNT;
-  const cases = generateCases(total, SEED);
+  const cases = generate(total, SEED);
   const who = POLICY === 'model' ? REGISTRY[PROVIDER].modelId() : `policy:${POLICY}`;
-  console.log(`Calibration: ${who}, ${PER_FAMILY} tasks/family x ${FAMILY_COUNT} families, seed ${SEED}\n`);
+  console.log(`Calibration: ${who}, tier ${TIER}, ${PER_FAMILY} tasks/family x ${FAMILY_COUNT} families, seed ${SEED}\n`);
 
   const perFamily = new Map();
   for (const { task, start, reference } of cases) {
