@@ -1,0 +1,218 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "curated",
+    "count": 12
+  },
+  "models": {
+    "claude": "claude-sonnet-4-6"
+  },
+  "generatedAt": "2026-07-22T05:37:51.128Z",
+  "board": [
+    {
+      "provider": "claude",
+      "passed": 7,
+      "total": 12,
+      "avgScore": 70,
+      "tokensPerSolve": 2604,
+      "failureCategories": {
+        "missing-layer-type": 3,
+        "connectivity": 2,
+        "low-score": 2,
+        "over-budget": 1,
+        "other": 1
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "claude",
+      "taskId": "cnn-cifar",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 914784,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1420,
+      "ms": 7831
+    },
+    {
+      "provider": "claude",
+      "taskId": "mlp-tabular",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 14368,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1370,
+      "ms": 9627
+    },
+    {
+      "provider": "claude",
+      "taskId": "text-encoder",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 1681536,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1093,
+      "ms": 5461
+    },
+    {
+      "provider": "claude",
+      "taskId": "fix-broken-attention",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3040200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 819,
+      "ms": 1646
+    },
+    {
+      "provider": "claude",
+      "taskId": "deepen-resnet",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 24112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1231,
+      "ms": 5680
+    },
+    {
+      "provider": "claude",
+      "taskId": "add-normalization",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 9472,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 903,
+      "ms": 2714
+    },
+    {
+      "provider": "claude",
+      "taskId": "scale-under-budget",
+      "status": "PASS",
+      "score": 75,
+      "pass": true,
+      "params": 79664640,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2013,
+      "ms": 14303
+    },
+    {
+      "provider": "claude",
+      "taskId": "autoencoder",
+      "status": "FAIL",
+      "score": 10,
+      "pass": false,
+      "params": 436224,
+      "blockers": [
+        "input does not reach output (disconnected)",
+        "encoder_fc1: no incoming connection (orphaned)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 10 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 2013,
+      "ms": 12807
+    },
+    {
+      "provider": "claude",
+      "taskId": "two-tower-retrieval",
+      "status": "FAIL",
+      "score": 90,
+      "pass": false,
+      "params": 132521984,
+      "blockers": [],
+      "failures": [
+        "params 132521984 > budget 30000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 1779,
+      "ms": 10564
+    },
+    {
+      "provider": "claude",
+      "taskId": "dlrm-ctr-ranking",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 4277632,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2450,
+      "ms": 16491
+    },
+    {
+      "provider": "claude",
+      "taskId": "bst-sequence-ranking",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 14911808,
+      "blockers": [
+        "flatten_proj: linear declares input width 6400 but upstream emits 128"
+      ],
+      "failures": [
+        "structural blocker: flatten_proj: linear declares input width 6400 but upstream emits 128",
+        "score 15 < min 55",
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "other",
+        "low-score",
+        "missing-layer-type"
+      ],
+      "tokens": 1684,
+      "ms": 10357
+    },
+    {
+      "provider": "claude",
+      "taskId": "semantic-search-encoder",
+      "status": "FAIL",
+      "score": 83,
+      "pass": false,
+      "params": 28406784,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1452,
+      "ms": 12091
+    }
+  ]
+}

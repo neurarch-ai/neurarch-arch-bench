@@ -1,0 +1,195 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "curated",
+    "count": 12
+  },
+  "models": {
+    "openrouter": "openai/gpt-4o"
+  },
+  "generatedAt": "2026-07-22T07:17:10.356Z",
+  "board": [
+    {
+      "provider": "openrouter",
+      "passed": 9,
+      "total": 12,
+      "avgScore": 72,
+      "tokensPerSolve": 1165,
+      "failureCategories": {
+        "over-budget": 1,
+        "missing-layer-type": 1,
+        "too-shallow": 1
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "openrouter",
+      "taskId": "cnn-cifar",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 203456,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 895,
+      "ms": 2495
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "mlp-tabular",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 4128,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 848,
+      "ms": 2420
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "text-encoder",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1412352,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 835,
+      "ms": 2207
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "fix-broken-attention",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3194310,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 737,
+      "ms": 1877
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "deepen-resnet",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 24112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 908,
+      "ms": 3895
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "add-normalization",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 9472,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 838,
+      "ms": 2954
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "scale-under-budget",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 24798208,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 910,
+      "ms": 2408
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "autoencoder",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 221184,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 951,
+      "ms": 2833
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "two-tower-retrieval",
+      "status": "FAIL",
+      "score": 68,
+      "pass": false,
+      "params": 128065536,
+      "blockers": [],
+      "failures": [
+        "params 128065536 > budget 30000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 832,
+      "ms": 3743
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "dlrm-ctr-ranking",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 64262272,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1058,
+      "ms": 3511
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "bst-sequence-ranking",
+      "status": "FAIL",
+      "score": 60,
+      "pass": false,
+      "params": 6169088,
+      "blockers": [],
+      "failures": [
+        "5 components < min 7"
+      ],
+      "failureCategories": [
+        "too-shallow"
+      ],
+      "tokens": 843,
+      "ms": 2672
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "semantic-search-encoder",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 26193408,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 829,
+      "ms": 1994
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "curated",
+    "count": 12
+  },
+  "models": {
+    "openrouter": "google/gemini-2.5-flash"
+  },
+  "generatedAt": "2026-07-22T07:18:01.548Z",
+  "board": [
+    {
+      "provider": "openrouter",
+      "passed": 11,
+      "total": 12,
+      "avgScore": 75,
+      "tokensPerSolve": 1427,
+      "failureCategories": {
+        "over-budget": 1,
+        "missing-layer-type": 1
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "openrouter",
+      "taskId": "cnn-cifar",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 60256,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1521,
+      "ms": 4485
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "mlp-tabular",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 648,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1182,
+      "ms": 2980
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "text-encoder",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1412352,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1174,
+      "ms": 2513
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "fix-broken-attention",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3040200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 727,
+      "ms": 1534
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "deepen-resnet",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 24112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1139,
+      "ms": 7127
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "add-normalization",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 9472,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 868,
+      "ms": 5284
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "scale-under-budget",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 24798208,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1055,
+      "ms": 6769
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "autoencoder",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 436224,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1380,
+      "ms": 3320
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "two-tower-retrieval",
+      "status": "PASS",
+      "score": 78,
+      "pass": true,
+      "params": 12865536,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1213,
+      "ms": 2678
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "dlrm-ctr-ranking",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 3454080,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2997,
+      "ms": 7830
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "bst-sequence-ranking",
+      "status": "PASS",
+      "score": 75,
+      "pass": true,
+      "params": 1353792,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1295,
+      "ms": 3474
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "semantic-search-encoder",
+      "status": "FAIL",
+      "score": 61,
+      "pass": false,
+      "params": 45674496,
+      "blockers": [],
+      "failures": [
+        "params 45674496 > budget 40000000",
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "over-budget",
+        "missing-layer-type"
+      ],
+      "tokens": 1143,
+      "ms": 3151
+    }
+  ]
+}

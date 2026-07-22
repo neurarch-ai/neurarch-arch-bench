@@ -1,0 +1,41 @@
+{
+  "who": "claude-sonnet-4-6",
+  "seed": 11,
+  "perFamily": 12,
+  "generatedAt": "2026-07-22T06:03:38.082Z",
+  "rows": [
+    {
+      "family": "fmla",
+      "n": 12,
+      "passes": 3,
+      "rate": 0.25,
+      "ci": [
+        0.08894003962896138,
+        0.53231033912066
+      ],
+      "band": "EASY (eval-useful)"
+    },
+    {
+      "family": "fkv",
+      "n": 12,
+      "passes": 3,
+      "rate": 0.25,
+      "ci": [
+        0.08894003962896138,
+        0.53231033912066
+      ],
+      "band": "EASY (eval-useful)"
+    },
+    {
+      "family": "fmoe",
+      "n": 12,
+      "passes": 4,
+      "rate": 0.3333333333333333,
+      "ci": [
+        0.13811783989736132,
+        0.6093824126023861
+      ],
+      "band": "EASY (eval-useful)"
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "curated",
+    "count": 12
+  },
+  "models": {
+    "claude": "claude-sonnet-4-6",
+    "grok": "grok-4"
+  },
+  "generatedAt": "2026-07-22T06:12:08.338Z",
+  "board": [
+    {
+      "provider": "grok",
+      "passed": 9,
+      "total": 12,
+      "avgScore": 60,
+      "tokensPerSolve": 2867,
+      "failureCategories": {
+        "shape-mismatch": 3,
+        "low-score": 3,
+        "missing-layer-type": 1,
+        "too-shallow": 2
+      }
+    },
+    {
+      "provider": "claude",
+      "passed": 8,
+      "total": 12,
+      "avgScore": 81,
+      "tokensPerSolve": 2157,
+      "failureCategories": {
+        "missing-layer-type": 3,
+        "over-budget": 1
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "claude",
+      "taskId": "cnn-cifar",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 5633376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1304,
+      "ms": 6721
+    },
+    {
+      "provider": "claude",
+      "taskId": "mlp-tabular",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 14368,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1370,
+      "ms": 7774
+    },
+    {
+      "provider": "claude",
+      "taskId": "text-encoder",
+      "status": "FAIL",
+      "score": 63,
+      "pass": false,
+      "params": 1673472,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1027,
+      "ms": 5072
+    },
+    {
+      "provider": "claude",
+      "taskId": "fix-broken-attention",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3040200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 814,
+      "ms": 2349
+    },
+    {
+      "provider": "claude",
+      "taskId": "deepen-resnet",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 24112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1225,
+      "ms": 5676
+    },
+    {
+      "provider": "claude",
+      "taskId": "add-normalization",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 9472,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 875,
+      "ms": 2515
+    },
+    {
+      "provider": "claude",
+      "taskId": "scale-under-budget",
+      "status": "PASS",
+      "score": 75,
+      "pass": true,
+      "params": 79664640,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1994,
+      "ms": 15325
+    },
+    {
+      "provider": "claude",
+      "taskId": "autoencoder",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 436224,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1456,
+      "ms": 9962
+    },
+    {
+      "provider": "claude",
+      "taskId": "two-tower-retrieval",
+      "status": "FAIL",
+      "score": 90,
+      "pass": false,
+      "params": 136716288,
+      "blockers": [],
+      "failures": [
+        "params 136716288 > budget 30000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 1771,
+      "ms": 11308
+    },
+    {
+      "provider": "claude",
+      "taskId": "dlrm-ctr-ranking",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1272384,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2467,
+      "ms": 16544
+    },
+    {
+      "provider": "claude",
+      "taskId": "bst-sequence-ranking",
+      "status": "FAIL",
+      "score": 75,
+      "pass": false,
+      "params": 6886592,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1569,
+      "ms": 10929
+    },
+    {
+      "provider": "claude",
+      "taskId": "semantic-search-encoder",
+      "status": "FAIL",
+      "score": 81,
+      "pass": false,
+      "params": 28341248,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1381,
+      "ms": 8704
+    },
+    {
+      "provider": "grok",
+      "taskId": "cnn-cifar",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 255920,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1779,
+      "ms": 7197
+    },
+    {
+      "provider": "grok",
+      "taskId": "mlp-tabular",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 4128,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1762,
+      "ms": 7161
+    },
+    {
+      "provider": "grok",
+      "taskId": "text-encoder",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 672896,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2501,
+      "ms": 13010
+    },
+    {
+      "provider": "grok",
+      "taskId": "fix-broken-attention",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3040200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1346,
+      "ms": 4502
+    },
+    {
+      "provider": "grok",
+      "taskId": "deepen-resnet",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 9808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2551,
+      "ms": 13777
+    },
+    {
+      "provider": "grok",
+      "taskId": "add-normalization",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 9472,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1440,
+      "ms": 4961
+    },
+    {
+      "provider": "grok",
+      "taskId": "scale-under-budget",
+      "status": "PASS",
+      "score": 75,
+      "pass": true,
+      "params": 93820416,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2480,
+      "ms": 11884
+    },
+    {
+      "provider": "grok",
+      "taskId": "autoencoder",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 434176,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1871,
+      "ms": 9225
+    },
+    {
+      "provider": "grok",
+      "taskId": "two-tower-retrieval",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 10725376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2328,
+      "ms": 13705
+    },
+    {
+      "provider": "grok",
+      "taskId": "dlrm-ctr-ranking",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 1356096,
+      "blockers": [
+        "bottom1: linear declares input width 2048 but upstream emits 16"
+      ],
+      "failures": [
+        "structural blocker: bottom1: linear declares input width 2048 but upstream emits 16",
+        "score 15 < min 55",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "missing-layer-type"
+      ],
+      "tokens": 2592,
+      "ms": 13879
+    },
+    {
+      "provider": "grok",
+      "taskId": "bst-sequence-ranking",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 5313792,
+      "blockers": [
+        "fc1: linear declares input width 8192 but upstream emits 64"
+      ],
+      "failures": [
+        "structural blocker: fc1: linear declares input width 8192 but upstream emits 64",
+        "score 15 < min 55",
+        "6 components < min 7"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow"
+      ],
+      "tokens": 2616,
+      "ms": 12850
+    },
+    {
+      "provider": "grok",
+      "taskId": "semantic-search-encoder",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 16464384,
+      "blockers": [
+        "proj: linear declares input width 32768 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: proj: linear declares input width 32768 but upstream emits 256",
+        "score 15 < min 55",
+        "5 components < min 6"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow"
+      ],
+      "tokens": 2539,
+      "ms": 15572
+    }
+  ]
+}

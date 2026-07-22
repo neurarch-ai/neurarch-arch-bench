@@ -1,0 +1,1920 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "generated",
+    "count": 120,
+    "seed": 7
+  },
+  "models": {
+    "openrouter": "google/gemini-2.5-flash"
+  },
+  "generatedAt": "2026-07-22T07:30:05.980Z",
+  "board": [
+    {
+      "provider": "openrouter",
+      "passed": 77,
+      "total": 120,
+      "avgScore": 67,
+      "tokensPerSolve": 1921,
+      "failureCategories": {
+        "action-limit": 12,
+        "too-shallow": 15,
+        "missing-layer-type": 11,
+        "over-budget": 6,
+        "connectivity": 34,
+        "low-score": 20,
+        "shape-mismatch": 3
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-0",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 334592,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1949,
+      "ms": 6716
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-1",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1592320,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 973,
+      "ms": 2173
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-2",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 592544,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1460,
+      "ms": 4738
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-3",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 2648832,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1022,
+      "ms": 3410
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-4",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 56320,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1973,
+      "ms": 8664
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-5",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 13073032,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 732,
+      "ms": 778
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-6",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1287700,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1010,
+      "ms": 1594
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-7",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 232823,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 4"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1299,
+      "ms": 2358
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-8",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 143250,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1484,
+      "ms": 4890
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-9",
+      "status": "FAIL",
+      "score": 70,
+      "pass": false,
+      "params": 100640000,
+      "blockers": [],
+      "failures": [
+        "params 100640000 > budget 4000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 833,
+      "ms": 1029
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-10",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 3138432,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1418,
+      "ms": 3978
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-11",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 4780032,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1394,
+      "ms": 3719
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-12",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 784224,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1448,
+      "ms": 5629
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-13",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 2301952,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1109,
+      "ms": 2625
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-14",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 387072,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1661,
+      "ms": 4727
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-15",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 11316552,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 733,
+      "ms": 808
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-16",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 768500,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1095,
+      "ms": 2855
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-17",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 398422,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 5"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1367,
+      "ms": 5029
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-18",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 535704,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 1384,
+      "ms": 4508
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-19",
+      "status": "FAIL",
+      "score": 70,
+      "pass": false,
+      "params": 101170000,
+      "blockers": [],
+      "failures": [
+        "params 101170000 > budget 4000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 842,
+      "ms": 1613
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-20",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 318720,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1309,
+      "ms": 3439
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-21",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 4429824,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1077,
+      "ms": 2714
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-22",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 558432,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1615,
+      "ms": 4736
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-23",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 2351104,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1177,
+      "ms": 2623
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-24",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 131328,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1100,
+      "ms": 2598
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-25",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 6713912,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 740,
+      "ms": 909
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-26",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 522560,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 993,
+      "ms": 1455
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-27",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 355559,
+      "blockers": [],
+      "failures": [
+        "15 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1576,
+      "ms": 3396
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-28",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 496986,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 1458,
+      "ms": 3845
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-29",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1148000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 890,
+      "ms": 1052
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-30",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 165120,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 9",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "connectivity"
+      ],
+      "tokens": 1337,
+      "ms": 3493
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-31",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 2162688,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1098,
+      "ms": 2443
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-32",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 304416,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1527,
+      "ms": 3678
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-33",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 5161728,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "5 components < min 6",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "connectivity"
+      ],
+      "tokens": 960,
+      "ms": 1982
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-34",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 274944,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1439,
+      "ms": 3800
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-35",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5252800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 733,
+      "ms": 746
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-36",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1250550,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1095,
+      "ms": 1542
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-37",
+      "status": "FAIL",
+      "score": 94,
+      "pass": false,
+      "params": 207963,
+      "blockers": [],
+      "failures": [
+        "6 actions > max 3"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1018,
+      "ms": 1567
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-38",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 377625,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1677,
+      "ms": 4008
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-39",
+      "status": "FAIL",
+      "score": 79,
+      "pass": false,
+      "params": 4261868,
+      "blockers": [],
+      "failures": [
+        "params 4261868 > budget 4000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 911,
+      "ms": 1355
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-40",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 5615616,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2013,
+      "ms": 5967
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-41",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 2011648,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1070,
+      "ms": 2484
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-42",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 3103584,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1454,
+      "ms": 3865
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-43",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 5009664,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1067,
+      "ms": 1791
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-44",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 319488,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1568,
+      "ms": 4631
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-45",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 2273292,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 733,
+      "ms": 893
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-46",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 508200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 909,
+      "ms": 2257
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-47",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 224577,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 4"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1294,
+      "ms": 2907
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-48",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 360976,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1505,
+      "ms": 3780
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-49",
+      "status": "FAIL",
+      "score": 79,
+      "pass": false,
+      "params": 4186000,
+      "blockers": [],
+      "failures": [
+        "params 4186000 > budget 4000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 833,
+      "ms": 993
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-50",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1464320,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2003,
+      "ms": 4404
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-51",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 1513216,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1319,
+      "ms": 2725
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-52",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 20257632,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1663,
+      "ms": 4574
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-53",
+      "status": "PASS",
+      "score": 85,
+      "pass": true,
+      "params": 9043200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1540,
+      "ms": 4577
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-54",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 9356544,
+      "blockers": [
+        "linear_head: linear declares input width 99840 but upstream emits 768"
+      ],
+      "failures": [
+        "structural blocker: linear_head: linear declares input width 99840 but upstream emits 768",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1683,
+      "ms": 4764
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-55",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1499808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 729,
+      "ms": 760
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-56",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1138900,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1012,
+      "ms": 1612
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-57",
+      "status": "FAIL",
+      "score": 94,
+      "pass": false,
+      "params": 79019,
+      "blockers": [],
+      "failures": [
+        "6 actions > max 3"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1008,
+      "ms": 1581
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-58",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 675200,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1508,
+      "ms": 4530
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-59",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1139000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 911,
+      "ms": 1370
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-60",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 366848,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 9",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "connectivity"
+      ],
+      "tokens": 1301,
+      "ms": 3876
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-61",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 418800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1093,
+      "ms": 2498
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-62",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 489312,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2093,
+      "ms": 6251
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-63",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 4929792,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1127,
+      "ms": 2661
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-64",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 295680,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1682,
+      "ms": 4472
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-65",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3115200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 733,
+      "ms": 753
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-66",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1472200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1096,
+      "ms": 1521
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-67",
+      "status": "FAIL",
+      "score": 94,
+      "pass": false,
+      "params": 40181,
+      "blockers": [],
+      "failures": [
+        "10 actions > max 3"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1150,
+      "ms": 1765
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-68",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 23660,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 1489,
+      "ms": 3501
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-69",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1104000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 907,
+      "ms": 1220
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-70",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1189376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1567,
+      "ms": 3970
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-71",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 167200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 972,
+      "ms": 1637
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-72",
+      "status": "FAIL",
+      "score": 89,
+      "pass": false,
+      "params": 55653984,
+      "blockers": [],
+      "failures": [
+        "params 55653984 > budget 50000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 1663,
+      "ms": 4408
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-73",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 7388160,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1255,
+      "ms": 3180
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-74",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 9741312,
+      "blockers": [
+        "classification_head: linear declares input width 347904 but upstream emits 768"
+      ],
+      "failures": [
+        "structural blocker: classification_head: linear declares input width 347904 but upstream emits 768",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1218,
+      "ms": 3097
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-75",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3214264,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 732,
+      "ms": 767
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-76",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 792412,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1096,
+      "ms": 1473
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-77",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 99141,
+      "blockers": [],
+      "failures": [
+        "15 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1542,
+      "ms": 2959
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-78",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 772842,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 1479,
+      "ms": 3838
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-79",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1122000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 907,
+      "ms": 1278
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-80",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 373760,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 9",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "connectivity"
+      ],
+      "tokens": 1339,
+      "ms": 3874
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-81",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 3041484,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1087,
+      "ms": 2542
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-82",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 143200,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1137,
+      "ms": 3148
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-83",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 7289856,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1195,
+      "ms": 3022
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-84",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 326400,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1168,
+      "ms": 2736
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-85",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1508544,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 738,
+      "ms": 1081
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-86",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 952945,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1009,
+      "ms": 1544
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-87",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 649195,
+      "blockers": [],
+      "failures": [
+        "20 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1731,
+      "ms": 3899
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-88",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 597734,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 1464,
+      "ms": 3959
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-89",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1068000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 907,
+      "ms": 1249
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-90",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 143808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1569,
+      "ms": 4272
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-91",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 477952,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 927,
+      "ms": 1878
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-92",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 398752,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1461,
+      "ms": 4146
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-93",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 7229952,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1231,
+      "ms": 3501
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-94",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 96906,
+      "blockers": [
+        "linear_head: linear declares input width 274 but upstream emits 768"
+      ],
+      "failures": [
+        "structural blocker: linear_head: linear declares input width 274 but upstream emits 768",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1714,
+      "ms": 4881
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-95",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5543424,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 741,
+      "ms": 1046
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-96",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 857000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1119,
+      "ms": 1627
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-97",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 334349,
+      "blockers": [],
+      "failures": [
+        "15 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1573,
+      "ms": 3754
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-98",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 487466,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1493,
+      "ms": 3900
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-99",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1112000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 907,
+      "ms": 1239
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-100",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1042432,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1232,
+      "ms": 3235
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-101",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 1437952,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1071,
+      "ms": 2853
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-102",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 5370144,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1246,
+      "ms": 3364
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-103",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 2632704,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1000,
+      "ms": 2088
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-104",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 288768,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1372,
+      "ms": 3938
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-105",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5232672,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 742,
+      "ms": 989
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-106",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 576100,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 910,
+      "ms": 1319
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-107",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 226127,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 5"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1388,
+      "ms": 2521
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-108",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 299640,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "8 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 1462,
+      "ms": 3788
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-109",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1122000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 905,
+      "ms": 1246
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-mlp-110",
+      "status": "FAIL",
+      "score": 80,
+      "pass": false,
+      "params": 21786624,
+      "blockers": [],
+      "failures": [
+        "params 21786624 > budget 10000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 1566,
+      "ms": 4509
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-ae-111",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 1303040,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1299,
+      "ms": 3268
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-cnn-112",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 193376,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 1407,
+      "ms": 2610
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-txf-113",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 4953600,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1076,
+      "ms": 1780
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-gqa-114",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 439296,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1456,
+      "ms": 3875
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-fix-115",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 23561376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 733,
+      "ms": 835
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-trim-116",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 489600,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 889,
+      "ms": 1266
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-norm-117",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 489551,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 5"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1368,
+      "ms": 2627
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-tower-118",
+      "status": "FAIL",
+      "score": 69,
+      "pass": false,
+      "params": 496062,
+      "blockers": [],
+      "failures": [
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1536,
+      "ms": 4194
+    },
+    {
+      "provider": "openrouter",
+      "taskId": "gen-grow-119",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1140000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 908,
+      "ms": 1428
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "who": "grok-4",
+  "seed": 11,
+  "perFamily": 12,
+  "generatedAt": "2026-07-22T06:08:17.663Z",
+  "rows": [
+    {
+      "family": "fmla",
+      "n": 12,
+      "passes": 11,
+      "rate": 0.9166666666666666,
+      "ci": [
+        0.6461140782014047,
+        0.9851352905492264
+      ],
+      "band": "SATURATED (>70%)"
+    },
+    {
+      "family": "fmoe",
+      "n": 12,
+      "passes": 12,
+      "rate": 1,
+      "ci": [
+        0.7574992425007574,
+        1
+      ],
+      "band": "SATURATED (>70%)"
+    },
+    {
+      "family": "fkv",
+      "n": 12,
+      "passes": 12,
+      "rate": 1,
+      "ci": [
+        0.7574992425007574,
+        1
+      ],
+      "band": "SATURATED (>70%)"
+    }
+  ]
+}

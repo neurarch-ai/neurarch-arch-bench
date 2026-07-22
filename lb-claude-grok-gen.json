@@ -1,0 +1,3706 @@
+{
+  "benchmark": 1,
+  "split": {
+    "kind": "generated",
+    "count": 120,
+    "seed": 7
+  },
+  "models": {
+    "claude": "claude-sonnet-4-6",
+    "grok": "grok-4"
+  },
+  "generatedAt": "2026-07-22T07:05:10.857Z",
+  "board": [
+    {
+      "provider": "grok",
+      "passed": 86,
+      "total": 120,
+      "avgScore": 62,
+      "tokensPerSolve": 2723,
+      "failureCategories": {
+        "connectivity": 4,
+        "low-score": 30,
+        "shape-mismatch": 28,
+        "too-shallow": 14,
+        "missing-layer-type": 13,
+        "other": 1
+      }
+    },
+    {
+      "provider": "claude",
+      "passed": 79,
+      "total": 120,
+      "avgScore": 72,
+      "tokensPerSolve": 2262,
+      "failureCategories": {
+        "missing-layer-type": 12,
+        "shape-mismatch": 17,
+        "low-score": 17,
+        "action-limit": 12,
+        "over-budget": 1
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-0",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 3287040,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1946,
+      "ms": 12126
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-1",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 2749760,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1824,
+      "ms": 12837
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-2",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 10656608,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1080,
+      "ms": 5066
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-3",
+      "status": "FAIL",
+      "score": 63,
+      "pass": false,
+      "params": 20361216,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1341,
+      "ms": 10722
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-4",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 12868096,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1437,
+      "ms": 9874
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-5",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 13112352,
+      "blockers": [
+        "head: linear declares input width 344 but upstream emits 345"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 344 but upstream emits 345",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 903,
+      "ms": 2842
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-6",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1993692,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1466,
+      "ms": 9219
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-7",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 232823,
+      "blockers": [],
+      "failures": [
+        "9 actions > max 4"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1279,
+      "ms": 4851
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-8",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 383358,
+      "blockers": [
+        "output: merges parents of differing widths (191 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (191 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 12452
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-9",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1114112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1176,
+      "ms": 6289
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-10",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1915776,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1775,
+      "ms": 12904
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-11",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 4780032,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1606,
+      "ms": 10563
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-12",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 14852448,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1329,
+      "ms": 7075
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-13",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 10868480,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1380,
+      "ms": 10524
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-14",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 16434176,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1869,
+      "ms": 12926
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-15",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 11316552,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 976,
+      "ms": 4887
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-16",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1993376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1610,
+      "ms": 10344
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-17",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 398422,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 5"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1453,
+      "ms": 6272
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-18",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 535704,
+      "blockers": [
+        "output: merges parents of differing widths (332 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (332 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 11102
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-19",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1168384,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1194,
+      "ms": 5893
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-20",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1891328,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1376,
+      "ms": 7476
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-21",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 4429824,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1391,
+      "ms": 7507
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-22",
+      "status": "FAIL",
+      "score": 85,
+      "pass": false,
+      "params": 76163936,
+      "blockers": [],
+      "failures": [
+        "params 76163936 > budget 50000000"
+      ],
+      "failureCategories": [
+        "over-budget"
+      ],
+      "tokens": 2254,
+      "ms": 16045
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-23",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 10243072,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1837,
+      "ms": 15970
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-24",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 8931328,
+      "blockers": [
+        "linear_head: linear declares input width 38912 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: linear_head: linear declares input width 38912 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1544,
+      "ms": 15214
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-25",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 6713912,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 840,
+      "ms": 2045
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-26",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1994168,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1499,
+      "ms": 8823
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-27",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 355559,
+      "blockers": [],
+      "failures": [
+        "15 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1638,
+      "ms": 6692
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-28",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 248922,
+      "blockers": [
+        "output: merges parents of differing widths (429 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (429 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 11749
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-29",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 703488,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1263,
+      "ms": 7578
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-30",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 2082816,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1371,
+      "ms": 7742
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-31",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 5460992,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2193,
+      "ms": 15258
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-32",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 5968096,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1085,
+      "ms": 4736
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-33",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 18449920,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1639,
+      "ms": 15677
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-34",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 12890112,
+      "blockers": [
+        "head: linear declares input width 75776 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 75776 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1704,
+      "ms": 14303
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-35",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5252800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1020,
+      "ms": 5754
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-36",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1996000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1508,
+      "ms": 9854
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-37",
+      "status": "FAIL",
+      "score": 94,
+      "pass": false,
+      "params": 207963,
+      "blockers": [],
+      "failures": [
+        "6 actions > max 3"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1092,
+      "ms": 3811
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-38",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 515310,
+      "blockers": [
+        "output: merges parents of differing widths (375 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (375 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1813,
+      "ms": 10545
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-39",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 439800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1267,
+      "ms": 8944
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-40",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 2361344,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1997,
+      "ms": 14294
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-41",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 4340224,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2196,
+      "ms": 15845
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-42",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 133472,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1328,
+      "ms": 6994
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-43",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 10941952,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1528,
+      "ms": 12806
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-44",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 15361024,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1998,
+      "ms": 16138
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-45",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 2273292,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 994,
+      "ms": 4520
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-46",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1996890,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1500,
+      "ms": 10467
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-47",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 224577,
+      "blockers": [],
+      "failures": [
+        "9 actions > max 4"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1279,
+      "ms": 6619
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-48",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 360976,
+      "blockers": [
+        "output: merges parents of differing widths (264 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (264 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 10798
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-49",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 415800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1176,
+      "ms": 6084
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-50",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 2232064,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1544,
+      "ms": 9928
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-51",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1722752,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1844,
+      "ms": 12518
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-52",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 5355360,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1337,
+      "ms": 7339
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-53",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 6011392,
+      "blockers": [
+        "classifier_head: linear declares input width 60672 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: classifier_head: linear declares input width 60672 but upstream emits 256",
+        "score 15 < min 50",
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "missing-layer-type"
+      ],
+      "tokens": 1615,
+      "ms": 14699
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-54",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 8215808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1798,
+      "ms": 14858
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-55",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1499808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 818,
+      "ms": 1608
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-56",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1996560,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1471,
+      "ms": 9606
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-57",
+      "status": "FAIL",
+      "score": 94,
+      "pass": false,
+      "params": 79019,
+      "blockers": [],
+      "failures": [
+        "6 actions > max 3"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1087,
+      "ms": 3833
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-58",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 675200,
+      "blockers": [
+        "output: merges parents of differing widths (448 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (448 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 10535
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-59",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 443400,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1186,
+      "ms": 6260
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-60",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 613888,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1526,
+      "ms": 9718
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-61",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 692992,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2143,
+      "ms": 14941
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-62",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 541536,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1455,
+      "ms": 8395
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-63",
+      "status": "FAIL",
+      "score": 75,
+      "pass": false,
+      "params": 21679616,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1538,
+      "ms": 14972
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-64",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 5146624,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1994,
+      "ms": 15656
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-65",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3115200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1076,
+      "ms": 6606
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-66",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1995450,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1599,
+      "ms": 10451
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-67",
+      "status": "FAIL",
+      "score": 94,
+      "pass": false,
+      "params": 40181,
+      "blockers": [],
+      "failures": [
+        "6 actions > max 3"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1092,
+      "ms": 3848
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-68",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 43206,
+      "blockers": [
+        "output: merges parents of differing widths (35 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (35 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 11078
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-69",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1155072,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1129,
+      "ms": 5308
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-70",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 680448,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1739,
+      "ms": 11330
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-71",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 297216,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1382,
+      "ms": 7169
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-72",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 561504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1455,
+      "ms": 7876
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-73",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 14596608,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1574,
+      "ms": 14975
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-74",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 8198912,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1441,
+      "ms": 9986
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-75",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3214264,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1055,
+      "ms": 15400
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-76",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1992800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1594,
+      "ms": 9615
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-77",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 99141,
+      "blockers": [],
+      "failures": [
+        "15 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1823,
+      "ms": 9362
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-78",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 618986,
+      "blockers": [
+        "output: merges parents of differing widths (501 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (501 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1819,
+      "ms": 11183
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-79",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1173504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1235,
+      "ms": 7096
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-80",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 2007040,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1371,
+      "ms": 8872
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-81",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 3060480,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1604,
+      "ms": 10088
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-82",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 127840,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1330,
+      "ms": 6837
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-83",
+      "status": "FAIL",
+      "score": 67,
+      "pass": false,
+      "params": 9179904,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1439,
+      "ms": 15101
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-84",
+      "status": "PASS",
+      "score": 75,
+      "pass": true,
+      "params": 12310016,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1577,
+      "ms": 13415
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-85",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1508544,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 845,
+      "ms": 1785
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-86",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1993677,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1539,
+      "ms": 10451
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-87",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 649195,
+      "blockers": [],
+      "failures": [
+        "15 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1638,
+      "ms": 6909
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-88",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 597734,
+      "blockers": [
+        "output: merges parents of differing widths (371 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (371 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 10978
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-89",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 400800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1305,
+      "ms": 7602
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-90",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 2108928,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1560,
+      "ms": 8823
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-91",
+      "status": "PASS",
+      "score": 71,
+      "pass": true,
+      "params": 2044352,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1913,
+      "ms": 12765
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-92",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 6843232,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1085,
+      "ms": 5775
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-93",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 4476416,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1467,
+      "ms": 9862
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-94",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 25647616,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2093,
+      "ms": 19622
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-95",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5543424,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 840,
+      "ms": 1690
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-96",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1992120,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1594,
+      "ms": 9295
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-97",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 334349,
+      "blockers": [],
+      "failures": [
+        "15 actions > max 6"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1648,
+      "ms": 7180
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-98",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 487466,
+      "blockers": [
+        "output: merges parents of differing widths (277 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (277 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 10685
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-99",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1163264,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1069,
+      "ms": 4750
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-100",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1042432,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1761,
+      "ms": 14882
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-101",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1450624,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1697,
+      "ms": 11509
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-102",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 9567024,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1085,
+      "ms": 6100
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-103",
+      "status": "FAIL",
+      "score": 63,
+      "pass": false,
+      "params": 9859072,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1346,
+      "ms": 11562
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-104",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 12813312,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1499,
+      "ms": 12295
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-105",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5232672,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 845,
+      "ms": 1768
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-106",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1997028,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1310,
+      "ms": 8163
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-107",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 226127,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 5"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1466,
+      "ms": 5766
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-108",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 232596,
+      "blockers": [
+        "output: merges parents of differing widths (330 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (330 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 11037
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-109",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1173504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1250,
+      "ms": 6543
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-110",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 2329344,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2113,
+      "ms": 14336
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-111",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1351936,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1677,
+      "ms": 11547
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-112",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 129888,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1302,
+      "ms": 6817
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-113",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 6252544,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 1295,
+      "ms": 12342
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-114",
+      "status": "PASS",
+      "score": 79,
+      "pass": true,
+      "params": 14589952,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1660,
+      "ms": 15784
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-115",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 23659946,
+      "blockers": [
+        "head: linear declares input width 498 but upstream emits 500"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 498 but upstream emits 500",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 979,
+      "ms": 3894
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-116",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1996904,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1328,
+      "ms": 7719
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-117",
+      "status": "FAIL",
+      "score": 100,
+      "pass": false,
+      "params": 489551,
+      "blockers": [],
+      "failures": [
+        "12 actions > max 5"
+      ],
+      "failureCategories": [
+        "action-limit"
+      ],
+      "tokens": 1453,
+      "ms": 8258
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-118",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 292964,
+      "blockers": [
+        "output: merges parents of differing widths (434 vs 1)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (434 vs 1)",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 1818,
+      "ms": 11740
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-119",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1191936,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1181,
+      "ms": 6688
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-0",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 85376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2047,
+      "ms": 9900
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-1",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 812416,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2172,
+      "ms": 10376
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-2",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 4416336,
+      "blockers": [
+        "input does not reach output (disconnected)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 15 < min 50",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "connectivity"
+      ],
+      "tokens": 2195,
+      "ms": 10856
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-3",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 9332736,
+      "blockers": [
+        "head: linear declares input width 73984 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 73984 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2403,
+      "ms": 44344
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-4",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 5124608,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2262,
+      "ms": 13682
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-5",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 13073032,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1253,
+      "ms": 3820
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-6",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1969800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1512,
+      "ms": 4461
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-7",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 232823,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1560,
+      "ms": 4974
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-8",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 191870,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 191)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 191)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2341,
+      "ms": 11371
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-9",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1114112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1742,
+      "ms": 6265
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-10",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 523712,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2163,
+      "ms": 8785
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-11",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 4780032,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2235,
+      "ms": 11262
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-12",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 1696176,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2574,
+      "ms": 13311
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-13",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 9819904,
+      "blockers": [
+        "head: linear declares input width 81152 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 81152 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2537,
+      "ms": 13198
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-14",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 14838272,
+      "blockers": [
+        "head: linear declares input width 71680 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 71680 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2638,
+      "ms": 14347
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-15",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 11316552,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1424,
+      "ms": 6099
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-16",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1998270,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1803,
+      "ms": 6993
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-17",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 398422,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1693,
+      "ms": 6676
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-18",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 535704,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 332)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 332)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2264,
+      "ms": 16987
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-19",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1168384,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1568,
+      "ms": 5325
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-20",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 318720,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1883,
+      "ms": 8500
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-21",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1820672,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1751,
+      "ms": 8288
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-22",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 15252400,
+      "blockers": [
+        "head: linear declares input width 204800 but upstream emits 128"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 204800 but upstream emits 128",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2275,
+      "ms": 10885
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-23",
+      "status": "ERROR",
+      "score": 0,
+      "error": "TypeError: fetch failed",
+      "failureCategories": [
+        "other"
+      ],
+      "tokens": 0,
+      "ms": 653472
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-24",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 7818496,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2393,
+      "ms": 12778
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-25",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 6713912,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1444,
+      "ms": 5480
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-26",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1998170,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1619,
+      "ms": 5332
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-27",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 355559,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1644,
+      "ms": 4883
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-28",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 496986,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 429)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 429)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1906,
+      "ms": 8398
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-29",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 448800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1536,
+      "ms": 261100
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-30",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1152000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1969,
+      "ms": 10973
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-31",
+      "status": "FAIL",
+      "score": 58,
+      "pass": false,
+      "params": 455544,
+      "blockers": [],
+      "failures": [
+        "4 components < min 6"
+      ],
+      "failureCategories": [
+        "too-shallow"
+      ],
+      "tokens": 1744,
+      "ms": 7833
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-32",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 1929600,
+      "blockers": [
+        "head: linear declares input width 34992 but upstream emits 32"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 34992 but upstream emits 32",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2398,
+      "ms": 12231
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-33",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 9977344,
+      "blockers": [
+        "head: linear declares input width 129536 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 129536 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2254,
+      "ms": 13095
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-34",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 7258112,
+      "blockers": [
+        "head: linear declares input width 75776 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 75776 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2274,
+      "ms": 12876
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-35",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5252800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1343,
+      "ms": 4434
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-36",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1996000,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1611,
+      "ms": 5122
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-37",
+      "status": "PASS",
+      "score": 94,
+      "pass": true,
+      "params": 207963,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1394,
+      "ms": 4285
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-38",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 377625,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 375)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 375)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2004,
+      "ms": 8919
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-39",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1184768,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1559,
+      "ms": 5228
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-40",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 420864,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2316,
+      "ms": 11277
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-41",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 2011648,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2042,
+      "ms": 9497
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-42",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 1951584,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2249,
+      "ms": 10993
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-43",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 4815616,
+      "blockers": [
+        "head: linear declares input width 36608 but upstream emits 128"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 36608 but upstream emits 128",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2320,
+      "ms": 14376
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-44",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 7814144,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2925,
+      "ms": 18153
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-45",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 2273292,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1339,
+      "ms": 3732
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-46",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1996890,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1862,
+      "ms": 6087
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-47",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 224577,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1416,
+      "ms": 3600
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-48",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 186384,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 264)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 264)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2146,
+      "ms": 10140
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-49",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 661248,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1696,
+      "ms": 6300
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-50",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 1464320,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2611,
+      "ms": 16876
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-51",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 701440,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1954,
+      "ms": 11839
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-52",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 20257632,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2378,
+      "ms": 13564
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-53",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 4438528,
+      "blockers": [
+        "head: linear declares input width 60672 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 60672 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2536,
+      "ms": 16721
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-54",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 5655040,
+      "blockers": [
+        "linear: linear declares input width 33280 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: linear: linear declares input width 33280 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2407,
+      "ms": 11850
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-55",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1499808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1430,
+      "ms": 5686
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-56",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1996560,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1851,
+      "ms": 6471
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-57",
+      "status": "PASS",
+      "score": 94,
+      "pass": true,
+      "params": 79019,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1462,
+      "ms": 4654
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-58",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 590912,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 448)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 448)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2366,
+      "ms": 10993
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-59",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 443400,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1632,
+      "ms": 6058
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-60",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 366848,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1885,
+      "ms": 7657
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-61",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 558400,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1965,
+      "ms": 9517
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-62",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 14695344,
+      "blockers": [
+        "head: linear declares input width 331776 but upstream emits 128"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 331776 but upstream emits 128",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2221,
+      "ms": 10657
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-63",
+      "status": "PASS",
+      "score": 63,
+      "pass": true,
+      "params": 1418112,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2391,
+      "ms": 12492
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-64",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 7826944,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2395,
+      "ms": 10898
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-65",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3115200,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1692,
+      "ms": 6820
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-66",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1995450,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1821,
+      "ms": 5975
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-67",
+      "status": "PASS",
+      "score": 94,
+      "pass": true,
+      "params": 40181,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1416,
+      "ms": 4609
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-68",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 43206,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 35)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 35)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1967,
+      "ms": 8459
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-69",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 422400,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1606,
+      "ms": 5151
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-70",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1189376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2185,
+      "ms": 9488
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-71",
+      "status": "PASS",
+      "score": 65,
+      "pass": true,
+      "params": 181124,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2123,
+      "ms": 10157
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-72",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 39675488,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2191,
+      "ms": 11609
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-73",
+      "status": "FAIL",
+      "score": 65,
+      "pass": false,
+      "params": 14596608,
+      "blockers": [],
+      "failures": [
+        "missing layer type \"multiHeadAttention\""
+      ],
+      "failureCategories": [
+        "missing-layer-type"
+      ],
+      "tokens": 2654,
+      "ms": 14380
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-74",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 5691136,
+      "blockers": [
+        "head: linear declares input width 115968 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 115968 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2469,
+      "ms": 15772
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-75",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 3214264,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1313,
+      "ms": 4193
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-76",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1992800,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1817,
+      "ms": 9014
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-77",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 99141,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2061,
+      "ms": 7268
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-78",
+      "status": "FAIL",
+      "score": 0,
+      "pass": false,
+      "params": 1236970,
+      "blockers": [
+        "input does not reach output (disconnected)",
+        "user_linear1: no incoming connection (orphaned)",
+        "item_linear1: no incoming connection (orphaned)",
+        "output: merges parents of differing widths (1 vs 501)"
+      ],
+      "failures": [
+        "structural blocker: input does not reach output (disconnected)",
+        "score 0 < min 50",
+        "7 components < min 11",
+        "missing layer type \"relu\"",
+        "input does not reach output"
+      ],
+      "failureCategories": [
+        "connectivity",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type",
+        "connectivity"
+      ],
+      "tokens": 2132,
+      "ms": 9200
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-79",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1173504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1508,
+      "ms": 4729
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-80",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 373760,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1724,
+      "ms": 8723
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-81",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 1909248,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2264,
+      "ms": 11560
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-82",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 895840,
+      "blockers": [
+        "head: linear declares input width 100352 but upstream emits 128"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 100352 but upstream emits 128",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2319,
+      "ms": 11151
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-83",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 7607040,
+      "blockers": [
+        "head: linear declares input width 47872 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 47872 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2242,
+      "ms": 11004
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-84",
+      "status": "PASS",
+      "score": 73,
+      "pass": true,
+      "params": 15381504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2530,
+      "ms": 12692
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-85",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 1508544,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1405,
+      "ms": 4460
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-86",
+      "status": "PASS",
+      "score": 84,
+      "pass": true,
+      "params": 1981710,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1784,
+      "ms": 5677
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-87",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 649195,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1781,
+      "ms": 7147
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-88",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 433328,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 371)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 371)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2292,
+      "ms": 14246
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-89",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1118208,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1596,
+      "ms": 6475
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-90",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 373632,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1919,
+      "ms": 11455
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-91",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 2037504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2015,
+      "ms": 10562
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-92",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 2904272,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2283,
+      "ms": 13907
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-93",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 33538048,
+      "blockers": [
+        "head: linear declares input width 61440 but upstream emits 512"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 61440 but upstream emits 512",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2007,
+      "ms": 12678
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-94",
+      "status": "PASS",
+      "score": 81,
+      "pass": true,
+      "params": 2583808,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2662,
+      "ms": 17335
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-95",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5543424,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1274,
+      "ms": 3838
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-96",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 1992120,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1958,
+      "ms": 8322
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-97",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 334349,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1710,
+      "ms": 5608
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-98",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 263981,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 277)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 277)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2368,
+      "ms": 12449
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-99",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1163264,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1536,
+      "ms": 5739
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-100",
+      "status": "PASS",
+      "score": 88,
+      "pass": true,
+      "params": 349184,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2110,
+      "ms": 9761
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-101",
+      "status": "PASS",
+      "score": 67,
+      "pass": true,
+      "params": 1437952,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1708,
+      "ms": 6626
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-102",
+      "status": "PASS",
+      "score": 82,
+      "pass": true,
+      "params": 2034576,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2237,
+      "ms": 10960
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-103",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 4214784,
+      "blockers": [
+        "head: linear declares input width 87040 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 87040 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2275,
+      "ms": 12748
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-104",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 2573312,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2518,
+      "ms": 14980
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-105",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 5232672,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1296,
+      "ms": 3946
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-106",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1988550,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1498,
+      "ms": 4416
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-107",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 226127,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1448,
+      "ms": 3481
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-108",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 299640,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 330)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 330)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 2138,
+      "ms": 10672
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-109",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1173504,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1642,
+      "ms": 7475
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-mlp-110",
+      "status": "PASS",
+      "score": 90,
+      "pass": true,
+      "params": 429568,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2279,
+      "ms": 10925
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-ae-111",
+      "status": "FAIL",
+      "score": 58,
+      "pass": false,
+      "params": 127920,
+      "blockers": [],
+      "failures": [
+        "4 components < min 6"
+      ],
+      "failureCategories": [
+        "too-shallow"
+      ],
+      "tokens": 1740,
+      "ms": 8366
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-cnn-112",
+      "status": "PASS",
+      "score": 86,
+      "pass": true,
+      "params": 5419872,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2290,
+      "ms": 10608
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-txf-113",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 4741120,
+      "blockers": [
+        "head: linear declares input width 70656 but upstream emits 256"
+      ],
+      "failures": [
+        "structural blocker: head: linear declares input width 70656 but upstream emits 256",
+        "score 15 < min 50"
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score"
+      ],
+      "tokens": 2270,
+      "ms": 14188
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-gqa-114",
+      "status": "PASS",
+      "score": 77,
+      "pass": true,
+      "params": 1290752,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 2617,
+      "ms": 15027
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-fix-115",
+      "status": "PASS",
+      "score": 60,
+      "pass": true,
+      "params": 23561376,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1384,
+      "ms": 4221
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-trim-116",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1996904,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1636,
+      "ms": 5929
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-norm-117",
+      "status": "PASS",
+      "score": 100,
+      "pass": true,
+      "params": 489551,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1680,
+      "ms": 5193
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-tower-118",
+      "status": "FAIL",
+      "score": 15,
+      "pass": false,
+      "params": 496062,
+      "blockers": [
+        "output: merges parents of differing widths (1 vs 434)"
+      ],
+      "failures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 434)",
+        "score 15 < min 50",
+        "9 components < min 11",
+        "missing layer type \"relu\""
+      ],
+      "failureCategories": [
+        "shape-mismatch",
+        "low-score",
+        "too-shallow",
+        "missing-layer-type"
+      ],
+      "tokens": 1918,
+      "ms": 10337
+    },
+    {
+      "provider": "grok",
+      "taskId": "gen-grow-119",
+      "status": "PASS",
+      "score": 80,
+      "pass": true,
+      "params": 1191936,
+      "blockers": [],
+      "failures": [],
+      "failureCategories": [],
+      "tokens": 1728,
+      "ms": 6953
+    }
+  ]
+}

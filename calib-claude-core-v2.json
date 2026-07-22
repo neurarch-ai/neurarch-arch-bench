@@ -1,0 +1,118 @@
+{
+  "who": "claude-sonnet-4-6",
+  "seed": 11,
+  "perFamily": 12,
+  "generatedAt": "2026-07-22T05:55:19.492Z",
+  "rows": [
+    {
+      "family": "txf",
+      "n": 12,
+      "passes": 0,
+      "rate": 0,
+      "ci": [
+        0,
+        0.2425007574992425
+      ],
+      "band": "TOO-HARD (<2%)"
+    },
+    {
+      "family": "norm",
+      "n": 12,
+      "passes": 0,
+      "rate": 0,
+      "ci": [
+        0,
+        0.2425007574992425
+      ],
+      "band": "TOO-HARD (<2%)"
+    },
+    {
+      "family": "tower",
+      "n": 12,
+      "passes": 0,
+      "rate": 0,
+      "ci": [
+        0,
+        0.2425007574992425
+      ],
+      "band": "TOO-HARD (<2%)"
+    },
+    {
+      "family": "gqa",
+      "n": 12,
+      "passes": 7,
+      "rate": 0.5833333333333334,
+      "ci": [
+        0.3195073356553728,
+        0.8067425380947535
+      ],
+      "band": "EASY (eval-useful)"
+    },
+    {
+      "family": "fix",
+      "n": 12,
+      "passes": 10,
+      "rate": 0.8333333333333334,
+      "ci": [
+        0.5519636426153274,
+        0.9530358523851776
+      ],
+      "band": "SATURATED (>70%)"
+    },
+    {
+      "family": "cnn",
+      "n": 12,
+      "passes": 11,
+      "rate": 0.9166666666666666,
+      "ci": [
+        0.6461140782014047,
+        0.9851352905492264
+      ],
+      "band": "SATURATED (>70%)"
+    },
+    {
+      "family": "mlp",
+      "n": 12,
+      "passes": 12,
+      "rate": 1,
+      "ci": [
+        0.7574992425007574,
+        1
+      ],
+      "band": "SATURATED (>70%)"
+    },
+    {
+      "family": "ae",
+      "n": 12,
+      "passes": 12,
+      "rate": 1,
+      "ci": [
+        0.7574992425007574,
+        1
+      ],
+      "band": "SATURATED (>70%)"
+    },
+    {
+      "family": "trim",
+      "n": 12,
+      "passes": 12,
+      "rate": 1,
+      "ci": [
+        0.7574992425007574,
+        1
+      ],
+      "band": "SATURATED (>70%)"
+    },
+    {
+      "family": "grow",
+      "n": 12,
+      "passes": 12,
+      "rate": 1,
+      "ci": [
+        0.7574992425007574,
+        1
+      ],
+      "band": "SATURATED (>70%)"
+    }
+  ]
+}

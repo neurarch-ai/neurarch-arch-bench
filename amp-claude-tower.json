@@ -1,0 +1,811 @@
+{
+  "split": {
+    "kind": "generated",
+    "count": 30,
+    "seed": 7
+  },
+  "turns": 3,
+  "generatedAt": "2026-07-22T07:36:48.080Z",
+  "results": [
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4-6",
+      "n": 30,
+      "singleShot": 0.7,
+      "withVerifier": 0.9333333333333333,
+      "liftPoints": 23.333333333333332,
+      "errors": 0,
+      "rescuedBy": {
+        "turn2": 6,
+        "turn3": 1
+      }
+    }
+  ],
+  "rows": [
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-0",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1473,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-1",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1633,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-2",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1300,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-3",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1441,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-4",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1895,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-5",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1022,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-6",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1494,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-7",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2351,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-8",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 3,
+      "tokens": 5856,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-9",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1211,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-10",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1959,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-11",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 2108,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-12",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1328,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-13",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 3211,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-14",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1879,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-15",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 818,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-16",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1581,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-17",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2579,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-18",
+      "passAtTurn1": false,
+      "passFinal": false,
+      "turnsUsed": 3,
+      "tokens": 5911,
+      "finalFailures": [
+        "structural blocker: score_head: merges parents of differing widths (664 vs 332)",
+        "score 10 < min 50"
+      ],
+      "finalGraph": {
+        "components": [
+          {
+            "id": "iu",
+            "type": "input",
+            "name": "user_input",
+            "params": {
+              "shape": [
+                1,
+                172
+              ]
+            },
+            "inputs": [],
+            "outputs": [
+              "n-b0"
+            ]
+          },
+          {
+            "id": "ii",
+            "type": "input",
+            "name": "item_input",
+            "params": {
+              "shape": [
+                1,
+                209
+              ]
+            },
+            "inputs": [],
+            "outputs": [
+              "n-b8"
+            ]
+          },
+          {
+            "id": "o",
+            "type": "output",
+            "name": "output",
+            "params": {},
+            "inputs": [
+              "n-b6",
+              "n-b18"
+            ],
+            "outputs": []
+          },
+          {
+            "id": "n-b0",
+            "type": "linear",
+            "name": "user_fc1",
+            "params": {
+              "inFeatures": 172,
+              "outFeatures": 1024
+            },
+            "inputs": [
+              "iu"
+            ],
+            "outputs": [
+              "n-b2"
+            ]
+          },
+          {
+            "id": "n-b2",
+            "type": "relu",
+            "name": "user_relu1",
+            "params": {},
+            "inputs": [
+              "n-b0"
+            ],
+            "outputs": [
+              "n-b4"
+            ]
+          },
+          {
+            "id": "n-b4",
+            "type": "linear",
+            "name": "user_fc2",
+            "params": {
+              "inFeatures": 1024,
+              "outFeatures": 332
+            },
+            "inputs": [
+              "n-b2"
+            ],
+            "outputs": [
+              "n-b6"
+            ]
+          },
+          {
+            "id": "n-b6",
+            "type": "relu",
+            "name": "user_relu2",
+            "params": {},
+            "inputs": [
+              "n-b4"
+            ],
+            "outputs": [
+              "o",
+              "n-b18",
+              "n-b3"
+            ]
+          },
+          {
+            "id": "n-b8",
+            "type": "linear",
+            "name": "item_fc1",
+            "params": {
+              "inFeatures": 209,
+              "outFeatures": 1024
+            },
+            "inputs": [
+              "ii"
+            ],
+            "outputs": [
+              "n-b10"
+            ]
+          },
+          {
+            "id": "n-b10",
+            "type": "relu",
+            "name": "item_relu1",
+            "params": {},
+            "inputs": [
+              "n-b8"
+            ],
+            "outputs": [
+              "n-b12"
+            ]
+          },
+          {
+            "id": "n-b12",
+            "type": "linear",
+            "name": "item_fc2",
+            "params": {
+              "inFeatures": 1024,
+              "outFeatures": 332
+            },
+            "inputs": [
+              "n-b10"
+            ],
+            "outputs": [
+              "n-b14"
+            ]
+          },
+          {
+            "id": "n-b14",
+            "type": "relu",
+            "name": "item_relu2",
+            "params": {},
+            "inputs": [
+              "n-b12"
+            ],
+            "outputs": [
+              "n-b3"
+            ]
+          },
+          {
+            "id": "n-b18",
+            "type": "linear",
+            "name": "score_head",
+            "params": {
+              "inFeatures": 664,
+              "outFeatures": 1
+            },
+            "inputs": [
+              "n-b3",
+              "n-b6"
+            ],
+            "outputs": [
+              "o"
+            ]
+          },
+          {
+            "id": "n-b3",
+            "type": "concatenate",
+            "name": "concat",
+            "params": {
+              "dim": 1
+            },
+            "inputs": [
+              "n-b14",
+              "n-b6"
+            ],
+            "outputs": [
+              "n-b18"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "id": "c0",
+            "from": "n-b6",
+            "to": "o"
+          },
+          {
+            "id": "c1",
+            "from": "n-b18",
+            "to": "o"
+          },
+          {
+            "id": "c-b1",
+            "from": "iu",
+            "to": "n-b0"
+          },
+          {
+            "id": "c-b3",
+            "from": "n-b0",
+            "to": "n-b2"
+          },
+          {
+            "id": "c-b5",
+            "from": "n-b2",
+            "to": "n-b4"
+          },
+          {
+            "id": "c-b7",
+            "from": "n-b4",
+            "to": "n-b6"
+          },
+          {
+            "id": "c-b9",
+            "from": "ii",
+            "to": "n-b8"
+          },
+          {
+            "id": "c-b11",
+            "from": "n-b8",
+            "to": "n-b10"
+          },
+          {
+            "id": "c-b13",
+            "from": "n-b10",
+            "to": "n-b12"
+          },
+          {
+            "id": "c-b15",
+            "from": "n-b12",
+            "to": "n-b14"
+          },
+          {
+            "id": "c-b0",
+            "from": "n-b3",
+            "to": "n-b18"
+          },
+          {
+            "id": "c-b2",
+            "from": "n-b6",
+            "to": "n-b18"
+          },
+          {
+            "id": "c-b4",
+            "from": "n-b14",
+            "to": "n-b3"
+          },
+          {
+            "id": "c-b6",
+            "from": "n-b6",
+            "to": "n-b3"
+          }
+        ]
+      }
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-19",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1200,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-mlp-20",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1372,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-ae-21",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1772,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-cnn-22",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1409,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-txf-23",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2828,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-gqa-24",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 3342,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-fix-25",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1004,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-trim-26",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1477,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-norm-27",
+      "passAtTurn1": false,
+      "passFinal": true,
+      "turnsUsed": 2,
+      "tokens": 2935,
+      "finalFailures": []
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-tower-28",
+      "passAtTurn1": false,
+      "passFinal": false,
+      "turnsUsed": 3,
+      "tokens": 4918,
+      "finalFailures": [
+        "structural blocker: output: merges parents of differing widths (1 vs 429)",
+        "score 15 < min 50"
+      ],
+      "finalGraph": {
+        "components": [
+          {
+            "id": "iu",
+            "type": "input",
+            "name": "user_input",
+            "params": {
+              "shape": [
+                1,
+                35
+              ]
+            },
+            "inputs": [],
+            "outputs": [
+              "n-b0"
+            ]
+          },
+          {
+            "id": "ii",
+            "type": "input",
+            "name": "item_input",
+            "params": {
+              "shape": [
+                1,
+                76
+              ]
+            },
+            "inputs": [],
+            "outputs": [
+              "n-b8"
+            ]
+          },
+          {
+            "id": "o",
+            "type": "output",
+            "name": "output",
+            "params": {},
+            "inputs": [
+              "n-b18",
+              "n-b9"
+            ],
+            "outputs": []
+          },
+          {
+            "id": "n-b0",
+            "type": "linear",
+            "name": "user_fc1",
+            "params": {
+              "inFeatures": 35,
+              "outFeatures": 256
+            },
+            "inputs": [
+              "iu"
+            ],
+            "outputs": [
+              "n-b2"
+            ]
+          },
+          {
+            "id": "n-b2",
+            "type": "relu",
+            "name": "user_relu1",
+            "params": {},
+            "inputs": [
+              "n-b0"
+            ],
+            "outputs": [
+              "n-b4"
+            ]
+          },
+          {
+            "id": "n-b4",
+            "type": "linear",
+            "name": "user_fc2",
+            "params": {
+              "inFeatures": 256,
+              "outFeatures": 429
+            },
+            "inputs": [
+              "n-b2"
+            ],
+            "outputs": [
+              "n-b9"
+            ]
+          },
+          {
+            "id": "n-b8",
+            "type": "linear",
+            "name": "item_fc1",
+            "params": {
+              "inFeatures": 76,
+              "outFeatures": 256
+            },
+            "inputs": [
+              "ii"
+            ],
+            "outputs": [
+              "n-b10"
+            ]
+          },
+          {
+            "id": "n-b10",
+            "type": "relu",
+            "name": "item_relu1",
+            "params": {},
+            "inputs": [
+              "n-b8"
+            ],
+            "outputs": [
+              "n-b12"
+            ]
+          },
+          {
+            "id": "n-b12",
+            "type": "linear",
+            "name": "item_fc2",
+            "params": {
+              "inFeatures": 256,
+              "outFeatures": 429
+            },
+            "inputs": [
+              "n-b10"
+            ],
+            "outputs": [
+              "n-b14"
+            ]
+          },
+          {
+            "id": "n-b14",
+            "type": "relu",
+            "name": "item_relu2",
+            "params": {},
+            "inputs": [
+              "n-b12"
+            ],
+            "outputs": [
+              "n-b16"
+            ]
+          },
+          {
+            "id": "n-b16",
+            "type": "concatenate",
+            "name": "concat",
+            "params": {
+              "dim": 1
+            },
+            "inputs": [
+              "n-b14",
+              "n-b9"
+            ],
+            "outputs": [
+              "n-b18"
+            ]
+          },
+          {
+            "id": "n-b18",
+            "type": "linear",
+            "name": "score_head",
+            "params": {
+              "inFeatures": 858,
+              "outFeatures": 1
+            },
+            "inputs": [
+              "n-b16"
+            ],
+            "outputs": [
+              "o"
+            ]
+          },
+          {
+            "id": "n-b9",
+            "type": "relu",
+            "name": "user_relu2",
+            "params": {},
+            "inputs": [
+              "n-b4"
+            ],
+            "outputs": [
+              "o",
+              "n-b16"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "id": "c1",
+            "from": "n-b18",
+            "to": "o"
+          },
+          {
+            "id": "c-b1",
+            "from": "iu",
+            "to": "n-b0"
+          },
+          {
+            "id": "c-b3",
+            "from": "n-b0",
+            "to": "n-b2"
+          },
+          {
+            "id": "c-b5",
+            "from": "n-b2",
+            "to": "n-b4"
+          },
+          {
+            "id": "c-b9",
+            "from": "ii",
+            "to": "n-b8"
+          },
+          {
+            "id": "c-b11",
+            "from": "n-b8",
+            "to": "n-b10"
+          },
+          {
+            "id": "c-b13",
+            "from": "n-b10",
+            "to": "n-b12"
+          },
+          {
+            "id": "c-b15",
+            "from": "n-b12",
+            "to": "n-b14"
+          },
+          {
+            "id": "c-b17",
+            "from": "n-b14",
+            "to": "n-b16"
+          },
+          {
+            "id": "c-b19",
+            "from": "n-b16",
+            "to": "n-b18"
+          },
+          {
+            "id": "c-b6",
+            "from": "n-b9",
+            "to": "o"
+          },
+          {
+            "id": "c-b7",
+            "from": "n-b9",
+            "to": "n-b16"
+          },
+          {
+            "id": "c-b10",
+            "from": "n-b4",
+            "to": "n-b9"
+          }
+        ]
+      }
+    },
+    {
+      "provider": "claude",
+      "taskId": "gen-grow-29",
+      "passAtTurn1": true,
+      "passFinal": true,
+      "turnsUsed": 1,
+      "tokens": 1163,
+      "finalFailures": []
+    }
+  ]
+}
