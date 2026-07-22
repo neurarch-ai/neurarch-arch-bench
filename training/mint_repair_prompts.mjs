@@ -21,6 +21,7 @@
  */
 import fs from 'node:fs';
 import { applyActions, gradeTask, serializeModel } from '../bench.mjs';
+import { SYSTEM_PROMPT } from '../providers.mjs';
 import { generateCases } from '../generate.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => {
@@ -29,6 +30,11 @@ const args = Object.fromEntries(process.argv.slice(2).map(a => {
 const COUNT = Math.max(1, parseInt(args.count ?? '256', 10) || 256);
 const SEED = parseInt(args.seed ?? '123', 10) || 123;
 const OUT = args.out ?? 'repair-prompts.jsonl';
+// --chat-out=file.jsonl additionally writes SFT rows: the repair prompt as the
+// user turn and the task's REFERENCE solution as the verified target, so a
+// policy can be TAUGHT the feedback-consumption format before RL refines it.
+// The user text must stay byte-identical to train_grpo.py::build_repair_prompt.
+const CHAT_OUT = args['chat-out'] ?? null;
 
 function corruptions(reference) {
   const variants = [];
@@ -48,6 +54,7 @@ function corruptions(reference) {
 }
 
 const rows = [];
+const chatRows = [];
 let skipped = 0;
 const kinds = {};
 const cases = generateCases(COUNT, SEED);
@@ -61,6 +68,22 @@ cases.forEach((c, index) => {
       observation: serializeModel(c.start),
       attempt, failures: g.failures, corruption: kind,
     }));
+    if (CHAT_OUT) {
+      const user = `SPEC:\n${c.task.spec}\n\n`
+        + `CURRENT MODEL (unchanged -- the previous attempt below was NOT applied):\n${serializeModel(c.start)}\n\n`
+        + `A PREVIOUS ATTEMPT failed:\n${JSON.stringify({ actions: attempt })}\n\n`
+        + 'THE VERIFIER REPORTED:\n- ' + g.failures.join('\n- ') + '\n\n'
+        + 'Return the COMPLETE corrected action list to apply to the CURRENT MODEL '
+        + 'above. Do NOT return a patch on the previous attempt: its actions were '
+        + 'never applied, and names it introduced do not exist unless your list '
+        + 'creates them. Fix what the verifier reported and output one full '
+        + 'actions JSON.';
+      chatRows.push(JSON.stringify({ messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: user },
+        { role: 'assistant', content: JSON.stringify({ actions: c.reference }) },
+      ] }));
+    }
     kinds[kind] = (kinds[kind] ?? 0) + 1;
     return;
   }
@@ -68,6 +91,7 @@ cases.forEach((c, index) => {
 });
 
 fs.writeFileSync(OUT, rows.join('\n') + '\n');
+if (CHAT_OUT) { fs.writeFileSync(CHAT_OUT, chatRows.join('\n') + '\n'); console.log(`Wrote ${chatRows.length} repair SFT rows to ${CHAT_OUT} (reference targets, verified by construction).`); }
 console.log(`Wrote ${rows.length} repair prompts to ${OUT} (${skipped} tasks skipped: no corruption failed).`);
 console.log('corruption mix:', JSON.stringify(kinds));
 console.log('Every attempt above was re-graded and provably fails its task.');
