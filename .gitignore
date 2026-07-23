@@ -3,3 +3,13 @@ node_modules/
 board.json
 leaderboard.json
 .DS_Store
+
+# Training checkpoints and scratch data — weights belong in HF/Drive, not git.
+out/
+*.safetensors
+*.pt
+merged-base/
+repair-train*.jsonl
+repair-eval*.jsonl
+repair-sft*.jsonl
+mixed*.jsonl
