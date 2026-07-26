@@ -256,6 +256,23 @@ Same specs to both models, single-shot; the verifier decides each round
 reproducible from the seed. The leaderboard also reports **tokens per solved
 task** per model — the cost of intelligence, not just its rank.
 
+## Debate: a multi-agent panel, arbitrated by the verifier
+
+```bash
+node debate.mjs --self-check                                   # keyless bracket first
+node debate.mjs --panel=grok,grok,grok --generate=30 --seed=7  # homogeneous panel
+node debate.mjs --panel=grok,claude,deepseek --curated         # heterogeneous panel
+```
+
+Frontier inference is moving to multi-agent debate — and every debate system
+needs a judge. LLM judges inherit the near-miss false-positive problem the
+reward-model audit measures; here the judge is the deterministic verifier
+(same rule as the arena: pass > score > fewer tokens). N agents propose
+independently, each with its own verifier-feedback repair rounds, and the
+arbiter selects reproducibly. Reports solo-mean vs arbitrated best-of-N pass
+rate, plus how often the agents actually diverged. `DEBATE_OUT=debate.json`
+writes the full record.
+
 ## Verified SFT data, minted on demand
 
 `training/build_sft_dataset.mjs` writes chat-format and raw JSONL where every
