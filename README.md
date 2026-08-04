@@ -64,6 +64,28 @@ strategy, its defense, the pinned test, and the open residual risks), and
 floor labs cite, with keyless self-tests that bracket the harness itself.
 Working with the environment at a lab? See [LABS.md](./LABS.md).
 
+## Submit your run to the public ledger
+
+Scores in your terminal are yours; scores on the public board are ours to
+defend, so the ledger accepts **action plans, never numbers**. The server
+re-applies your plans and grades them with the same verifier this repo ships,
+then stores its own verdict at a permanent URL you can cite in a paper or a
+README. No account, no API key.
+
+```bash
+# 1. run with traces on (records the plans your policy emitted)
+XAI_API_KEY=... node leaderboard.mjs --providers=grok --traces=traces.jsonl
+
+# 2. submit the plans; the server grades them and returns a permanent result URL
+node submit.mjs --traces=traces.jsonl --model="grok-4" --submitter="Your Lab"
+```
+
+If your policy is not wired into `providers.mjs`, build the JSON yourself and
+submit with `--file=submission.json` (`{ "model", "submitter", "results":
+[{ "taskId", "actions" }] }`). Rows appear on the
+[public board](https://neurarch.com/leaderboard.html) after review; your
+`result.html?id=...` URL is live immediately either way.
+
 ## The action space
 
 A policy returns `{ "actions": [ ... ] }` using the structured edit vocabulary:
