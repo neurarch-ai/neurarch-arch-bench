@@ -22,7 +22,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // checks that Algorithm 1 specifies; both were implemented in v2 (see the
 // commit history). Numbers published before v2 were measured under v1 and are
 // labeled as such in the paper and in VERIFICATION.md.
-export const RUBRIC_VERSION = 2;
+// v3: `scale-under-budget` gained the minParams floor it always needed. Until
+// v3 that task was VACUOUS — its start graph already satisfied every constraint,
+// so an empty action plan passed it and it discriminated between no two models.
+// It was found by feeding nonsense actions through the grader and noticing one
+// task still passed. Scores measured under v2 included that free point and are
+// labelled as such on the board; they are not comparable to v3 scores.
+export const RUBRIC_VERSION = 3;
 
 // ─── Benchmark loading ───────────────────────────────────────────────────────
 

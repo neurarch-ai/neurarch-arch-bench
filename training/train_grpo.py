@@ -323,6 +323,8 @@ def run_train(args):
         fp16=use_fp16,
         report_to=[],
     )
+    if args.dtype:
+        desired["model_init_kwargs"] = {"torch_dtype": args.dtype}
     accepted = {f.name for f in dataclasses.fields(GRPOConfig)}
     cfg_kwargs = {k: v for k, v in desired.items() if k in accepted}
     dropped = [k for k in desired if k not in accepted]
@@ -384,6 +386,12 @@ def main():
     p.add_argument("--out", default="out/grpo-arch")
     p.add_argument("--lora", action="store_true", help="LoRA instead of full finetune")
     p.add_argument("--bf16", action="store_true")
+    p.add_argument("--dtype", default=None,
+                   choices=["bfloat16", "float16", "float32"],
+                   help="weight storage dtype for RL. Unset keeps transformers' fp32 "
+                        "default (what the 1.5B runs used); a 7B policy needs bfloat16 "
+                        "to fit GRPO's generation buffers on one 80GB card. Compute "
+                        "precision is set by --bf16 either way.")
     p.add_argument("--eval-only", action="store_true", help="report pass@1 on the split, no training")
     p.add_argument("--curated", action="store_true", help="eval on the 12 curated tasks instead of a generated split")
     p.add_argument("--repair-prompts", default=None,
