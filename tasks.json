@@ -109,7 +109,7 @@
     },
     {
       "id": "scale-under-budget",
-      "spec": "Make this transformer bigger to increase capacity, but the total parameter count MUST stay under 100M. Widen or deepen as you like, but respect the budget.",
+      "spec": "Make this transformer bigger to increase capacity, but the total parameter count MUST stay under 100M. Widen or deepen as you like. The result must reach at least 15M parameters (the starting graph has ~9M), so leaving it unchanged does not count.",
       "start": "small-transformer",
       "budget": {
         "maxParams": 100000000
@@ -117,6 +117,7 @@
       "constraints": {
         "forbidBlockers": true,
         "maxParams": 100000000,
+        "minParams": 15000000,
         "minScore": 50,
         "mustReachOutput": true
       }

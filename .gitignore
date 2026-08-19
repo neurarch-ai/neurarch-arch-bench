@@ -13,3 +13,13 @@ repair-train*.jsonl
 repair-eval*.jsonl
 repair-sft*.jsonl
 mixed*.jsonl
+
+# Private Arch-Bench held-out splits. Publishing one destroys its contamination
+# resistance. Only public/bench-manifest.json (the digest) is safe to commit.
+private/
+
+# Paper drafts live in the private neurarch-arch-bench-paper repo. Local copies
+# sit here for convenience; publishing one would break double-blind review.
+paper/
+paper-neurips/
+paper-iclr2026/
