@@ -165,6 +165,14 @@ def run_eval(args):
         print(f"evaluating on the curated split ({len(tasks)} hand-authored tasks)")
     else:
         tasks = fetch_tasks(args.env_url, args.count, args.seed)
+        if getattr(args, "families", None):
+            # Family-holdout evaluation: keep only the families this run asks
+            # for, so a model fine-tuned on the complement is measured out of
+            # distribution rather than on tasks shaped like its training data.
+            want = {f.strip() for f in args.families.split(",") if f.strip()}
+            tasks = [t for t in tasks
+                     if re.sub(r"-\d+$", "", str(t["id"]).replace("gen-", "")) in want]
+            print(f"family filter {sorted(want)}: {len(tasks)} tasks remain")
 
     # fp16 on GPUs without bf16 (e.g. T4); low_cpu_mem_usage avoids a RAM spike
     # that can kill the Colab kernel while loading.
@@ -393,6 +401,11 @@ def main():
                         "to fit GRPO's generation buffers on one 80GB card. Compute "
                         "precision is set by --bf16 either way.")
     p.add_argument("--eval-only", action="store_true", help="report pass@1 on the split, no training")
+    p.add_argument("--families", default=None,
+                   help="comma-separated family ids to keep in the eval split "
+                        "(mlp, ae, cnn, txf, gqa, tower, fix, trim, norm, grow). Use with a "
+                        "checkpoint trained on the complement to measure out-of-distribution "
+                        "transfer rather than in-distribution recall.")
     p.add_argument("--curated", action="store_true", help="eval on the 12 curated tasks instead of a generated split")
     p.add_argument("--repair-prompts", default=None,
                    help="jsonl from mint_repair_prompts.mjs: repair-conditioned mode (failed attempt + verifier failures in-context) for train and eval")

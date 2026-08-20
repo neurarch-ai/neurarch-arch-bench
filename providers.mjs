@@ -28,14 +28,32 @@ Rules:
 // so the leaderboard can price intelligence (tokens per solved task), not just
 // rank it.
 async function openaiCompat(baseUrl, key, model, system, user) {
+  // max_tokens is not optional here. The Anthropic path has always sent 2000;
+  // this one sent nothing, so a reasoning model routed through an OpenAI-shaped
+  // API could spend the provider's default budget on reasoning tokens and return
+  // an EMPTY content field. That reads downstream as "the model produced no
+  // design", which silently deflates every pass rate measured through this path
+  // and inflates every judge's false-negative rate. Found by an amplification
+  // re-run where 61 of 65 failures carried no failure message at all.
   const r = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-    body: JSON.stringify({ model, temperature: 0.2, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
+    body: JSON.stringify({
+      model, temperature: 0.2,
+      max_tokens: Number(process.env.MAX_TOKENS ?? 4000),
+      messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
+    }),
   });
   if (!r.ok) throw new Error(`${baseUrl} ${r.status}: ${(await r.text()).slice(0, 200)}`);
   const json = await r.json();
-  return { text: json.choices?.[0]?.message?.content ?? '', tokens: json.usage?.total_tokens ?? 0 };
+  const choice = json.choices?.[0];
+  const text = choice?.message?.content ?? '';
+  // An empty completion is a measurement failure, not a wrong answer; say so
+  // loudly rather than letting it be scored as a bad design.
+  if (!text && choice?.finish_reason === 'length') {
+    throw new Error(`${model}: empty content, finish_reason=length (raise MAX_TOKENS)`);
+  }
+  return { text, tokens: json.usage?.total_tokens ?? 0 };
 }
 
 // 'reference' is a keyless oracle handled by the callers (it replays each

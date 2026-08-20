@@ -29,6 +29,9 @@ const args = Object.fromEntries(process.argv.slice(2).map(a => {
 const COUNT = Math.max(1, parseInt(args.count ?? '40', 10) || 40);
 const SEED = parseInt(args.seed ?? '123', 10) || 123;
 const OUT = args.out ?? 'grounding_set.jsonl';
+// --clean-only: the quality-head study trains clean graphs to convergence and
+// has no use for corrupted ones, which never finish a forward pass.
+const CLEAN_ONLY = args['clean-only'] === 'true' || args['clean-only'] === true;
 
 function record(task, model, variant) {
   const { score, blockers, params } = scoreModel(model, task.budget ?? {});
@@ -88,6 +91,53 @@ const CORRUPTIONS = {
     }
     return next;
   },
+  // Three families bounded the residue; a reviewer is right that three is not
+  // "no defect outside the checks exists". These four widen the sample toward
+  // the defects that actually show up in generated designs: a normalisation
+  // layer sized to the wrong axis, a convolution whose channel count disagrees
+  // with its predecessor, a pooling stride that annihilates the spatial map,
+  // and an embedding whose vocabulary no longer covers its own indices.
+  'norm-dim'(model) {
+    const next = structuredClone(model);
+    // The generator mints layerNorm (normalizedShape) and batchNorm1d
+    // (numFeatures); both are the same defect, a norm sized to the wrong axis.
+    const norm = next.components.find(c =>
+      (c.type === 'layerNorm' && typeof c.params?.normalizedShape === 'number') ||
+      (c.type === 'batchNorm1d' && typeof c.params?.numFeatures === 'number'));
+    if (!norm) return null;
+    const key = norm.type === 'layerNorm' ? 'normalizedShape' : 'numFeatures';
+    norm.params[key] = norm.params[key] + 13;   // never a width the graph carries
+    return next;
+  },
+  'conv-channels'(model) {
+    const next = structuredClone(model);
+    const mid = next.components.filter(c =>
+      c.type === 'conv2d' && typeof c.params?.inChannels === 'number').find(l => {
+        const preds = next.connections.filter(cn => cn.to === l.id).map(cn => cn.from);
+        return preds.some(p => next.components.find(c => c.id === p)?.type !== 'input');
+      });
+    if (!mid) return null;
+    mid.params.inChannels = mid.params.inChannels * 3 + 1;
+    return next;
+  },
+  'kernel-oversize'(model) {
+    const next = structuredClone(model);
+    // conv2d carries no stride in this generator, so the spatial-collapse defect
+    // is expressed as a kernel wider than the feature map it slides over.
+    const conv = next.components.find(c =>
+      c.type === 'conv2d' && typeof c.params?.kernelSize === 'number');
+    if (!conv) return null;
+    conv.params.kernelSize = 99;
+    return next;
+  },
+  'embedding-vocab'(model) {
+    const next = structuredClone(model);
+    const emb = next.components.find(c =>
+      c.type === 'embedding' && typeof c.params?.numEmbeddings === 'number');
+    if (!emb) return null;
+    emb.params.numEmbeddings = 1;   // indices immediately run past the table
+    return next;
+  },
 };
 
 const lines = [];
@@ -99,6 +149,7 @@ for (const { task, start, reference } of generateCases(COUNT, SEED)) {
   }
   const clean = applied.model;
   lines.push(record(task, clean, 'clean'));
+  if (CLEAN_ONLY) continue;
   for (const [variant, corrupt] of Object.entries(CORRUPTIONS)) {
     const corrupted = corrupt(clean);
     if (corrupted) lines.push(record(task, corrupted, variant));
