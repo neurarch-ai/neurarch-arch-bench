@@ -169,6 +169,11 @@ def main():
             "score": t["verifier"]["score"],
         })
 
+    bad = [r for r in rows if not all(math.isfinite(v) for v in r["x"])]
+    if bad:
+        print(f"dropped {len(bad)} rows with a non-finite feature")
+        rows = [r for r in rows if all(math.isfinite(v) for v in r["x"])]
+
     if len(rows) < 40:
         raise SystemExit(f"only {len(rows)} usable triples; need more before this means anything")
 
@@ -196,10 +201,18 @@ def main():
              else f"{abs(rho_head) - abs(rho_score):+.2f}")
         print(f"{fam:<18}{len(te):>5}{rho_score:>12.2f}{rho_head:>11.2f}{d:>9}")
 
+    both = [(h, s) for h, s in zip(head_all, score_all)
+            if not math.isnan(h) and not math.isnan(s)]
+    undefined = sum(1 for s in score_all if math.isnan(s))
+    if both:
+        hb = [abs(h) for h, _ in both]; sb = [abs(s) for _, s in both]
+        print(f"\nOn the {len(both)} families where BOTH are defined: "
+              f"health score |rho| {np.mean(sb):.2f}, learned head |rho| {np.mean(hb):.2f}")
     hv = [abs(v) for v in head_all if not math.isnan(v)]
-    sv = [abs(v) for v in score_all if not math.isnan(v)]
-    print(f"\nmean |rho| over held-out families: health score {np.mean(sv):.2f}, "
-          f"learned head {np.mean(hv):.2f}  (n={len(hv)} families)")
+    print(f"Over all {len(hv)} families the head is defined on: |rho| {np.mean(hv):.2f}")
+    print(f"The health score is UNDEFINED on {undefined} of {len(score_all)} families, "
+          f"because every instance there receives the same score. That is not a tie; "
+          f"it is the score declining to rank at all.")
     print("The head never sees the family it is scored on, and family identity is not a feature.")
 
     # Which features carry it, fitted once on everything (reported, not tuned on).
@@ -211,8 +224,11 @@ def main():
 
     if args.out:
         json.dump({"per_family": per_family,
-                   "mean_abs_rho_score": float(np.mean(sv)),
-                   "mean_rho_head": float(np.mean(hv)),
+                   "families_both_defined": len(both),
+                   "mean_abs_rho_score_shared": float(np.mean(sb)) if both else None,
+                   "mean_abs_rho_head_shared": float(np.mean(hb)) if both else None,
+                   "mean_abs_rho_head_all": float(np.mean(hv)),
+                   "score_undefined_families": undefined,
                    "n_triples": len(rows), "lambda": args.lam},
                   open(args.out, "w"), indent=2)
         print(f"\nwrote {args.out}")
