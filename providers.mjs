@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 /**
  * providers — the model registry shared by the leaderboard and the
  * amplification study. One "design" model per provider, all speaking the same
@@ -23,6 +24,27 @@ Rules:
 - If the spec says to repair or edit in place, use surgical actions (update_params, add_component); do NOT use replace_model or clear_canvas.
 - Every numeric value MUST be a single computed integer, never an arithmetic expression: write "inFeatures": 6400, NOT "inFeatures": 64 * 10 * 10.
 - Respect any parameter budget in the spec. Output only the JSON object.`;
+
+// ── Policy override (opt-in) ────────────────────────────────────────────────
+// The system prompt is the policy, and an overnight search (program.md) needs
+// exactly one file it is allowed to edit. Set NEURARCH_POLICY_FILE to load the
+// prompt from disk instead of the constant above.
+//
+// Opt-in on purpose: every number published in RESULTS.md was produced with
+// the built-in prompt, so a stray policy.md in the working directory must
+// never silently change what a leaderboard row means.
+//
+//   NEURARCH_POLICY_FILE=policy.md node leaderboard.mjs --providers=grok
+export function loadPolicy(file = process.env.NEURARCH_POLICY_FILE) {
+  if (!file) return SYSTEM_PROMPT;
+  const raw = readFileSync(file, 'utf8');
+  // Strip HTML comments so the file can carry instructions to the human (and
+  // to the agent editing it) without those reaching the design model.
+  const text = raw.replace(/<!--[\s\S]*?-->/g, '').trim();
+  if (!text) throw new Error(`${file} has no prompt text (only comments?)`);
+  return text;
+}
+
 
 // Every call returns { text, tokens } — tokens is the provider-reported total
 // so the leaderboard can price intelligence (tokens per solved task), not just

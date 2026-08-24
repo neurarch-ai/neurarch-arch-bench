@@ -26,7 +26,12 @@ import {
   loadBenchmark, loadSolutions, buildFixture, applyActions, gradeTask, serializeModel, categorizeFailure,
 } from './bench.mjs';
 import { generateCases } from './generate.mjs';
-import { SYSTEM_PROMPT, REGISTRY, parseActions, runnableProviders } from './providers.mjs';
+import { loadPolicy, REGISTRY, parseActions, runnableProviders } from './providers.mjs';
+
+// Resolved once per run: an overnight loop edits the policy file between runs
+// (program.md), and re-reading it per call could grade half a board on one
+// prompt and half on another.
+const POLICY = loadPolicy();
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => {
   const m = a.match(/^--([^=]+)(?:=(.*))?$/); return m ? [m[1], m[2] ?? 'true'] : [a, 'true'];
@@ -87,7 +92,7 @@ async function run() {
         let actions;
         if (spec.oracle) { actions = solution; }
         else {
-          const reply = await spec.call(SYSTEM_PROMPT, user);
+          const reply = await spec.call(POLICY, user);
           raw = reply.text; tokens = reply.tokens;
           actions = parseActions(raw);
         }
