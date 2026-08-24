@@ -154,9 +154,16 @@ def mint(count: int = 3000, seed: int = 20260716, tag: str = "shared"):
     return payload
 
 
-@app.function(image=image, gpu="A10G", volumes=VOLUMES, timeout=7200)
+# Evaluation is a 1.5B forward pass; L4 and T4 schedule far more readily than
+# A10G when the region is tight, and the eval is not throughput-bound.
+# Evaluation is a 1.5B forward pass, so it is indifferent to GPU class and to
+# cloud. Naming several of both is the difference between scheduling in
+# minutes and sitting in a queue for a day when one region is tight.
+@app.function(image=image, gpu=["L4", "T4", "A10G"], cloud="auto",
+              volumes=VOLUMES, timeout=14400)
 def evaluate(model: str, tag: str, label: str, seed: int = 999,
-             count: int = 192, curated: bool = False, max_completion: int = 384):
+             count: int = 192, curated: bool = False, max_completion: int = 384,
+             families: str = ""):
     """pass@1 on a strictly-held-out split (or the 12 curated tasks)."""
     proc = start_env_server()
     try:
@@ -164,9 +171,11 @@ def evaluate(model: str, tag: str, label: str, seed: int = 999,
                "--model", model, "--env-url", ENV_URL,
                "--max-completion", str(max_completion)]
         cmd += ["--curated"] if curated else ["--seed", str(seed), "--count", str(count)]
+        if families:
+            cmd += ["--families", families]
         res = parse_eval(run(cmd))
         res |= {"model": model, "label": label, "curated": curated,
-                "seed": None if curated else seed,
+                "seed": None if curated else seed, "families": families or None,
                 "rubric_version": rubric_version()}
         save(tag, f"eval-{label}", res)
         print(json.dumps(res, indent=2))
