@@ -1,0 +1,11 @@
+{
+  "passed": 46,
+  "n": 204,
+  "pass_at_1": 0.225,
+  "parse_failures": 56,
+  "mean_reward": 0.364,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "label": "untrained-heldout",
+  "families": "txf,gqa,tower,norm",
+  "rubric_version": 3
+}

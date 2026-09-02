@@ -1,0 +1,11 @@
+{
+  "passed": 44,
+  "n": 308,
+  "pass_at_1": 0.143,
+  "parse_failures": 136,
+  "mean_reward": 0.109,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "label": "untrained-seen",
+  "families": "mlp,ae,cnn,fix,trim,grow",
+  "rubric_version": 3
+}

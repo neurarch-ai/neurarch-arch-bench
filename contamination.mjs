@@ -53,7 +53,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function count(query) {
   let lastBody = '';
-  for (let attempt = 0; attempt < 3; attempt++) {
+  // Six attempts with a widening back-off: the public index answers a burst
+  // with 403 for a while, and three tries 1.5 s apart read that as an outage.
+  for (let attempt = 0; attempt < 6; attempt++) {
     try {
       const res = await fetch(API, {
         method: 'POST',
@@ -67,10 +69,10 @@ async function count(query) {
       // or a throttled run reports a pristine benchmark. Those raise.
       if (typeof j.error === 'string' && /token/i.test(j.error)) return 0;
       lastBody = JSON.stringify(j).slice(0, 120);
-      await sleep(1500 * (attempt + 1));
-    } catch (e) { lastBody = String(e).slice(0, 120); await sleep(1500 * (attempt + 1)); }
+      await sleep(5000 * (attempt + 1));
+    } catch (e) { lastBody = String(e).slice(0, 120); await sleep(5000 * (attempt + 1)); }
   }
-  throw new Error(`index unreachable after 3 attempts: ${lastBody}`);
+  throw new Error(`index unreachable after 6 attempts: ${lastBody}`);
 }
 
 /** Longest contiguous word span of `text` that the corpus contains verbatim. */

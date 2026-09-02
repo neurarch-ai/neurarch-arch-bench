@@ -221,6 +221,10 @@ def main():
     order = np.argsort(-np.abs(w[1:]))[:5]
     print("\ntop standardised weights: " +
           ", ".join(f"{FEATURE_NAMES[i]} {w[i+1]:+.2f}" for i in order))
+    # The full vector, so the health score's own coefficient is on record even
+    # when it is too small to make the top five, which is the point of reporting it.
+    print("all standardised weights: " +
+          ", ".join(f"{n} {w[i+1]:+.2f}" for i, n in enumerate(FEATURE_NAMES)))
 
     if args.out:
         json.dump({"per_family": per_family,

@@ -42,11 +42,19 @@ def train_full(model, graph, steps, batch, ckpt_every, lr, seed):
     """Train to (near) convergence; return curve + summary stats."""
     import torch.nn.functional as F
     torch.manual_seed(seed)
+    # Train on the GPU when there is one. Until 2026-09-01 this ran on the CPU
+    # even inside a GPU container, which is why a convolutional graph could
+    # stall a shard for hours: 800 steps over 128 images on CPU. The teacher is
+    # still drawn on the CPU so the task distribution is identical either way.
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = model.to(device)
     inputs, feat = make_batch(graph, batch, seed=seed)
+    inputs = {k: v.to(device) for k, v in inputs.items()}
+    feat = feat.to(device)
     with torch.no_grad():
         out = model(inputs)
     out_dim = out.shape[-1]
-    teacher = torch.randn(feat.shape[-1], max(out_dim, 1))
+    teacher = torch.randn(feat.shape[-1], max(out_dim, 1)).to(device)
     if out_dim >= 2:
         labels = (feat @ teacher).argmax(dim=-1)
         loss_fn = lambda o: F.cross_entropy(o if o.dim() == 2 else o.mean(dim=1), labels)

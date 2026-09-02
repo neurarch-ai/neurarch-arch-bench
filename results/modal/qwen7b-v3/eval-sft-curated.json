@@ -1,0 +1,12 @@
+{
+  "passed": 5,
+  "n": 12,
+  "pass_at_1": 0.417,
+  "parse_failures": 1,
+  "mean_reward": 0.608,
+  "model": "/runs/qwen7b-v3/sft/checkpoint-final",
+  "label": "sft-curated",
+  "curated": true,
+  "seed": null,
+  "rubric_version": 3
+}

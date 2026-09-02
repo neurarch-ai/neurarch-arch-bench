@@ -1,0 +1,8 @@
+{
+  "path": "/runs/shared/data/sft-3000.chat.jsonl",
+  "rows": 2824,
+  "nominal": 3000,
+  "seed": 20260716,
+  "excluded_holdout_collisions": 176,
+  "rubric_version": 3
+}

@@ -1,0 +1,23 @@
+200 clean triples across 10 families
+
+held-out family       n   score rho   head rho    delta
+ae                   20         nan      -0.13         
+cnn                  20       -0.37       0.03    -0.34
+fix                  20         nan       0.53         
+gqa                  20        0.12       0.69    +0.57
+grow                 20         nan       0.78         
+mlp                  20       -0.01       0.60    +0.59
+norm                 20        0.33       0.52    +0.20
+tower                20         nan      -0.17         
+trim                 20       -0.45       0.34    -0.11
+txf                  20        0.39       0.35    -0.03
+
+On the 6 families where BOTH are defined: health score |rho| 0.28, learned head |rho| 0.42
+Over all 10 families the head is defined on: |rho| 0.42
+The health score is UNDEFINED on 4 of 10 families, because every instance there receives the same score. That is not a tie; it is the score declining to rank at all.
+The head never sees the family it is scored on, and family identity is not a feature.
+
+top standardised weights: frac conv +0.34, log width range -0.23, log10 max width +0.11, frac act -0.11, frac attn -0.08
+all standardised weights: log10 params -0.00, components +0.03, edges +0.03, depth +0.01, log10 max width +0.11, log10 mean width -0.03, log width range -0.23, frac dense +0.02, frac conv +0.34, frac attn -0.08, frac norm -0.08, frac act -0.11, frac merge +0.06, health score -0.07
+
+wrote quality_head-clean200.json

@@ -1,0 +1,8 @@
+{
+  "path": "/runs/shared/data/sft-200.chat.jsonl",
+  "rows": 189,
+  "nominal": 200,
+  "seed": 20260716,
+  "excluded_holdout_collisions": 11,
+  "rubric_version": 3
+}

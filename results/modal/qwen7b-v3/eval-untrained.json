@@ -1,0 +1,12 @@
+{
+  "passed": 9,
+  "n": 192,
+  "pass_at_1": 0.047,
+  "parse_failures": 84,
+  "mean_reward": -0.048,
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "label": "untrained",
+  "curated": false,
+  "seed": 999,
+  "rubric_version": 3
+}

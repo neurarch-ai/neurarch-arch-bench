@@ -1,0 +1,6 @@
+{
+  "checkpoint": "/runs/qwen7b-v3/sft/checkpoint-final",
+  "base_model": "Qwen/Qwen2.5-7B-Instruct",
+  "data": "/runs/shared/data/sft-3000.chat.jsonl",
+  "epochs": 2.0
+}

@@ -1,0 +1,71 @@
+{
+  "per_family": [
+    {
+      "family": "ae",
+      "n": 20,
+      "rho_score": NaN,
+      "rho_head": -0.13383458646616542
+    },
+    {
+      "family": "cnn",
+      "n": 20,
+      "rho_score": -0.37361990944634343,
+      "rho_head": 0.031578947368421054
+    },
+    {
+      "family": "fix",
+      "n": 20,
+      "rho_score": NaN,
+      "rho_head": 0.5293233082706766
+    },
+    {
+      "family": "gqa",
+      "n": 20,
+      "rho_score": 0.11634655074864203,
+      "rho_head": 0.6887218045112782
+    },
+    {
+      "family": "grow",
+      "n": 20,
+      "rho_score": NaN,
+      "rho_head": 0.7819548872180451
+    },
+    {
+      "family": "mlp",
+      "n": 20,
+      "rho_score": -0.01302255593200579,
+      "rho_head": 0.6045112781954888
+    },
+    {
+      "family": "norm",
+      "n": 20,
+      "rho_score": 0.32783314166642513,
+      "rho_head": 0.5233082706766917
+    },
+    {
+      "family": "tower",
+      "n": 20,
+      "rho_score": NaN,
+      "rho_head": -0.17443609022556392
+    },
+    {
+      "family": "trim",
+      "n": 20,
+      "rho_score": -0.45269206533105627,
+      "rho_head": 0.34135338345864663
+    },
+    {
+      "family": "txf",
+      "n": 20,
+      "rho_score": 0.38719378654632486,
+      "rho_head": 0.3548872180451128
+    }
+  ],
+  "families_both_defined": 6,
+  "mean_abs_rho_score_shared": 0.2784513349451329,
+  "mean_abs_rho_head_shared": 0.4240601503759398,
+  "mean_abs_rho_head_all": 0.4163909774436091,
+  "score_undefined_families": 4,
+  "n_triples": 200,
+  "lambda": 3.0
+}
