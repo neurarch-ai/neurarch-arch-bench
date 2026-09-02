@@ -50,7 +50,18 @@ if (HOLDOUT_COUNT > 0) {
 }
 let excluded = 0;
 
+// --families / --exclude-families cut the data along family lines, which is how
+// you build a genuinely out-of-distribution eval: train on six families, then
+// evaluate on four the model has never seen. Comma-separated ids (mlp, ae, cnn,
+// txf, gqa, tower, fix, trim, norm, grow).
+const only = args.families ? new Set(args.families.split(',').map(s => s.trim())) : null;
+const skip = args['exclude-families']
+  ? new Set(args['exclude-families'].split(',').map(s => s.trim())) : null;
+let famFiltered = 0;
+
 for (const { task, start, reference } of generateCases(COUNT, SEED)) {
+  const fam = familyOf(task.id);
+  if ((only && !only.has(fam)) || (skip && skip.has(fam))) { famFiltered += 1; continue; }
   if (holdout.has(task.spec)) { excluded += 1; continue; }
   // The guarantee: re-apply and re-grade every reference before writing.
   const applied = applyActions(start, reference);
@@ -87,6 +98,7 @@ raw.end();
 chat.end();
 
 console.log(`Wrote ${written} verified rows (${rejected} rejected by re-grading — should be 0)`);
+if (famFiltered) console.log(`  skipped ${famFiltered} row(s) outside the requested families`);
 if (excluded) console.log(`  excluded ${excluded} row(s) colliding with the holdout split (seed ${HOLDOUT_SEED} x ${HOLDOUT_COUNT})`);
 console.log(`  ${rawPath}`);
 console.log(`  ${chatPath}`);

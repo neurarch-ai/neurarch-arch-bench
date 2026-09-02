@@ -193,6 +193,25 @@ points at a mean of 1.17 audits per task; frontier tier 96.6% -> 100%. The
 single-shot arm loses tasks to free-text parse errors; the tool arm has none
 by construction, because function calls are structured.
 
+## Run it overnight: the policy ratchet
+
+`program.md` is a contract for a coding agent, not a script: point one at the
+file and leave. It optimizes `policy.md` (the system prompt, and the only file
+it may edit) against pass rate on a freshly minted split, keeping a change when
+the number goes up and reverting it when it does not, one row per experiment in
+`results.tsv`.
+
+```bash
+# what the agent runs each step, and what you can run right now
+NEURARCH_POLICY_FILE=policy.md node leaderboard.mjs --providers=reference --generate=40 --seed=11
+```
+
+Because the metric is a CPU verifier rather than a training run, an experiment
+costs seconds and the whole loop needs no GPU. The loop shape is taken from
+[karpathy/autoresearch](https://github.com/karpathy/autoresearch); what it
+measures is legality and structure, not trained accuracy, and `program.md`
+states that limit with the number behind it.
+
 ## Train on it: the RL loop
 
 `env-server.mjs` (zero deps) serves tasks and shaped rewards over HTTP, and [`training/`](./training/) contains a TRL GRPO script plus a Colab notebook that trains a small open model against the verifier end to end: baseline pass@1 on a held-out split, train, reward curve, re-eval.

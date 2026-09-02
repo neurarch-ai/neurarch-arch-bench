@@ -154,9 +154,16 @@ def mint(count: int = 3000, seed: int = 20260716, tag: str = "shared"):
     return payload
 
 
-@app.function(image=image, gpu="A10G", volumes=VOLUMES, timeout=7200)
+# Evaluation is a 1.5B forward pass; L4 and T4 schedule far more readily than
+# A10G when the region is tight, and the eval is not throughput-bound.
+# Evaluation is a 1.5B forward pass, so it is indifferent to GPU class and to
+# cloud. Naming several of both is the difference between scheduling in
+# minutes and sitting in a queue for a day when one region is tight.
+@app.function(image=image, gpu=["L4", "T4", "A10G"], cloud="auto",
+              volumes=VOLUMES, timeout=14400)
 def evaluate(model: str, tag: str, label: str, seed: int = 999,
-             count: int = 192, curated: bool = False, max_completion: int = 384):
+             count: int = 192, curated: bool = False, max_completion: int = 384,
+             families: str = ""):
     """pass@1 on a strictly-held-out split (or the 12 curated tasks)."""
     proc = start_env_server()
     try:
@@ -164,9 +171,11 @@ def evaluate(model: str, tag: str, label: str, seed: int = 999,
                "--model", model, "--env-url", ENV_URL,
                "--max-completion", str(max_completion)]
         cmd += ["--curated"] if curated else ["--seed", str(seed), "--count", str(count)]
+        if families:
+            cmd += ["--families", families]
         res = parse_eval(run(cmd))
         res |= {"model": model, "label": label, "curated": curated,
-                "seed": None if curated else seed,
+                "seed": None if curated else seed, "families": families or None,
                 "rubric_version": rubric_version()}
         save(tag, f"eval-{label}", res)
         print(json.dumps(res, indent=2))
@@ -371,5 +380,115 @@ def chain(model: str, tag: str, data: str, eval_seed: int = 999,
         proc.terminate()
 
     save(tag, "chain-summary", results)
+    print(json.dumps(results, indent=2))
+    return results
+
+
+# ── grounding at scale ───────────────────────────────────────────────────────
+# Building and training a few hundred small graphs is embarrassingly parallel
+# and CPU-bound locally (2.5 hours for 780 graphs on a laptop); one GPU does it
+# while the training chain is running in another container.
+
+@app.function(image=image, gpu="A10G", volumes=VOLUMES, timeout=21600)
+def grounding(count: int = 200, seed: int = 4242, steps: int = 800,
+              clean_only: bool = True, tag: str = "grounding", label: str = "clean",
+              shard: int = 0, shards: int = 1):
+    """Mint (architecture, verdict, real training curve) triples.
+
+    Training 800 steps per graph costs ~2.7 minutes, so 200 graphs is nine hours
+    in one container and an hour across eight. The set is dumped once, then each
+    shard trains its own stride of it and writes its own file; nothing is shared
+    but the volume.
+    """
+    os.makedirs(f"/runs/{tag}", exist_ok=True)
+    jsonl = f"/runs/{tag}/{label}{count}.jsonl"
+    if shard == 0 or not os.path.exists(jsonl):
+        cmd = ["node", "training/dump_grounding_set.mjs", f"--count={count}",
+               f"--seed={seed}", f"--out={jsonl}"]
+        if clean_only:
+            cmd.append("--clean-only")
+        run(cmd)
+        runs.commit()
+    else:
+        for _ in range(60):
+            runs.reload()
+            if os.path.exists(jsonl):
+                break
+            time.sleep(2)
+
+    rows = [l for l in open(jsonl) if l.strip()]
+    mine = rows[shard::shards]
+    part = f"/runs/{tag}/{label}{count}-shard{shard}.jsonl"
+    with open(part, "w") as f:
+        f.writelines(mine)
+    print(f"shard {shard}/{shards}: {len(mine)} of {len(rows)} graphs", flush=True)
+
+    out = f"/runs/{tag}/{label}{count}-triples-shard{shard}.jsonl"
+    run(["python", "-u", "training/grounding_at_scale.py", "--set", part,
+         "--steps", str(steps), "--out", out])
+    runs.commit()
+    n = sum(1 for _ in open(out))
+    print(f"shard {shard}: wrote {n} triples")
+    return {"shard": shard, "triples": out, "rows": n}
+
+
+# ── family-holdout transfer ──────────────────────────────────────────────────
+# The paper's transfer evidence is twelve curated tasks, which it calls
+# suggestive and which is the right word for n=12. The generator makes a proper
+# out-of-distribution split free: fine-tune on six families, evaluate on the
+# four the model has never seen.
+
+@app.function(image=image, gpu="A100-40GB", volumes=VOLUMES, timeout=28800)
+def family_holdout(heldout: str = "txf,gqa,tower,norm", tag: str = "ood",
+                   model: str = "Qwen/Qwen2.5-1.5B-Instruct",
+                   mint_count: int = 6000, mint_seed: int = 20260716,
+                   eval_count: int = 512, eval_seed: int = 999,
+                   batch_size: int = 4, grad_accum: int = 4):
+    proc = start_env_server()
+    rubric = rubric_version()
+    results = {"tag": tag, "heldout": heldout, "model": model, "rubric_version": rubric}
+    try:
+        # Mint from the six training families only.
+        os.makedirs(f"/runs/{tag}/data", exist_ok=True)
+        data_stem = f"/runs/{tag}/data/sft-{mint_count}-minus-{heldout.replace(',', '_')}"
+        log = run(["node", "training/build_sft_dataset.mjs", f"--count={mint_count}",
+                   f"--seed={mint_seed}", f"--exclude-families={heldout}",
+                   f"--out={data_stem}"])
+        data = f"{data_stem}.chat.jsonl"
+        results["train_rows"] = sum(1 for _ in open(data))
+        results["train_families_excluded"] = heldout
+
+        def _eval(model_path, label, families=None):
+            cmd = ["python", "-u", "training/train_grpo.py", "--eval-only",
+                   "--model", model_path, "--env-url", ENV_URL,
+                   "--seed", str(eval_seed), "--count", str(eval_count),
+                   "--max-completion", "384"]
+            if families:
+                cmd += ["--families", families]
+            res = parse_eval(run(cmd))
+            res |= {"model": model_path, "label": label, "families": families,
+                    "rubric_version": rubric}
+            save(tag, f"eval-{label}", res)
+            results[label] = res
+            print(f"[stage] {label}: {json.dumps(res)}", flush=True)
+
+        # Untrained baseline on the held-out families, then on the seen ones.
+        _eval(model, "untrained-heldout", families=heldout)
+        _eval(model, "untrained-seen", families="mlp,ae,cnn,fix,trim,grow")
+
+        out = f"/runs/{tag}/sft"
+        run(["python", "-u", "training/train_sft.py", "--data", data, "--model", model,
+             "--out", out, "--epochs", "2.0", "--bf16",
+             "--batch-size", str(batch_size), "--grad-accum", str(grad_accum)])
+        runs.commit()
+        ckpt = f"{out}/checkpoint-final"
+
+        # The measurement: does training on six families transfer to four unseen
+        # ones, and by how much less than it transfers within distribution?
+        _eval(ckpt, "sft-heldout", families=heldout)
+        _eval(ckpt, "sft-seen", families="mlp,ae,cnn,fix,trim,grow")
+    finally:
+        proc.terminate()
+    save(tag, "summary", results)
     print(json.dumps(results, indent=2))
     return results

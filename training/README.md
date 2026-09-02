@@ -121,3 +121,37 @@ user runs; this script is the self-serve batch engine.
   network-bound at localhost latency (microseconds of compute per grade).
 - GRPO group size (`--num-generations`, default 8) is the main memory knob
   after model size.
+
+## Family-holdout transfer (built, baselines taken, not finished)
+
+The out-of-distribution split the paper's transfer claim wants: train on six
+families, evaluate on the four the model has never seen. Everything needed is
+here and the baselines are measured; the two post-SFT evaluations were not run,
+so no transfer number exists and none is claimed anywhere.
+
+Measured (rubric v3, seed-999 split, Qwen2.5-1.5B untrained):
+
+| split | families | pass@1 |
+|---|---|---|
+| held out | txf, gqa, tower, norm | 46/204 = 22.5% |
+| seen | mlp, ae, cnn, fix, trim, grow | 44/308 = 14.3% |
+
+Note the held-out families are the *easier* ones untrained, so a drop after
+fine-tuning would be a real distribution shift rather than a difficulty
+artifact. That is why the baselines are worth keeping.
+
+To finish it:
+
+```bash
+node training/build_sft_dataset.mjs --count=6000 --seed=20260716 \
+     --exclude-families=txf,gqa,tower,norm --out=sft-6fam
+python training/train_sft.py --data sft-6fam.chat.jsonl --out out/sft-ood
+python training/train_grpo.py --eval-only --seed 999 --count 512 \
+     --model out/sft-ood/checkpoint-final --families txf,gqa,tower,norm
+python training/train_grpo.py --eval-only --seed 999 --count 512 \
+     --model out/sft-ood/checkpoint-final --families mlp,ae,cnn,fix,trim,grow
+```
+
+On Modal: `modal_chain.py::family_holdout` runs the whole thing, or
+`::evaluate` with `families=` for the two evaluations alone if a checkpoint
+already exists.
