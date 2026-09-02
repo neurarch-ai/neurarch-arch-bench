@@ -1,0 +1,13 @@
+{
+  "passed": 243,
+  "n": 308,
+  "pass_at_1": 0.789,
+  "parse_failures": 15,
+  "mean_reward": 1.095,
+  "model": "/runs/ood/sft/checkpoint-final",
+  "label": "sft-seen",
+  "curated": false,
+  "seed": 999,
+  "families": "mlp,ae,cnn,fix,trim,grow",
+  "rubric_version": 3
+}

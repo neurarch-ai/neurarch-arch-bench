@@ -1,0 +1,13 @@
+{
+  "passed": 0,
+  "n": 204,
+  "pass_at_1": 0.0,
+  "parse_failures": 56,
+  "mean_reward": -0.087,
+  "model": "/runs/ood/sft/checkpoint-final",
+  "label": "sft-heldout",
+  "curated": false,
+  "seed": 999,
+  "families": "txf,gqa,tower,norm",
+  "rubric_version": 3
+}

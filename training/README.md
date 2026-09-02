@@ -122,36 +122,33 @@ user runs; this script is the self-serve batch engine.
 - GRPO group size (`--num-generations`, default 8) is the main memory knob
   after model size.
 
-## Family-holdout transfer (built, baselines taken, not finished)
+## Family-holdout transfer (measured 2026-09-01; the result is negative)
 
-The out-of-distribution split the paper's transfer claim wants: train on six
-families, evaluate on the four the model has never seen. Everything needed is
-here and the baselines are measured; the two post-SFT evaluations were not run,
-so no transfer number exists and none is claimed anywhere.
+The out-of-distribution split: train on six families, evaluate on the four the
+model has never seen. It is finished, and it is the sharpest limit on what the
+foundry teaches.
 
-Measured (rubric v3, seed-999 split, Qwen2.5-1.5B untrained):
+Rubric v3, seed-999 split, Qwen2.5-1.5B LoRA, 6,000 minted pairs excluding the
+held-out families:
 
-| split | families | pass@1 |
-|---|---|---|
-| held out | txf, gqa, tower, norm | 46/204 = 22.5% |
-| seen | mlp, ae, cnn, fix, trim, grow | 44/308 = 14.3% |
+| split | families | untrained | after SFT |
+|---|---|---|---|
+| held out | txf, gqa, tower, norm | 46/204 = 22.5% | **0/204 = 0.0%** |
+| seen | mlp, ae, cnn, fix, trim, grow | 44/308 = 14.3% | 243/308 = 78.9% |
 
-Note the held-out families are the *easier* ones untrained, so a drop after
-fine-tuning would be a real distribution shift rather than a difficulty
-artifact. That is why the baselines are worth keeping.
+Fine-tuning does not merely fail to transfer, it destroys what the base model
+had. 88 of the 204 held-out attempts return a graph whose input does not reach
+its output and 56 do not parse, so the policy learned an edit pattern that is
+well-formed only for the shapes it saw. Note the held-out families are the ones
+the *untrained* model handled better, so this is not a difficulty artifact.
 
-To finish it:
+Raw evaluations: `results/modal/ood/eval-{untrained,sft}-{heldout,seen}.json`.
+
+To reproduce:
 
 ```bash
-node training/build_sft_dataset.mjs --count=6000 --seed=20260716 \
-     --exclude-families=txf,gqa,tower,norm --out=sft-6fam
-python training/train_sft.py --data sft-6fam.chat.jsonl --out out/sft-ood
-python training/train_grpo.py --eval-only --seed 999 --count 512 \
-     --model out/sft-ood/checkpoint-final --families txf,gqa,tower,norm
-python training/train_grpo.py --eval-only --seed 999 --count 512 \
-     --model out/sft-ood/checkpoint-final --families mlp,ae,cnn,fix,trim,grow
+modal run training/modal_chain.py::family_holdout        # the whole thing
+modal run training/modal_chain.py::evaluate \
+     --model /runs/ood/sft/checkpoint-final --tag ood \
+     --label sft-heldout --count 512 --families txf,gqa,tower,norm
 ```
-
-On Modal: `modal_chain.py::family_holdout` runs the whole thing, or
-`::evaluate` with `families=` for the two evaluations alone if a checkpoint
-already exists.
