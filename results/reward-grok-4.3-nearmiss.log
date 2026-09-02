@@ -1,0 +1,12 @@
+near-miss negatives: {"dropped-component":58,"dropped-connection":33,"broken-divisibility":9}
+Verifier-labeled set: 200 examples (100 pass, 100 fail), seed 11.
+
+LLM reward model "grok" (grok-4.3) vs the verifier (n=200):
+  agreement:      69.0% (138/200)
+  FALSE POSITIVE: 24.5% (49/200)  <- approved a design the verifier proves is broken
+  false negative: 6.5% (13/200)
+
+The false-positive rate is the number a lab needs to trust an LLM reward model here.
+It can only be measured where a ground-truth verifier exists. That is the point.
+
+Wrote /private/tmp/claude-501/-Users-xingao-Projects-Neurarch/72a55f5b-4806-4c28-ba6a-be5eddb0dd7c/scratchpad/results/reward-grok-4.3-nearmiss.json

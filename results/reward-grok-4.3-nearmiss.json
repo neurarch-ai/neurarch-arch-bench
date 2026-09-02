@@ -1,0 +1,1418 @@
+{
+  "provider": "grok",
+  "requested": "grok-4.3",
+  "served": [
+    "grok-4.3"
+  ],
+  "seed": 11,
+  "count": 100,
+  "tier": "near-miss",
+  "n": 200,
+  "agree": 138,
+  "falsePos": 49,
+  "falseNeg": 13,
+  "errored": 0,
+  "generatedAt": "2026-09-02T23:09:51.655Z",
+  "rows": [
+    {
+      "i": 0,
+      "taskId": "gen-mlp-0",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 1,
+      "taskId": "gen-mlp-0",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 2,
+      "taskId": "gen-ae-1",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 3,
+      "taskId": "gen-ae-1",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 4,
+      "taskId": "gen-cnn-2",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 5,
+      "taskId": "gen-cnn-2",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 6,
+      "taskId": "gen-txf-3",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 7,
+      "taskId": "gen-txf-3",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 8,
+      "taskId": "gen-gqa-4",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 9,
+      "taskId": "gen-gqa-4",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 10,
+      "taskId": "gen-fix-5",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 11,
+      "taskId": "gen-fix-5",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 12,
+      "taskId": "gen-trim-6",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 13,
+      "taskId": "gen-trim-6",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 14,
+      "taskId": "gen-norm-7",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 15,
+      "taskId": "gen-norm-7",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 16,
+      "taskId": "gen-tower-8",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 17,
+      "taskId": "gen-tower-8",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 18,
+      "taskId": "gen-grow-9",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 19,
+      "taskId": "gen-grow-9",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 20,
+      "taskId": "gen-mlp-10",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 21,
+      "taskId": "gen-mlp-10",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 22,
+      "taskId": "gen-ae-11",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 23,
+      "taskId": "gen-ae-11",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 24,
+      "taskId": "gen-cnn-12",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 25,
+      "taskId": "gen-cnn-12",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 26,
+      "taskId": "gen-txf-13",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 27,
+      "taskId": "gen-txf-13",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 28,
+      "taskId": "gen-gqa-14",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 29,
+      "taskId": "gen-gqa-14",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 30,
+      "taskId": "gen-fix-15",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 31,
+      "taskId": "gen-fix-15",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 32,
+      "taskId": "gen-trim-16",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 33,
+      "taskId": "gen-trim-16",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 34,
+      "taskId": "gen-norm-17",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 35,
+      "taskId": "gen-norm-17",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 36,
+      "taskId": "gen-tower-18",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 37,
+      "taskId": "gen-tower-18",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 38,
+      "taskId": "gen-grow-19",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 39,
+      "taskId": "gen-grow-19",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 40,
+      "taskId": "gen-mlp-20",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 41,
+      "taskId": "gen-mlp-20",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 42,
+      "taskId": "gen-ae-21",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 43,
+      "taskId": "gen-ae-21",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 44,
+      "taskId": "gen-cnn-22",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 45,
+      "taskId": "gen-cnn-22",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 46,
+      "taskId": "gen-txf-23",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 47,
+      "taskId": "gen-txf-23",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 48,
+      "taskId": "gen-gqa-24",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 49,
+      "taskId": "gen-gqa-24",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 50,
+      "taskId": "gen-fix-25",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 51,
+      "taskId": "gen-fix-25",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 52,
+      "taskId": "gen-trim-26",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 53,
+      "taskId": "gen-trim-26",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 54,
+      "taskId": "gen-norm-27",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 55,
+      "taskId": "gen-norm-27",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 56,
+      "taskId": "gen-tower-28",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 57,
+      "taskId": "gen-tower-28",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 58,
+      "taskId": "gen-grow-29",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 59,
+      "taskId": "gen-grow-29",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 60,
+      "taskId": "gen-mlp-30",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 61,
+      "taskId": "gen-mlp-30",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 62,
+      "taskId": "gen-ae-31",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 63,
+      "taskId": "gen-ae-31",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 64,
+      "taskId": "gen-cnn-32",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 65,
+      "taskId": "gen-cnn-32",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 66,
+      "taskId": "gen-txf-33",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 67,
+      "taskId": "gen-txf-33",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 68,
+      "taskId": "gen-gqa-34",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 69,
+      "taskId": "gen-gqa-34",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 70,
+      "taskId": "gen-fix-35",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 71,
+      "taskId": "gen-fix-35",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 72,
+      "taskId": "gen-trim-36",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 73,
+      "taskId": "gen-trim-36",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 74,
+      "taskId": "gen-norm-37",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 75,
+      "taskId": "gen-norm-37",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 76,
+      "taskId": "gen-tower-38",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 77,
+      "taskId": "gen-tower-38",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 78,
+      "taskId": "gen-grow-39",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 79,
+      "taskId": "gen-grow-39",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 80,
+      "taskId": "gen-mlp-40",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 81,
+      "taskId": "gen-mlp-40",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 82,
+      "taskId": "gen-ae-41",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 83,
+      "taskId": "gen-ae-41",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 84,
+      "taskId": "gen-cnn-42",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 85,
+      "taskId": "gen-cnn-42",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 86,
+      "taskId": "gen-txf-43",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 87,
+      "taskId": "gen-txf-43",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 88,
+      "taskId": "gen-gqa-44",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 89,
+      "taskId": "gen-gqa-44",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 90,
+      "taskId": "gen-fix-45",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 91,
+      "taskId": "gen-fix-45",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 92,
+      "taskId": "gen-trim-46",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 93,
+      "taskId": "gen-trim-46",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 94,
+      "taskId": "gen-norm-47",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 95,
+      "taskId": "gen-norm-47",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 96,
+      "taskId": "gen-tower-48",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 97,
+      "taskId": "gen-tower-48",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 98,
+      "taskId": "gen-grow-49",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 99,
+      "taskId": "gen-grow-49",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 100,
+      "taskId": "gen-mlp-50",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 101,
+      "taskId": "gen-mlp-50",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 102,
+      "taskId": "gen-ae-51",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 103,
+      "taskId": "gen-ae-51",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 104,
+      "taskId": "gen-cnn-52",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 105,
+      "taskId": "gen-cnn-52",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 106,
+      "taskId": "gen-txf-53",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 107,
+      "taskId": "gen-txf-53",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 108,
+      "taskId": "gen-gqa-54",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 109,
+      "taskId": "gen-gqa-54",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 110,
+      "taskId": "gen-fix-55",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 111,
+      "taskId": "gen-fix-55",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 112,
+      "taskId": "gen-trim-56",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 113,
+      "taskId": "gen-trim-56",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 114,
+      "taskId": "gen-norm-57",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 115,
+      "taskId": "gen-norm-57",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 116,
+      "taskId": "gen-tower-58",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 117,
+      "taskId": "gen-tower-58",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 118,
+      "taskId": "gen-grow-59",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 119,
+      "taskId": "gen-grow-59",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 120,
+      "taskId": "gen-mlp-60",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 121,
+      "taskId": "gen-mlp-60",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 122,
+      "taskId": "gen-ae-61",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 123,
+      "taskId": "gen-ae-61",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 124,
+      "taskId": "gen-cnn-62",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 125,
+      "taskId": "gen-cnn-62",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 126,
+      "taskId": "gen-txf-63",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 127,
+      "taskId": "gen-txf-63",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 128,
+      "taskId": "gen-gqa-64",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 129,
+      "taskId": "gen-gqa-64",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 130,
+      "taskId": "gen-fix-65",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 131,
+      "taskId": "gen-fix-65",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 132,
+      "taskId": "gen-trim-66",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 133,
+      "taskId": "gen-trim-66",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 134,
+      "taskId": "gen-norm-67",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 135,
+      "taskId": "gen-norm-67",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 136,
+      "taskId": "gen-tower-68",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 137,
+      "taskId": "gen-tower-68",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 138,
+      "taskId": "gen-grow-69",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 139,
+      "taskId": "gen-grow-69",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 140,
+      "taskId": "gen-mlp-70",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 141,
+      "taskId": "gen-mlp-70",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 142,
+      "taskId": "gen-ae-71",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 143,
+      "taskId": "gen-ae-71",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 144,
+      "taskId": "gen-cnn-72",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 145,
+      "taskId": "gen-cnn-72",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 146,
+      "taskId": "gen-txf-73",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 147,
+      "taskId": "gen-txf-73",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 148,
+      "taskId": "gen-gqa-74",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 149,
+      "taskId": "gen-gqa-74",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 150,
+      "taskId": "gen-fix-75",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 151,
+      "taskId": "gen-fix-75",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 152,
+      "taskId": "gen-trim-76",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 153,
+      "taskId": "gen-trim-76",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 154,
+      "taskId": "gen-norm-77",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 155,
+      "taskId": "gen-norm-77",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 156,
+      "taskId": "gen-tower-78",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 157,
+      "taskId": "gen-tower-78",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 158,
+      "taskId": "gen-grow-79",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 159,
+      "taskId": "gen-grow-79",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 160,
+      "taskId": "gen-mlp-80",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 161,
+      "taskId": "gen-mlp-80",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 162,
+      "taskId": "gen-ae-81",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 163,
+      "taskId": "gen-ae-81",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 164,
+      "taskId": "gen-cnn-82",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 165,
+      "taskId": "gen-cnn-82",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 166,
+      "taskId": "gen-txf-83",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 167,
+      "taskId": "gen-txf-83",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 168,
+      "taskId": "gen-gqa-84",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 169,
+      "taskId": "gen-gqa-84",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 170,
+      "taskId": "gen-fix-85",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 171,
+      "taskId": "gen-fix-85",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 172,
+      "taskId": "gen-trim-86",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 173,
+      "taskId": "gen-trim-86",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 174,
+      "taskId": "gen-norm-87",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 175,
+      "taskId": "gen-norm-87",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 176,
+      "taskId": "gen-tower-88",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 177,
+      "taskId": "gen-tower-88",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 178,
+      "taskId": "gen-grow-89",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 179,
+      "taskId": "gen-grow-89",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 180,
+      "taskId": "gen-mlp-90",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 181,
+      "taskId": "gen-mlp-90",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 182,
+      "taskId": "gen-ae-91",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 183,
+      "taskId": "gen-ae-91",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 184,
+      "taskId": "gen-cnn-92",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 185,
+      "taskId": "gen-cnn-92",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 186,
+      "taskId": "gen-txf-93",
+      "truth": true,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 187,
+      "taskId": "gen-txf-93",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 188,
+      "taskId": "gen-gqa-94",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 189,
+      "taskId": "gen-gqa-94",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 190,
+      "taskId": "gen-fix-95",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 191,
+      "taskId": "gen-fix-95",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 192,
+      "taskId": "gen-trim-96",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 193,
+      "taskId": "gen-trim-96",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 194,
+      "taskId": "gen-norm-97",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 195,
+      "taskId": "gen-norm-97",
+      "truth": false,
+      "judged": false,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 196,
+      "taskId": "gen-tower-98",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 197,
+      "taskId": "gen-tower-98",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 198,
+      "taskId": "gen-grow-99",
+      "truth": true,
+      "judged": true,
+      "served": "grok-4.3"
+    },
+    {
+      "i": 199,
+      "taskId": "gen-grow-99",
+      "truth": false,
+      "judged": true,
+      "served": "grok-4.3"
+    }
+  ]
+}
