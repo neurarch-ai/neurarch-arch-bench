@@ -1,0 +1,10 @@
+near-miss negatives: {"dropped-component":58,"dropped-connection":33,"broken-divisibility":9}
+Verifier-labeled set: 200 examples (100 pass, 100 fail), seed 11.
+
+LLM reward model "openrouter" (meta-llama/llama-3.3-70b-instruct) vs the verifier (n=200):
+  agreement:      55.5% (111/200)
+  FALSE POSITIVE: 41.5% (83/200)  <- approved a design the verifier proves is broken
+  false negative: 3.0% (6/200)
+
+The false-positive rate is the number a lab needs to trust an LLM reward model here.
+It can only be measured where a ground-truth verifier exists. That is the point.

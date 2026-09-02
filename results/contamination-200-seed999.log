@@ -1,0 +1,16 @@
+index: v4_rpj_llama_s4
+
+--- positive control (these must match) ---
+  OK   longest match 12-gram (32 docs): The dominant sequence transduction models are based on compl...
+  OK   longest match 12-gram (29 docs): We propose a new simple network architecture, the Transforme...
+  OK   longest match 12-gram (15 docs): Deeper neural networks are more difficult to train. We prese...
+
+--- 200 generated task specs, seed 999 ---
+  10/200  20/200  30/200  40/200  50/200  60/200  70/200  80/200  90/200  100/200  110/200  120/200  130/200  140/200  150/200  160/200  170/200  180/200  190/200  200/200
+longest verbatim overlap with the corpus, per spec:
+   0-gram:  200 specs  (no span of 4+ words appears at all)
+
+specs with a 12+ word verbatim match: 0/200 (0.0%)
+longest overlap seen anywhere: 0-gram
+
+Controls matched: 3/3, so the procedure detects overlap where overlap exists.

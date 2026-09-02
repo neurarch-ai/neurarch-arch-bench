@@ -1,5 +1,9 @@
 node_modules/
 *.log
+# ...except the run records the paper cites. `*.log` silently swallowed the
+# contamination and reward-model outputs on their first commit, which is the
+# failure mode this file is most prone to: an artifact that looks committed.
+!results/*.log
 board.json
 leaderboard.json
 .DS_Store
