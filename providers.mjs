@@ -75,7 +75,12 @@ async function openaiCompat(baseUrl, key, model, system, user) {
   if (!text && choice?.finish_reason === 'length') {
     throw new Error(`${model}: empty content, finish_reason=length (raise MAX_TOKENS)`);
   }
-  return { text, tokens: json.usage?.total_tokens ?? 0 };
+  // Report the model the provider actually served, not the one we asked for.
+  // xAI resolves retired ids silently (grok-4 and grok-4-fast both answer as
+  // grok-4.3 today), so a run labelled by its request can name a model that
+  // never saw the prompt. Three "Grok variants" in an early audit turned out to
+  // be byte-identical files for exactly this reason.
+  return { text, tokens: json.usage?.total_tokens ?? 0, served: json.model ?? null };
 }
 
 // 'reference' is a keyless oracle handled by the callers (it replays each
@@ -124,7 +129,7 @@ export const REGISTRY = {
       });
       if (!r.ok) throw new Error(`claude ${r.status}: ${(await r.text()).slice(0, 200)}`);
       const json = await r.json();
-      return { text: json.content?.[0]?.text ?? '', tokens: (json.usage?.input_tokens ?? 0) + (json.usage?.output_tokens ?? 0) };
+      return { text: json.content?.[0]?.text ?? '', tokens: (json.usage?.input_tokens ?? 0) + (json.usage?.output_tokens ?? 0), served: json.model ?? null };
     },
   },
   gemini: {
@@ -138,7 +143,7 @@ export const REGISTRY = {
       });
       if (!r.ok) throw new Error(`gemini ${r.status}: ${(await r.text()).slice(0, 200)}`);
       const json = await r.json();
-      return { text: json.candidates?.[0]?.content?.parts?.[0]?.text ?? '', tokens: json.usageMetadata?.totalTokenCount ?? 0 };
+      return { text: json.candidates?.[0]?.content?.parts?.[0]?.text ?? '', tokens: json.usageMetadata?.totalTokenCount ?? 0, served: json.modelVersion ?? null };
     },
   },
 };

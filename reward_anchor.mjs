@@ -119,9 +119,11 @@ async function run() {
   const call = REGISTRY[PROVIDER].call;
 
   let agree = 0, falsePos = 0, falseNeg = 0, errored = 0, n = 0, firstErr = null;
+  const servedIds = new Set();
   for (const e of examples) {
     try {
       const reply = await callWithRetry(call, JUDGE_SYSTEM, `SPEC:\n${e.spec}\n\nGRAPH:\n${e.graph}\n\nPASS or FAIL?`);
+      if (reply.served) servedIds.add(reply.served);
       const judged = /pass/i.test(reply.text) && !/fail/i.test(reply.text);
       n += 1;
       if (DELAY) await sleep(DELAY);
@@ -131,7 +133,15 @@ async function run() {
     } catch (e) { errored += 1; if (!firstErr) firstErr = e.message; }
   }
   const pct = x => `${(100 * x / Math.max(1, n)).toFixed(1)}%`;
-  console.log(`\nLLM reward model "${PROVIDER}" (${REGISTRY[PROVIDER].modelId()}) vs the verifier (n=${n}${errored ? `, ${errored} errored` : ''}):`);
+  // Name the model that answered. The id we ask for is not always the id that
+  // replies, and a run labelled by its request can credit a model that never
+  // saw the prompt.
+  const requested = REGISTRY[PROVIDER].modelId();
+  const served = [...servedIds].join(', ') || 'not reported';
+  const label = servedIds.size === 1 && servedIds.has(requested)
+    ? requested
+    : `${requested} requested, served by ${served}`;
+  console.log(`\nLLM reward model "${PROVIDER}" (${label}) vs the verifier (n=${n}${errored ? `, ${errored} errored` : ''}):`);
   console.log(`  agreement:      ${pct(agree)} (${agree}/${n})`);
   console.log(`  FALSE POSITIVE: ${pct(falsePos)} (${falsePos}/${n})  <- approved a design the verifier proves is broken`);
   console.log(`  false negative: ${pct(falseNeg)} (${falseNeg}/${n})`);
