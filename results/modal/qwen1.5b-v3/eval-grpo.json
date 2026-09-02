@@ -1,0 +1,13 @@
+{
+  "passed": 153,
+  "n": 192,
+  "pass_at_1": 0.797,
+  "parse_failures": 11,
+  "mean_reward": 1.108,
+  "model": "/runs/qwen1.5b-v3/grpo/checkpoint-final",
+  "label": "grpo",
+  "curated": false,
+  "seed": 999,
+  "families": null,
+  "rubric_version": 3
+}

@@ -1,0 +1,8 @@
+{
+  "checkpoint": "/runs/qwen1.5b-v3/grpo/checkpoint-final",
+  "from": "/runs/qwen1.5b-v3/sft/checkpoint-final",
+  "steps": 100,
+  "lr": 1e-05,
+  "train_seed": 123,
+  "reward_curve": []
+}
