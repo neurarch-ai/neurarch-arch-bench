@@ -1,0 +1,11 @@
+Verifier-labeled set: 60 examples (30 pass, 30 fail), seed 7.
+
+LLM reward model "grok" (grok-4.20-0309-reasoning) vs the verifier (n=60):
+  agreement:      93.3% (56/60)
+  FALSE POSITIVE: 0.0% (0/60)  <- approved a design the verifier proves is broken
+  false negative: 6.7% (4/60)
+
+The false-positive rate is the number a lab needs to trust an LLM reward model here.
+It can only be measured where a ground-truth verifier exists. That is the point.
+
+Wrote /private/tmp/claude-501/-Users-xingao-Projects-Neurarch/72a55f5b-4806-4c28-ba6a-be5eddb0dd7c/scratchpad/results/reward-grok-4.20-0309-reasoning-blatant.json

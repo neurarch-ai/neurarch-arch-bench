@@ -91,14 +91,14 @@ function labeledExamples() {
   for (const { task, start, reference } of generateCases(COUNT, SEED)) {
     const solved = applyActions(start, reference).model;
     const gPass = gradeTask(task, solved, reference.length, reference.map(a => a.type));
-    ex.push({ spec: task.spec, graph: serializeModel(solved), truth: gPass.pass });   // should be PASS
+    ex.push({ taskId: task.id ?? task.taskId ?? null, spec: task.spec, graph: serializeModel(solved), truth: gPass.pass });   // should be PASS
     if (args['near-miss']) {
       // subtle negative: one edit away from a passing design
       const nm = nearMiss(task, solved, reference, ex.length);
-      if (nm) { ex.push({ spec: task.spec, graph: serializeModel(nm.m), truth: false }); kinds[nm.kind] = (kinds[nm.kind] ?? 0) + 1; }
+      if (nm) { ex.push({ taskId: task.id ?? task.taskId ?? null, spec: task.spec, graph: serializeModel(nm.m), truth: false }); kinds[nm.kind] = (kinds[nm.kind] ?? 0) + 1; }
     } else {
       const gFail = gradeTask(task, start, 0, []);
-      ex.push({ spec: task.spec, graph: serializeModel(start), truth: gFail.pass });   // should be FAIL
+      ex.push({ taskId: task.id ?? task.taskId ?? null, spec: task.spec, graph: serializeModel(start), truth: gFail.pass });   // should be FAIL
     }
   }
   if (args['near-miss']) console.log('near-miss negatives:', JSON.stringify(kinds));
@@ -120,12 +120,17 @@ async function run() {
 
   let agree = 0, falsePos = 0, falseNeg = 0, errored = 0, n = 0, firstErr = null;
   const servedIds = new Set();
+  const perExample = [];
   for (const e of examples) {
     try {
       const reply = await callWithRetry(call, JUDGE_SYSTEM, `SPEC:\n${e.spec}\n\nGRAPH:\n${e.graph}\n\nPASS or FAIL?`);
       if (reply.served) servedIds.add(reply.served);
       const judged = /pass/i.test(reply.text) && !/fail/i.test(reply.text);
       n += 1;
+      // Which examples, not just how many. Two judges can both score 57/60 and
+      // disagree about which three they missed; without this the claim that
+      // they miss "the same" three cannot be checked.
+      perExample.push({ i: perExample.length, taskId: e.taskId ?? null, truth: e.truth, judged, served: reply.served ?? null });
       if (DELAY) await sleep(DELAY);
       if (judged === e.truth) agree += 1;
       else if (judged && !e.truth) falsePos += 1;   // approved a broken design (the dangerous one)
@@ -148,6 +153,19 @@ async function run() {
   if (errored) console.log(`  (${errored} errored; first error: ${firstErr})`);
   console.log('\nThe false-positive rate is the number a lab needs to trust an LLM reward model here.');
   console.log('It can only be measured where a ground-truth verifier exists. That is the point.');
+
+  // REWARD_OUT makes this run a replayable artifact rather than a transcript,
+  // the same contract AMPLIFY_OUT gives the amplification study.
+  if (process.env.REWARD_OUT) {
+    const fs = await import('node:fs');
+    fs.writeFileSync(process.env.REWARD_OUT, JSON.stringify({
+      provider: PROVIDER, requested, served: [...servedIds], seed: SEED, count: COUNT,
+      tier: args['near-miss'] ? 'near-miss' : 'blatant',
+      n, agree, falsePos, falseNeg, errored, generatedAt: new Date().toISOString(),
+      rows: perExample,
+    }, null, 2));
+    console.log(`\nWrote ${process.env.REWARD_OUT}`);
+  }
 }
 
 run().catch(err => { console.error(err); process.exit(2); });
