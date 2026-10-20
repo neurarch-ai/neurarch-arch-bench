@@ -8,6 +8,8 @@ A model is shown a spec ("design a CNN for CIFAR-10 under 50M params") and a sta
 spec + graph  ──▶  model emits edit actions  ──▶  apply  ──▶  verify + grade
 ```
 
+> **Read this before training on it.** A policy trained here does not transfer to architecture families it has not seen. Qwen2.5-1.5B fine-tuned on six task families: held-out families went from 46/204 = 22.5% untrained to **0/204 = 0.0%** after SFT, while seen families went from 14.3% to 78.9% (rubric v3, measured 2026-09-01; details and raw evaluations in [training/README.md](./training/README.md#family-holdout-transfer-measured-2026-09-01-the-result-is-negative) and [VERIFICATION.md](./VERIFICATION.md)). Use it to measure and to train within the families it covers, and evaluate any claim of generality on a family split, not a seed split.
+
 ## Why a benchmark like this
 
 The scarce ingredient in RL and agent evaluation is a **verifier**: a function that, given a candidate, says how good it is, cheaply and without a human. Code and math have one (a compiler, a unit test). Architecture design did not have a public one. This is that verifier, plus a task set, plus a leaderboard runner.

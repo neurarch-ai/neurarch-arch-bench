@@ -9,6 +9,8 @@ This is the **verifiers v1-native** taskset (`verifiers>=0.2`, taskset/harness
 split, July 2026 API). The legacy v0 package (`../neurarch_arch_design`) is
 frozen.
 
+> **Read this before training on it.** A policy trained here does not transfer to architecture families it has not seen. Qwen2.5-1.5B fine-tuned on six task families: held-out families went from 46/204 = 22.5% untrained to **0/204 = 0.0%** after SFT, while seen families went from 14.3% to 78.9% (rubric v3, measured 2026-09-01; details and raw evaluations in [training/README.md](../../training/README.md#family-holdout-transfer-measured-2026-09-01-the-result-is-negative) and [VERIFICATION.md](../../VERIFICATION.md)). Use it to measure and to train within the families it covers, and evaluate any claim of generality on a family split, not a seed split.
+
 ## Run it
 
 ```bash
